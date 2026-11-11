@@ -1,106 +1,111 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#f5f6f8"><meta name="description" content="AGUS AI VIDEO STUDIO — AI Story Director untuk Google Flow">
-<title>AGUS AI VIDEO STUDIO 2.0</title>
-<link rel="manifest" href="/manifest.webmanifest">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827">
+<meta name="description" content="AGUS AI VIDEO STUDIO — AI Story Director dan prompt produksi Google Flow">
+<title>AGUS AI VIDEO STUDIO</title><link rel="manifest" href="/manifest.webmanifest">
 <style>
-:root{--bg:#f4f6f9;--card:#fff;--ink:#172334;--muted:#687587;--line:#e2e7ee;--blue:#2457d6;--bluebg:#edf2ff;--green:#18794e;--shadow:0 8px 28px #15253b0b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial}
-header{background:#fff;border-bottom:1px solid var(--line);padding:16px;position:sticky;top:0;z-index:5}.wrap{max-width:960px;margin:auto}.brand{display:flex;gap:12px;align-items:center}.logo{width:42px;height:42px;background:#172334;color:#fff;border-radius:13px;display:grid;place-items:center;font-weight:850}.brand h1{font-size:17px;margin:0}.sub{font-size:12px;color:var(--muted)}
-main{max-width:960px;margin:24px auto;padding:0 14px 48px}.hero{margin-bottom:18px}.hero h2{font-size:25px;line-height:1.2;margin:0 0 6px}.hero p{margin:0;color:var(--muted)}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:var(--shadow);margin-bottom:14px}.panel h3{font-size:16px;margin:0 0 13px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:12px}.field:last-child{margin-bottom:0}label{font-size:13px;font-weight:700;display:block;margin-bottom:6px}
-input,select,textarea{width:100%;padding:11px 12px;border:1px solid #d6dde7;border-radius:10px;background:#fff;color:var(--ink);font:inherit}textarea{min-height:88px;resize:vertical}input:focus,select:focus,textarea:focus{outline:2px solid #dce6ff;border-color:var(--blue)}
-.hint{font-size:12px;color:var(--muted);margin-top:5px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}
-button{border:0;border-radius:10px;padding:11px 15px;font:700 14px system-ui;cursor:pointer}.primary{background:var(--blue);color:white}.secondary{background:#edf0f5;color:#243247}.primary:disabled{opacity:.55;cursor:wait}
-.notice{padding:12px 14px;border:1px solid #dbe5ff;background:var(--bluebg);color:#29436f;border-radius:12px;font-size:13px;margin-bottom:14px}.status{font-size:13px;color:var(--muted);margin-top:9px;min-height:20px}.status.ok{color:var(--green)}.status.err{color:#b42318}
-.output{white-space:pre-wrap;overflow-wrap:anywhere;background:#f8f9fb;border:1px solid var(--line);border-radius:12px;padding:14px;font:13px/1.6 ui-monospace,Consolas,monospace;max-height:520px;overflow:auto}.outhead{display:flex;justify-content:space-between;align-items:center;gap:8px}.outhead h3{margin:0}.tiny{font-size:12px;padding:8px 10px}
-footer{text-align:center;color:var(--muted);font-size:12px;padding:12px}
-@media(max-width:650px){.grid{grid-template-columns:1fr}.hero h2{font-size:22px}.panel{padding:14px}}
-</style>
-</head>
+:root{--bg:#0b1220;--panel:#121d2e;--panel2:#18263a;--line:#29394f;--ink:#edf3fb;--muted:#9aabc0;--blue:#72a5ff;--blue2:#245fd1;--gold:#e9bd72;--green:#59c99a;--red:#ff8585}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -15%,#20385c 0,transparent 38%),var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
+header{position:sticky;top:0;z-index:20;background:#0d1727ed;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top{max-width:1120px;margin:auto;padding:13px 18px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{display:flex;gap:11px;align-items:center}.logo{width:43px;height:43px;border-radius:14px;background:linear-gradient(145deg,#e7c27e,#a87636);color:#172033;display:grid;place-items:center;font-weight:950;font-size:17px;box-shadow:0 6px 20px #d8aa5533}.brand h1{font-size:15px;letter-spacing:.08em;margin:0}.brand small{display:block;color:var(--muted);font-size:11px}.topright{display:flex;align-items:center;gap:8px}.pill{border:1px solid #35516d;color:#b8d3ff;border-radius:30px;padding:5px 10px;font-size:11px}
+main{max-width:1120px;margin:26px auto;padding:0 16px 55px}.hero{padding:8px 2px 20px}.eyebrow{color:var(--gold);font-size:11px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.hero h2{font-size:clamp(25px,4vw,38px);line-height:1.15;margin:7px 0 8px}.hero p{margin:0;color:var(--muted);max-width:720px}
+.layout{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:16px;align-items:start}.stack{display:grid;gap:14px}.panel{background:linear-gradient(150deg,#152238,#111b2b);border:1px solid var(--line);border-radius:17px;padding:17px;box-shadow:0 12px 34px #0002}.panel h3{font-size:15px;margin:0 0 13px;display:flex;align-items:center;gap:9px}.num{width:25px;height:25px;border-radius:8px;background:#263d5c;color:#b9d5ff;display:grid;place-items:center;font-size:12px}
+.field{margin-bottom:12px}.field:last-child{margin-bottom:0}label{display:block;font-size:12px;font-weight:750;color:#c8d5e6;margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #35475f;background:#0c1727;color:var(--ink);border-radius:10px;padding:11px 12px;font:inherit;font-size:14px;outline:none}textarea{min-height:86px;resize:vertical}input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #72a5ff20}select option{background:#111d2d}.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.hint{color:var(--muted);font-size:11px;margin-top:5px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}button{font:700 13px system-ui;border:1px solid transparent;border-radius:10px;padding:10px 13px;cursor:pointer;transition:.15s}button:disabled{opacity:.5;cursor:wait}.primary{background:linear-gradient(135deg,#79aaff,#3973dc);color:#07152a}.secondary{background:#23334a;border-color:#344a66;color:#e3edf9}.gold{background:linear-gradient(135deg,#f0d49b,#c58d43);color:#1b2433}.ghost{background:transparent;border-color:#3b4e67;color:#bdcde0}.small{padding:7px 10px;font-size:11px}
+.notice{border:1px solid #705d39;background:#2b251b;color:#f0d7a7;border-radius:12px;padding:11px 13px;font-size:12px;margin-bottom:14px}.status{font-size:12px;color:var(--muted);min-height:20px;margin-top:10px}.status.ok{color:var(--green)}.status.err{color:var(--red)}
+.preview{display:flex;gap:12px;align-items:center;border:1px dashed #40536d;border-radius:12px;padding:10px}.preview img{width:58px;height:58px;object-fit:cover;border-radius:9px;display:none}.preview .hint{flex:1}.tabs{display:flex;gap:6px;overflow:auto;margin:0 0 12px;padding-bottom:3px}.tab{white-space:nowrap;background:#1a2940;border:1px solid #354a65;color:#aebfd3}.tab.active{background:#d8e7ff;color:#12223b;border-color:#d8e7ff}.resultHead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}.resultHead h3{margin:0;font-size:15px}
+.empty{padding:28px 15px;text-align:center;color:var(--muted);border:1px dashed #3a4b62;border-radius:12px;font-size:13px}.summary{background:#0c1727;border:1px solid #2d4059;border-radius:12px;padding:13px;margin-bottom:12px}.summary h4{margin:0 0 6px;font-size:16px;color:#f1d29a}.summary p{margin:5px 0;color:#c0cde0;font-size:13px}.scene{border:1px solid #31445d;background:#0d1929;border-radius:13px;padding:13px;margin:10px 0}.sceneTop{display:flex;align-items:center;justify-content:space-between;gap:8px}.sceneTop b{font-size:13px}.time{font-size:11px;color:#a9c7f8}.scene p{margin:7px 0;font-size:12px;color:#c2cfdf}.scene label{margin-top:11px;color:#e0c38e}.prompt{white-space:pre-wrap;overflow-wrap:anywhere;background:#111f32;border:1px solid #2b405a;border-radius:9px;padding:10px;color:#dce8f7;font:12px/1.6 ui-monospace,Consolas,monospace;max-height:210px;overflow:auto}.list{margin:6px 0 0;padding-left:18px;color:#c6d3e3;font-size:12px}.list li{margin:5px 0}.hidden{display:none!important}footer{text-align:center;color:#73859b;font-size:11px;padding:22px 0 0}
+@media(max-width:850px){.layout{grid-template-columns:1fr}.top{padding:11px 14px}.topright .pill{display:none}}@media(max-width:520px){main{margin:17px auto;padding:0 11px 40px}.panel{padding:13px}.grid{grid-template-columns:1fr}.hero h2{font-size:26px}.brand h1{font-size:12px}.brand small{font-size:10px}.logo{width:39px;height:39px}}
+</style></head>
 <body>
-<header><div class="wrap brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO <span style="color:#2457d6">2.0</span></h1><div class="sub">AI Story Director · Prompt produksi Google Flow</div></div></div></header>
+<header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
 <main>
-<section class="hero"><h2>Dari satu ide menjadi paket produksi video.</h2><p>AI membantu mengembangkan cerita, membagi adegan, menjaga karakter, dan menulis prompt Flow.</p></section>
-<div class="notice"><b>Mode AI:</b> tombol “Generate dengan AI” memerlukan backend dan API key yang dipasang di server. Jika belum disiapkan, gunakan “Buat template prompt” untuk membuat draft tanpa koneksi AI.</div>
-<section class="panel">
-<h3>1. Ide dan konsep cerita</h3>
-<div class="field"><label for="idea">Ceritakan ide videomu</label><textarea id="idea" placeholder="Contoh: Seorang driver GrabCar menerima orderan malam di Bali, menjemput penumpang, lalu mengantar ke hotel.">Seorang driver GrabCar bekerja pada malam hari di Bali. Ia menerima pesanan, menjemput penumpang, mengantar dengan aman, dan tetap semangat mencari nafkah.</textarea></div>
+<section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
+<div class="notice"><b>Catatan:</b> Generate AI membutuhkan OPENAI_API_KEY yang aktif di Vercel dan penggunaan API dapat dikenakan biaya terpisah. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow.</div>
+<div class="layout">
+<div class="stack">
+<section class="panel"><h3><span class="num">01</span> Ide & konsep cerita</h3>
+<div class="field"><label for="idea">IDE VIDEO</label><textarea id="idea" placeholder="Ceritakan ide video secara bebas...">Seorang driver pariwisata Bali bekerja pada malam hari. Ia menerima pesanan, menjemput tamu, mengantar dengan aman melewati suasana Bali malam, dan tetap semangat mencari nafkah.</textarea></div>
 <div class="grid">
-<div class="field"><label for="title">Judul video</label><input id="title" value="Perjuangan Driver di Bali"></div>
-<div class="field"><label for="genre">Genre</label><select id="genre"><option>Drama realistis</option><option>Motivasi</option><option>Komedi</option><option>Horor sinematik</option><option>Petualangan</option><option>Romantis</option><option>Dokumenter</option><option>Aksi</option></select></div>
-<div class="field"><label for="style">Gaya visual</label><select id="style"><option>Cinematic realistis</option><option>Dark cinematic</option><option>Hangat dan natural</option><option>Futuristik</option><option>Dokumenter natural</option><option>Komedi ekspresif</option></select></div>
-<div class="field"><label for="ratio">Format video</label><select id="ratio"><option>Vertikal 9:16 (TikTok / Reels)</option><option>Horizontal 16:9 (YouTube)</option><option>Persegi 1:1</option></select></div>
-</div>
-</section>
-<section class="panel">
-<h3>2. Pengaturan produksi</h3>
+<div class="field"><label for="title">Judul proyek</label><input id="title" value="Perjuangan Driver Bali"></div>
+<div class="field"><label for="genre">Genre</label><select id="genre"><option>Drama realistis</option><option>Motivasi</option><option>Komedi</option><option>Horor sinematik</option><option>Petualangan</option><option>Romantis</option><option>Dokumenter</option><option>Aksi</option><option>Promosi bisnis</option></select></div>
+<div class="field"><label for="style">Gaya visual</label><select id="style"><option>Cinematic realistis</option><option>Dark cinematic</option><option>Hangat dan natural</option><option>Futuristik</option><option>Dokumenter natural</option><option>Komedi ekspresif</option><option>Film epik</option></select></div>
+<div class="field"><label for="ratio">Format video</label><select id="ratio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div></div></section>
+<section class="panel"><h3><span class="num">02</span> Pengaturan produksi</h3>
 <div class="grid">
-<div class="field"><label for="duration">Durasi total</label><select id="duration"><option>15 detik</option><option>30 detik</option><option selected>60 detik</option><option>90 detik</option><option>120 detik</option></select></div>
-<div class="field"><label for="scenes">Jumlah adegan</label><select id="scenes"><option>3</option><option>4</option><option selected>6</option><option>8</option><option>9</option></select></div>
-<div class="field"><label for="language">Bahasa dialog / narasi</label><select id="language"><option>Bahasa Indonesia</option><option>Bahasa Bali sehari-hari</option><option>Bahasa Inggris</option><option>Tanpa dialog</option></select></div>
-<div class="field"><label for="voice">Karakter suara</label><select id="voice"><option>Natural dan bersahaja</option><option>Berat, tenang, berwibawa</option><option>Ceria dan ekspresif</option><option>Tegang dan misterius</option><option>Tanpa narator</option></select></div>
-</div>
-</section>
-<section class="panel">
-<h3>3. Character Lock & referensi</h3>
-<div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi pengguna sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, dan ciri khas yang sama di semua adegan.</textarea><div class="hint">Lampirkan foto referensi secara manual di Flow. Versi ini menyimpan arahan teks, belum mengunggah foto ke AI.</div></div>
-<div class="grid">
-<div class="field"><label for="wardrobe">Pakaian / properti wajib</label><input id="wardrobe" placeholder="Contoh: jaket hitam, mobil putih"></div>
-<div class="field"><label for="location">Lokasi / latar</label><input id="location" placeholder="Contoh: jalanan Bali malam hari"></div>
-</div>
-<div class="field"><label for="continuity">Aturan konsistensi</label><textarea id="continuity">Jangan mengubah wajah, usia visual, gaya rambut, bentuk tubuh, pakaian, kendaraan, atau identitas karakter antaradegan. Jaga kontinuitas waktu, lokasi, arah gerak, dan properti. Anatomi tangan dan jari harus natural.</textarea></div>
-</section>
-<section class="panel">
-<h3>4. Arahan sutradara</h3>
-<div class="grid">
-<div class="field"><label for="camera">Gaya kamera</label><select id="camera"><option>Variatif dan sinematik</option><option>Wide shot dan establishing shot</option><option>Close-up emosional</option><option>Tracking shot halus</option><option>Handheld dokumenter</option></select></div>
-<div class="field"><label for="lighting">Pencahayaan</label><select id="lighting"><option>Natural cinematic lighting</option><option>Golden hour</option><option>Low-key malam hari</option><option>Soft lighting</option><option>Kontras dramatis</option></select></div>
-</div>
-<div class="field"><label for="dialogue">Dialog khusus (opsional)</label><textarea id="dialogue" placeholder="Tulis kalimat yang wajib diucapkan. Jika kosong, AI akan membuat dialog yang sesuai."></textarea></div>
+<div class="field"><label for="duration">Durasi total</label><select id="duration"><option>15</option><option>30</option><option selected>60</option><option>90</option><option>120</option><option>180</option></select></div>
+<div class="field"><label for="scenes">Jumlah adegan</label><select id="scenes"><option>3</option><option>4</option><option selected>6</option><option>8</option><option>9</option><option>10</option><option>12</option></select></div>
+<div class="field"><label for="language">Bahasa dialog/narasi</label><select id="language"><option>Bahasa Indonesia</option><option>Bahasa Bali sehari-hari</option><option>Bahasa Bali halus</option><option>Bahasa Inggris</option><option>Tanpa dialog</option></select></div>
+<div class="field"><label for="voice">Karakter suara</label><select id="voice"><option>Natural dan bersahaja</option><option>Berat, tenang, berwibawa</option><option>Ceria dan ekspresif</option><option>Tegang dan misterius</option><option>Suara pria dewasa</option><option>Suara wanita dewasa</option><option>Tanpa narator</option></select></div></div></section>
+<section class="panel"><h3><span class="num">03</span> Character lock & referensi</h3>
+<div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi yang saya lampirkan sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, usia visual, dan ciri khas yang sama di semua adegan.</textarea></div>
+<div class="field"><label>Foto referensi (opsional)</label><div class="preview"><img id="refPreview" alt="Pratinjau foto referensi"><div class="hint" id="refName">Pilih foto untuk melihat pratinjau lokal. Foto tidak dikirim ke server.</div><input id="reference" type="file" accept="image/*" style="max-width:130px;padding:7px;font-size:11px"></div></div>
+<div class="grid"><div class="field"><label for="wardrobe">Pakaian / properti wajib</label><input id="wardrobe" placeholder="Contoh: kemeja hitam, Suzuki Ertiga putih"></div><div class="field"><label for="location">Lokasi / latar</label><input id="location" placeholder="Contoh: Ubud, Bali malam hari"></div></div>
+<div class="field"><label for="continuity">Aturan konsistensi</label><textarea id="continuity">Jangan mengubah wajah, usia visual, gaya rambut, bentuk tubuh, pakaian, kendaraan, atau identitas karakter antaradegan. Jaga kontinuitas waktu, lokasi, arah gerak, dan properti. Anatomi tangan dan jari natural.</textarea></div></section>
+<section class="panel"><h3><span class="num">04</span> Arahan sutradara</h3>
+<div class="grid"><div class="field"><label for="camera">Gaya kamera</label><select id="camera"><option>Variatif dan sinematik</option><option>Wide shot dan establishing shot</option><option>Close-up emosional</option><option>Tracking shot halus</option><option>Handheld dokumenter</option><option>Drone dan aerial</option></select></div><div class="field"><label for="lighting">Pencahayaan</label><select id="lighting"><option>Natural cinematic lighting</option><option>Golden hour</option><option>Low-key malam hari</option><option>Soft lighting</option><option>Kontras dramatis</option><option>Neon cinematic</option></select></div></div>
+<div class="field"><label for="dialogue">Dialog khusus (opsional)</label><textarea id="dialogue" placeholder="Kalimat wajib yang harus diucapkan karakter..."></textarea></div>
 <div class="field"><label for="audio">Musik & efek suara</label><input id="audio" value="Musik sinematik sesuai emosi cerita, ambience lokasi, dan efek suara realistis."></div>
-</section>
-<section class="panel">
-<h3>5. Hasil produksi</h3>
-<div class="actions">
-<button class="primary" id="aiBtn">Generate dengan AI</button>
-<button class="secondary" id="templateBtn">Buat template prompt</button>
-</div><div id="status" class="status" role="status"></div>
-<div class="outhead" style="margin-top:14px"><h3>Prompt siap salin ke Flow</h3><button class="secondary tiny" id="copyBtn">Salin hasil</button></div>
-<div id="result" class="output" style="margin-top:9px">Hasil akan muncul di sini.</div>
-<div class="actions"><button class="secondary tiny" id="downloadBtn">Unduh TXT</button><button class="secondary tiny" id="clearBtn">Kosongkan hasil</button></div>
-</section>
-<footer>AGUS AI VIDEO STUDIO 2.0 · Studio pribadi · Bukan generator video; hasil akhir dibuat di Google Flow.</footer>
+<div class="field"><label for="extra">Arahan tambahan (opsional)</label><textarea id="extra" placeholder="Contoh: ending logo, caption Inggris, hindari unsur tertentu..."></textarea></div></section>
+<div class="panel"><h3><span class="num">05</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
+</div>
+<div class="stack">
+<section class="panel" id="outputPanel"><div class="resultHead"><h3>Hasil Studio</h3><span class="pill" id="resultTag">BELUM ADA HASIL</span></div>
+<div class="tabs"><button class="tab active" data-tab="story">Cerita</button><button class="tab" data-tab="storyboard">Storyboard</button><button class="tab" data-tab="image">Prompt gambar</button><button class="tab" data-tab="video">Prompt video</button><button class="tab" data-tab="check">Checklist</button></div>
+<div id="storyView"><div class="empty">Hasil cerita dan paket produksi akan muncul di sini setelah Generate.</div></div>
+<div id="storyboardView" class="hidden"></div><div id="imageView" class="hidden"></div><div id="videoView" class="hidden"></div><div id="checkView" class="hidden"></div>
+<div class="actions"><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button></div></section>
+<section class="panel"><h3><span class="num">06</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
+<section class="panel"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
+</div></div>
+<footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by OpenAI</footer>
 </main>
 <script>
-const $=id=>document.getElementById(id);let latest="";
-function getData(){return Object.fromEntries(["idea","title","genre","style","ratio","duration","scenes","language","voice","character","wardrobe","location","continuity","camera","lighting","dialogue","audio"].map(k=>[k,$(k).value.trim()]));}
-function setStatus(msg,kind=""){const s=$("status");s.textContent=msg;s.className="status "+kind;}
-function template(){
- const d=getData(),n=Number(d.scenes),total=parseInt(d.duration),sec=(total/n).toFixed(1).replace(/\.0$/,"");
- let t=`AGUS AI VIDEO STUDIO 2.0 — PAKET PROMPT GOOGLE FLOW\nJUDUL: ${d.title}\nGENRE: ${d.genre}\nDURASI: ${d.duration} | ${n} adegan x ${sec} detik\nFORMAT: ${d.ratio}\n\nIDE CERITA:\n${d.idea}\n\nARAHAN VISUAL GLOBAL:\nGaya ${d.style}. Lokasi: ${d.location||"sesuai kebutuhan cerita"}. Format ${d.ratio}. Pertahankan kesinambungan visual dari awal hingga akhir.\n\nCHARACTER LOCK:\n${d.character}\nPakaian/properti: ${d.wardrobe||"konsisten sesuai cerita"}.\nAturan: ${d.continuity}\n\nAUDIO GLOBAL:\nDialog/narasi: ${d.language}. Karakter suara: ${d.voice}. Musik/efek: ${d.audio}\n\n`;
- for(let i=1;i<=n;i++){let from=((i-1)*total/n).toFixed(1),to=(i*total/n).toFixed(1);
- t+=`==================================================\nADEGAN ${i} | ${from}s–${to}s | ${sec} detik\n==================================================\nBuat satu klip mandiri untuk adegan ${i} dari cerita "${d.title}". Tampilkan bagian cerita yang logis pada tahap ini: ${d.idea}\nVISUAL: ${d.style}, detail realistis, ekspresi dan gerakan natural. Lokasi: ${d.location||"tentukan sesuai alur"}.\nKARAKTER: ${d.character} Pakaian/properti: ${d.wardrobe||"jaga konsistensi dengan adegan lain"}.\nKAMERA: ${d.camera}. Pencahayaan: ${d.lighting}.\nDIALOG: ${d.dialogue||"Buat dialog singkat dan alami jika diperlukan, dalam "+d.language+"; gunakan suara "+d.voice+"."}\nAUDIO: ${d.audio}\nKONTINUITAS: ${d.continuity} Sambungkan secara logis dengan adegan sebelumnya dan siapkan transisi ke adegan berikutnya. Jangan mengulang adegan lain.\nKUALITAS: gerakan halus, wajah stabil, anatomi wajar, tidak ada flicker, teks acak, subtitle otomatis, atau watermark yang tidak diminta.\n\n`;}
- t+=`PETUNJUK FLOW:\n- Lampirkan foto referensi karakter secara manual pada generasi yang mendukung referensi.\n- Hasilkan adegan satu per satu; cek kontinuitas sebelum lanjut.\n- Prompt membantu mengarahkan model, tetapi tidak menjamin wajah atau detail selalu identik.\n`;
- latest=t;$("result").textContent=t;setStatus("Template prompt berhasil dibuat.","ok");
+const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrl="";
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
+function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function timecode(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");}
+function fallbackTemplate(){
+ const d=getData(),n=Number(d.scenes),total=Number(d.duration),base=Math.floor(total/n),rem=total%n;let elapsed=0;
+ const scenes=Array.from({length:n},(_,i)=>{const dur=base+(i<rem?1:0),start=elapsed;elapsed+=dur;const tc=timecode(start)+"-"+timecode(elapsed);
+ const lock=d.character+" Pakaian/properti: "+(d.wardrobe||"konsisten sesuai cerita")+". "+d.continuity;
+ const visual="Adegan "+(i+1)+" dari "+n+" untuk cerita "+d.title+". "+d.idea+" Lokasi: "+(d.location||"sesuai alur")+". Tampilkan progres cerita tahap "+(i+1)+". "+d.style+".";
+ return {number:i+1,timecode:tc,durationSeconds:dur,purpose:"Mengembangkan cerita pada bagian "+(i+1),visual,action:"Aksi natural sesuai perkembangan cerita; ekspresi terbaca jelas.",dialogue:d.dialogue||"Dialog/narasi "+d.language+" dengan karakter suara "+d.voice+".",camera:d.camera,lighting:d.lighting,sound:d.audio,transition:"Transisi logis ke adegan berikutnya; jaga arah gerak dan posisi karakter.",imagePrompt:"Buat satu frame storyboard "+d.ratio+", "+d.style+". "+visual+" Karakter: "+lock+" Komposisi sinematik, detail natural, ekspresi jelas, anatomi wajar. Tanpa teks acak atau watermark.",videoPrompt:"Buat klip video "+dur+" detik, format "+d.ratio+". "+visual+" Aksi: natural dan berkesinambungan. Karakter: "+lock+" Kamera: "+d.camera+". Lighting: "+d.lighting+". Dialog/audio: "+(d.dialogue||d.language+" dengan suara "+d.voice)+". Musik dan SFX: "+d.audio+". Hindari flicker, perubahan wajah, anatomi rusak, teks acak, dan watermark."};
+ });
+ return {title:d.title,logline:d.idea,synopsis:d.idea,story:d.idea,duration:total+" detik",sceneCount:n,globalCharacterLock:d.character,scenes,continuityChecklist:[d.continuity,"Wajah dan pakaian konsisten di semua klip","Audio dan karakter suara konsisten","Durasi total tepat "+total+" detik"],flowWorkflow:["Lampirkan foto referensi di Flow bila dibutuhkan","Buat storyboard dari prompt gambar per adegan","Generate klip sesuai urutan adegan","Periksa kontinuitas sebelum menyatukan klip"]};
 }
-$("templateBtn").onclick=template;
-$("aiBtn").onclick=async()=>{
- const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
- setStatus("Menghubungi backend AI...");
- try{
-  const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(getData())});
-  const j=await r.json();if(!r.ok)throw new Error(j.error||"Permintaan AI gagal.");
-  latest=j.text||"";if(!latest)throw new Error("AI tidak mengembalikan teks.");
-  $("result").textContent=latest;setStatus("Paket prompt berhasil dibuat oleh AI.","ok");
- }catch(e){setStatus(e.message+" Pastikan backend berjalan dan OPENAI_API_KEY sudah diatur.","err");}
- finally{b.disabled=false;b.textContent="Generate dengan AI";}
-};
-$("copyBtn").onclick=async()=>{if(!latest){setStatus("Belum ada hasil untuk disalin.","err");return;}try{await navigator.clipboard.writeText(latest);setStatus("Hasil berhasil disalin.","ok");}catch(e){setStatus("Clipboard tidak tersedia. Pilih teks lalu salin manual.","err");}};
-$("downloadBtn").onclick=()=>{if(!latest){setStatus("Belum ada hasil untuk diunduh.","err");return;}const a=document.createElement("a"),u=URL.createObjectURL(new Blob([latest],{type:"text/plain;charset=utf-8"}));a.href=u;a.download="AGUS-AI-VIDEO-STUDIO-Prompt.txt";a.click();URL.revokeObjectURL(u);};
-$("clearBtn").onclick=()=>{latest="";$("result").textContent="Hasil akan muncul di sini.";setStatus("Hasil dikosongkan.");};
-if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
-</script>
-</body></html>
+function buildText(p){let t="AGUS AI VIDEO STUDIO — PAKET PRODUKSI\n"+p.title+"\n\nLOGLINE\n"+p.logline+"\n\nSINOPSIS\n"+p.synopsis+"\n\nCERITA\n"+p.story+"\n\nCHARACTER LOCK\n"+p.globalCharacterLock+"\n";
+ for(const s of p.scenes||[])t+="\n==============================\nADEGAN "+s.number+" | "+s.timecode+" | "+s.durationSeconds+" detik\n==============================\nTUJUAN: "+s.purpose+"\nVISUAL: "+s.visual+"\nAKSI: "+s.action+"\nDIALOG: "+s.dialogue+"\nKAMERA: "+s.camera+"\nLIGHTING: "+s.lighting+"\nAUDIO: "+s.sound+"\nTRANSISI: "+s.transition+"\n\nPROMPT GAMBAR:\n"+s.imagePrompt+"\n\nPROMPT VIDEO FLOW:\n"+s.videoPrompt+"\n";
+ t+="\nCHECKLIST\n"+(p.continuityChecklist||[]).map(x=>"- "+x).join("\n")+"\n\nALUR FLOW\n"+(p.flowWorkflow||[]).map(x=>"- "+x).join("\n");return t;}
+function render(){
+ if(!project)return;latestText=buildText(project);$("resultTag").textContent="PROYEK SIAP";
+ $("storyView").innerHTML='<div class="summary"><h4>'+esc(project.title)+'</h4><p><b>Logline:</b> '+esc(project.logline)+'</p><p><b>Sinopsis:</b> '+esc(project.synopsis)+'</p><p><b>Alur cerita:</b> '+esc(project.story)+'</p><p><b>Durasi:</b> '+esc(project.duration)+' · '+project.scenes.length+' adegan</p></div><p class="hint">Character lock: '+esc(project.globalCharacterLock)+'</p>';
+ const cards=(kind)=>project.scenes.map(s=>{const content=kind==="storyboard"?'<p><b>Tujuan:</b> '+esc(s.purpose)+'</p><p>'+esc(s.visual)+'</p><p><b>Aksi:</b> '+esc(s.action)+'</p><p><b>Dialog:</b> '+esc(s.dialogue)+'</p><p><b>Kamera:</b> '+esc(s.camera)+' · '+esc(s.lighting)+'</p>':kind==="image"?'<div class="prompt">'+esc(s.imagePrompt)+'</div>':'<div class="prompt">'+esc(s.videoPrompt)+'</div>';
+ return '<article class="scene"><div class="sceneTop"><b>ADEGAN '+s.number+'</b><span class="time">'+esc(s.timecode)+' · '+s.durationSeconds+' detik</span></div>'+content+(kind!=="storyboard"?'<div class="actions"><button class="secondary small" data-copy-scene="'+kind+'" data-id="'+s.number+'">Salin prompt</button></div>':'')+'</article>';}).join("");
+ $("storyboardView").innerHTML=cards("storyboard");$("imageView").innerHTML=cards("image");$("videoView").innerHTML=cards("video");
+ $("checkView").innerHTML='<div class="summary"><b>Checklist kontinuitas</b><ul class="list">'+(project.continuityChecklist||[]).map(x=>'<li>'+esc(x)+'</li>').join("")+'</ul></div><div class="summary"><b>Urutan produksi di Flow</b><ol class="list">'+(project.flowWorkflow||[]).map(x=>'<li>'+esc(x)+'</li>').join("")+'</ol></div>';
+ document.querySelectorAll("[data-copy-scene]").forEach(b=>b.onclick=()=>{const s=project.scenes.find(x=>x.number===Number(b.dataset.id));const v=b.dataset.copyScene==="image"?s.imagePrompt:s.videoPrompt;copy(v);});
+}
+function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));["story","storyboard","image","video","check"].forEach(k=>$ (k+"View").classList.toggle("hidden",k!==tab));}
+document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
+async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
+$("aiBtn").onclick=async()=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
+ setStatus("Menghubungi AI dan menyusun seluruh adegan...");
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");$("outputPanel").scrollIntoView({behavior:"smooth",block:"start"});}
+ catch(e){setStatus(e.message,"err");}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
+$("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");};
+$("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
+$("download").onclick=()=>{if(!project){setStatus("Belum ada hasil.","err");return;}const a=document.createElement("a"),u=URL.createObjectURL(new Blob([latestText],{type:"text/plain;charset=utf-8"}));a.href=u;a.download=(project.title||"AGUS-AI-VIDEO").replace(/[^a-z0-9-_]+/gi,"-")+".txt";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
+$("save").onclick=()=>{if(!project){setStatus("Belum ada proyek untuk disimpan.","err");return;}const arr=JSON.parse(localStorage.getItem("agusStudioProjects")||"[]");const item={id:Date.now(),title:project.title,project,form:getData(),savedAt:new Date().toLocaleString("id-ID")};arr.unshift(item);localStorage.setItem("agusStudioProjects",JSON.stringify(arr.slice(0,20)));renderSaved();setStatus("Proyek disimpan di perangkat ini.","ok");};
+function renderSaved(){const arr=JSON.parse(localStorage.getItem("agusStudioProjects")||"[]");$("projectList").innerHTML=arr.length?arr.map(x=>'<div class="scene"><div class="sceneTop"><b>'+esc(x.title)+'</b><span class="time">'+esc(x.savedAt)+'</span></div><div class="actions"><button class="secondary small" data-open="'+x.id+'">Buka</button><button class="ghost small" data-delete="'+x.id+'">Hapus</button></div></div>').join(""):'<div class="empty">Belum ada proyek tersimpan di perangkat ini.</div>';
+ document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const x=arr.find(y=>y.id===Number(b.dataset.open));if(!x)return;project=x.project;Object.entries(x.form||{}).forEach(([k,v])=>{if($(k))$(k).value=v;});render();switchTab("story");setStatus("Proyek dibuka kembali.","ok");});
+ document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{const next=arr.filter(x=>x.id!==Number(b.dataset.delete));localStorage.setItem("agusStudioProjects",JSON.stringify(next));renderSaved();});}
+$("savedBtn").onclick=()=>{$("projectList").scrollIntoView({behavior:"smooth",block:"center"});};
+$("resetBtn").onclick=()=>{if(!confirm("Kosongkan semua isian form?"))return;fields.forEach(k=>{if(["idea","title","character","continuity","audio"].includes(k))$(k).value="";else $(k).selectedIndex=0;});project=null;latestText="";$("resultTag").textContent="BELUM ADA HASIL";$("storyView").innerHTML='<div class="empty">Form direset. Buat proyek baru.</div>';["storyboard","image","video","check"].forEach(k=>$(k+"View").innerHTML="");setStatus("Form berhasil direset.");};
+$("reference").onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(referenceUrl)URL.revokeObjectURL(referenceUrl);referenceUrl=URL.createObjectURL(f);$("refPreview").src=referenceUrl;$("refPreview").style.display="block";$("refName").textContent=f.name+" · hanya pratinjau lokal";};
+renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
+</script></body></html>
