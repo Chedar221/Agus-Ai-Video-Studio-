@@ -118,7 +118,7 @@ button,input,select,textarea{touch-action:manipulation}
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
 <main>
 <section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
-<div class="notice"><b>Catatan:</b> Generate AI menggunakan Google Gemini API. Paket gratis tersedia dengan batas penggunaan; ketersediaan dan kuota mengikuti akun Google AI Studio. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow.</div>
+<div class="notice"><b>Catatan:</b> Generate AI menggunakan Google Gemini API. Paket gratis tersedia dengan batas penggunaan; ketersediaan dan kuota mengikuti akun Google AI Studio. Foto referensi dapat dipilih hingga 5 gambar untuk acuan karakter. Gambar tetap di perangkat ini dan perlu dilampirkan manual di Google Flow.</div>
 <div class="layout">
 <div class="stack">
 <section class="panel"><h3><span class="num">01</span> Ide & konsep cerita</h3>
@@ -130,13 +130,13 @@ button,input,select,textarea{touch-action:manipulation}
 <div class="field"><label for="ratio">Format video</label><select id="ratio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div></div></section>
 <section class="panel"><h3><span class="num">02</span> Pengaturan produksi</h3>
 <div class="grid">
-<div class="field"><label for="duration">Durasi total</label><select id="duration"><option>15</option><option>30</option><option selected>60</option><option>90</option><option>120</option><option>180</option></select></div>
-<div class="field"><label for="scenes">Jumlah adegan</label><select id="scenes"><option>3</option><option>4</option><option selected>6</option><option>8</option><option>9</option><option>10</option><option>12</option></select></div>
+<div class="field"><label for="duration">Durasi setiap adegan</label><select id="duration"><option>5</option><option>8</option><option selected>10</option><option>12</option><option>15</option></select><div class="hint">Setiap klip akan dibuat tepat sesuai durasi ini.</div></div>
+<div class="field"><label for="scenes">Jumlah adegan</label><select id="scenes"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>9</option><option>10</option><option>12</option></select><div class="hint">Pilih 1 adegan untuk uji coba.</div></div>
 <div class="field"><label for="language">Bahasa dialog/narasi</label><select id="language"><option>Bahasa Indonesia</option><option>Bahasa Bali sehari-hari</option><option>Bahasa Bali halus</option><option>Bahasa Inggris</option><option>Tanpa dialog</option></select></div>
 <div class="field"><label for="voice">Karakter suara</label><select id="voice"><option>Natural dan bersahaja</option><option>Berat, tenang, berwibawa</option><option>Ceria dan ekspresif</option><option>Tegang dan misterius</option><option>Suara pria dewasa</option><option>Suara wanita dewasa</option><option>Tanpa narator</option></select></div></div></section>
 <section class="panel"><h3><span class="num">03</span> Character lock & referensi</h3>
 <div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi yang saya lampirkan sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, usia visual, dan ciri khas yang sama di semua adegan.</textarea></div>
-<div class="field"><label>Foto referensi (opsional)</label><div class="preview"><img id="refPreview" alt="Pratinjau foto referensi"><div class="hint" id="refName">Pilih foto untuk melihat pratinjau lokal. Foto tidak dikirim ke server.</div><input id="reference" type="file" accept="image/*" style="max-width:130px;padding:7px;font-size:11px"></div></div>
+<div class="field"><label>Foto referensi (opsional)</label><div class="preview"><div id="refGallery" style="display:flex;gap:6px;flex-wrap:wrap"></div><div class="hint" id="refName">Pilih hingga 5 foto referensi. Foto tidak dikirim ke server.</div><input id="reference" type="file" accept="image/*" multiple style="max-width:150px;padding:7px;font-size:11px"></div></div>
 <div class="grid"><div class="field"><label for="wardrobe">Pakaian / properti wajib</label><input id="wardrobe" placeholder="Contoh: kemeja hitam, Suzuki Ertiga putih"></div><div class="field"><label for="location">Lokasi / latar</label><input id="location" placeholder="Contoh: Ubud, Bali malam hari"></div></div>
 <div class="field"><label for="continuity">Aturan konsistensi</label><textarea id="continuity">Jangan mengubah wajah, usia visual, gaya rambut, bentuk tubuh, pakaian, kendaraan, atau identitas karakter antaradegan. Jaga kontinuitas waktu, lokasi, arah gerak, dan properti. Anatomi tangan dan jari natural.</textarea></div></section>
 <section class="panel"><h3><span class="num">04</span> Arahan sutradara</h3>
@@ -158,15 +158,15 @@ button,input,select,textarea{touch-action:manipulation}
 <footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by Google Gemini</footer>
 </main>
 <script>
-const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrl="";
+const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
 const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
 function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function timecode(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");}
 function fallbackTemplate(){
- const d=getData(),n=Number(d.scenes),total=Number(d.duration),base=Math.floor(total/n),rem=total%n;let elapsed=0;
- const scenes=Array.from({length:n},(_,i)=>{const dur=base+(i<rem?1:0),start=elapsed;elapsed+=dur;const tc=timecode(start)+"-"+timecode(elapsed);
+ const d=getData(),n=Number(d.scenes),dur=Number(d.duration),total=dur*n;let elapsed=0;
+ const scenes=Array.from({length:n},(_,i)=>{const start=elapsed;elapsed+=dur;const tc=timecode(start)+"-"+timecode(elapsed);
  const lock=d.character+" Pakaian/properti: "+(d.wardrobe||"konsisten sesuai cerita")+". "+d.continuity;
  const visual="Adegan "+(i+1)+" dari "+n+" untuk cerita "+d.title+". "+d.idea+" Lokasi: "+(d.location||"sesuai alur")+". Tampilkan progres cerita tahap "+(i+1)+". "+d.style+".";
  return {number:i+1,timecode:tc,durationSeconds:dur,purpose:"Mengembangkan cerita pada bagian "+(i+1),visual,action:"Aksi natural sesuai perkembangan cerita; ekspresi terbaca jelas.",dialogue:d.dialogue||"Dialog/narasi "+d.language+" dengan karakter suara "+d.voice+".",camera:d.camera,lighting:d.lighting,sound:d.audio,transition:"Transisi logis ke adegan berikutnya; jaga arah gerak dan posisi karakter.",imagePrompt:"Buat satu frame storyboard "+d.ratio+", "+d.style+". "+visual+" Karakter: "+lock+" Komposisi sinematik, detail natural, ekspresi jelas, anatomi wajar. Tanpa teks acak atau watermark.",videoPrompt:"Buat klip video "+dur+" detik, format "+d.ratio+". "+visual+" Aksi: natural dan berkesinambungan. Karakter: "+lock+" Kamera: "+d.camera+". Lighting: "+d.lighting+". Dialog/audio: "+(d.dialogue||d.language+" dengan suara "+d.voice)+". Musik dan SFX: "+d.audio+". Hindari flicker, perubahan wajah, anatomi rusak, teks acak, dan watermark."};
@@ -201,6 +201,6 @@ function renderSaved(){const arr=JSON.parse(localStorage.getItem("agusStudioProj
  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{const next=arr.filter(x=>x.id!==Number(b.dataset.delete));localStorage.setItem("agusStudioProjects",JSON.stringify(next));renderSaved();});}
 $("savedBtn").onclick=()=>{$("projectList").scrollIntoView({behavior:"smooth",block:"center"});};
 $("resetBtn").onclick=()=>{if(!confirm("Kosongkan semua isian form?"))return;fields.forEach(k=>{if(["idea","title","character","continuity","audio"].includes(k))$(k).value="";else $(k).selectedIndex=0;});project=null;latestText="";$("resultTag").textContent="BELUM ADA HASIL";$("storyView").innerHTML='<div class="empty">Form direset. Buat proyek baru.</div>';["storyboard","image","video","check"].forEach(k=>$(k+"View").innerHTML="");setStatus("Form berhasil direset.");};
-$("reference").onchange=e=>{const f=e.target.files?.[0];if(!f)return;if(referenceUrl)URL.revokeObjectURL(referenceUrl);referenceUrl=URL.createObjectURL(f);$("refPreview").src=referenceUrl;$("refPreview").style.display="block";$("refName").textContent=f.name+" · hanya pratinjau lokal";};
+$("reference").onchange=e=>{const files=Array.from(e.target.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5);referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";files.forEach(f=>{const u=URL.createObjectURL(f);referenceUrls.push(u);const img=document.createElement("img");img.src=u;img.alt=f.name;img.title=f.name;img.style.cssText="width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid #40536d";$("refGallery").appendChild(img);});$("refName").textContent=files.length?files.length+" foto dipilih · lampirkan juga manual di Flow":"Belum ada foto dipilih";if((e.target.files||[]).length>5)setStatus("Maksimal 5 foto referensi. Lima foto pertama dipakai untuk pratinjau.","err");};
 renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script></body></html>
