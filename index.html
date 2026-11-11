@@ -23,7 +23,7 @@ input,select,textarea{width:100%;border:1px solid #35475f;background:#0c1727;col
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
 <main>
 <section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
-<div class="notice"><b>Catatan:</b> Generate AI membutuhkan OPENAI_API_KEY yang aktif di Vercel dan penggunaan API dapat dikenakan biaya terpisah. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow.</div>
+<div class="notice"><b>Catatan:</b> Generate AI menggunakan Google Gemini API. Paket gratis tersedia dengan batas penggunaan; ketersediaan dan kuota mengikuti akun Google AI Studio. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow. Foto referensi hanya dipratinjau di perangkat ini; lampirkan manual di Google Flow.</div>
 <div class="layout">
 <div class="stack">
 <section class="panel"><h3><span class="num">01</span> Ide & konsep cerita</h3>
@@ -60,7 +60,7 @@ input,select,textarea{width:100%;border:1px solid #35475f;background:#0c1727;col
 <section class="panel"><h3><span class="num">06</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
 </div></div>
-<footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by OpenAI</footer>
+<footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by Google Gemini</footer>
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrl="";
