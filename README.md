@@ -1,35 +1,40 @@
-# AGUS AI VIDEO STUDIO 2.0
+# AGUS AI VIDEO STUDIO 3.0
 
-Aplikasi pribadi untuk menyusun paket cerita dan prompt video siap salin ke Google Flow.
-
-## Isi paket
-- `public/index.html`: antarmuka aplikasi.
-- `server.js`: backend Node.js yang memanggil OpenAI Responses API.
-- `.env.example`: contoh konfigurasi rahasia API.
-- `public/manifest.webmanifest` dan `public/sw.js`: dukungan instalasi/PWA dasar.
-
-## Menjalankan di komputer
-1. Install Node.js 20 atau lebih baru.
-2. Ekstrak ZIP ini.
-3. Buka terminal di folder hasil ekstrak.
-4. Jalankan `npm install`.
-5. Salin `.env.example` menjadi `.env`.
-6. Isi `OPENAI_API_KEY` dengan API key milikmu. Jangan kirim key ke siapa pun.
-7. Jika model default tidak tersedia di proyek API-mu, ubah `OPENAI_MODEL` ke model teks yang tersedia di akun API-mu.
-8. Jalankan `npm start`, lalu buka `http://localhost:3000`.
-
-## Penting soal keamanan dan biaya
-- API key disimpan di backend dalam `.env`, bukan di HTML/browser.
-- Jangan unggah `.env` ke GitHub atau membagikannya.
-- Pemakaian API dapat dikenakan biaya terpisah dari langganan ChatGPT. Periksa billing dan tetapkan batas penggunaan di OpenAI Platform.
-- Untuk dipakai di Android dari luar komputer, deploy backend ke hosting HTTPS yang mendukung Node.js dan atur environment variables di dashboard hosting. Setelah itu buka alamat HTTPS di Chrome lalu pilih **Tambahkan ke layar utama**.
-- Jangan memasukkan API key ke halaman web atau aplikasi Android. Dokumentasi OpenAI melarang mengekspos secret key di sisi klien.
+Studio pribadi untuk mengembangkan ide menjadi cerita, storyboard teks, prompt gambar, dan prompt video siap digunakan di Google Flow.
 
 ## Fitur
-- Generate paket cerita dengan AI melalui backend.
-- Buat template prompt tanpa AI.
-- Pengaturan durasi, jumlah adegan, rasio, genre, bahasa, karakter, pakaian, lokasi, kamera, dan audio.
-- Salin hasil dan unduh TXT.
+- Generate paket produksi melalui OpenAI Responses API.
+- Konsep cerita: judul, logline, sinopsis, dan alur awal-tengah-akhir.
+- Storyboard per adegan dengan timecode, aksi, kamera, lighting, dialog, audio, dan transisi.
+- Prompt gambar storyboard dan prompt video Flow terpisah untuk setiap adegan.
+- Character Lock untuk menjaga deskripsi karakter, pakaian, kendaraan/properti, dan kontinuitas.
+- Pengaturan durasi total, jumlah adegan, rasio, genre, bahasa, karakter suara, dan arahan sutradara.
+- Template lokal tanpa AI, salin prompt, unduh TXT, simpan/buka/hapus proyek di perangkat.
+- Antarmuka responsif dan dukungan instalasi PWA.
 
-## Batasan versi 2.0
-Aplikasi ini menghasilkan teks prompt, bukan video. Foto referensi belum diunggah ke API; lampirkan foto secara manual di Google Flow. Konsistensi visual tetap bergantung pada hasil generasi Flow.
+## Struktur
+- `public/index.html`: antarmuka studio.
+- `api/generate.js`: endpoint serverless Vercel untuk OpenAI Responses API.
+- `server.js`: Express app untuk Vercel dan penggunaan lokal.
+- `public/manifest.webmanifest`, `public/sw.js`, `public/icon.svg`: aset PWA.
+
+## Konfigurasi Vercel
+1. Buka Project Settings → Environment Variables.
+2. Tambahkan `OPENAI_API_KEY` dengan secret API key dari OpenAI Platform. Pilih Production dan Preview.
+3. Opsional: atur `OPENAI_MODEL` ke model API yang tersedia pada project API milikmu. Jika tidak diisi, server memakai default `gpt-6`.
+4. Simpan perubahan lalu lakukan redeploy Production.
+5. Uji website dan tombol Generate. Jangan pernah menaruh API key di HTML, browser, GitHub, atau chat.
+
+**Penting:** koneksi ChatGPT berlangganan tidak otomatis mencakup saldo OpenAI API. Pemakaian API dapat ditagih terpisah; periksa billing dan usage limits di OpenAI Platform.
+
+## Menjalankan lokal
+1. Install Node.js 20 atau lebih baru.
+2. Jalankan `npm install`.
+3. Buat file `.env` berisi `OPENAI_API_KEY=...` dan opsional `OPENAI_MODEL=...`.
+4. Jalankan `npm start`, lalu buka `http://localhost:3000`.
+
+## Batasan yang perlu diketahui
+- Studio menghasilkan naskah dan prompt; bukan merender video atau gambar.
+- Foto referensi hanya dipratinjau lokal di browser. Lampirkan foto manual di Google Flow; foto tidak dikirim ke server.
+- Proyek tersimpan di localStorage perangkat/browser yang digunakan, bukan sinkron antarperangkat.
+- Character Lock membantu mengarahkan konsistensi tetapi tidak menjamin wajah identik sempurna.
