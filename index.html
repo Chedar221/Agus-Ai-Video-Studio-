@@ -81,6 +81,38 @@ button,input,select,textarea{touch-action:manipulation}
   .topright button{font-size:9px;padding:6px}
 }
 
+
+/* Output and lower sections: compact phone layout */
+@media(max-width:600px){
+  #outputPanel,#outputPanel~.panel{width:100%;min-width:0;max-width:100%;overflow:hidden}
+  #outputPanel .resultHead{display:flex;flex-wrap:wrap;align-items:center}
+  #outputPanel .tabs{display:flex;flex-wrap:nowrap;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;scrollbar-width:thin;overscroll-behavior-x:contain;padding:3px 1px 9px}
+  #outputPanel .tabs .tab{flex:0 0 auto;min-height:39px}
+  #outputPanel [id$="View"]{width:100%;min-width:0;max-width:100%}
+  #outputPanel .summary,#outputPanel .scene{width:100%;min-width:0;max-width:100%;overflow:hidden}
+  #outputPanel .summary p,#outputPanel .scene p{overflow-wrap:anywhere;word-break:normal}
+  #outputPanel .sceneTop{display:flex;flex-wrap:wrap;align-items:flex-start}
+  #outputPanel .sceneTop .time{margin-left:auto;max-width:48%;white-space:normal}
+  #outputPanel .prompt{width:100%;max-width:100%;max-height:38vh;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;-webkit-overflow-scrolling:touch}
+  #outputPanel>.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  #outputPanel>.actions button{width:100%;min-width:0;min-height:42px;margin:0;padding:9px 6px;font-size:11px;line-height:1.25}
+  #outputPanel>.actions button:last-child{grid-column:1/-1}
+  #projectList{width:100%;min-width:0}
+  #projectList .scene{padding:10px;margin:8px 0}
+  #projectList .sceneTop{gap:6px}
+  #projectList .sceneTop b{min-width:0;overflow-wrap:anywhere}
+  #projectList .time{max-width:100%;text-align:left;margin-left:0}
+  #projectList .actions{display:grid;grid-template-columns:1fr 1fr}
+  #projectList .actions button{width:100%;min-width:0}
+  #outputPanel~.panel .list{padding-left:19px;line-height:1.55}
+  #outputPanel~.panel .list li{padding-left:2px;margin:7px 0;overflow-wrap:anywhere}
+}
+@media(max-width:380px){
+  #outputPanel>.actions{grid-template-columns:minmax(0,1fr)}
+  #outputPanel>.actions button:last-child{grid-column:auto}
+  #outputPanel .sceneTop .time{max-width:100%;margin-left:0;text-align:left}
+}
+
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
