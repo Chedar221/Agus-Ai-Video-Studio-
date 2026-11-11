@@ -113,6 +113,16 @@ button,input,select,textarea{touch-action:manipulation}
   #outputPanel .sceneTop .time{max-width:100%;margin-left:0;text-align:left}
 }
 
+/* SUNO MUSIC STUDIO */
+.musicBox{border:1px solid #4a4560;background:linear-gradient(145deg,#211d36,#151e30);border-radius:15px;padding:14px}
+.musicBox .musicTitle{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.musicBox .musicTitle strong{font-size:14px;color:#f2d8ff}
+.musicBox .musicTitle span{font-size:10px;color:#c5b4e8;border:1px solid #5b4d77;border-radius:20px;padding:3px 8px}
+.musicBox textarea{min-height:110px}
+.musicBox .musicActions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.musicBox .musicActions button{flex:1 1 135px}
+.musicNote{font-size:11px;color:#b6c2d4;line-height:1.5;margin-top:8px}
+.musicBox .field{margin-bottom:10px}
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
@@ -144,7 +154,29 @@ button,input,select,textarea{touch-action:manipulation}
 <div class="field"><label for="dialogue">Dialog khusus (opsional)</label><textarea id="dialogue" placeholder="Kalimat wajib yang harus diucapkan karakter..."></textarea></div>
 <div class="field"><label for="audio">Musik & efek suara</label><input id="audio" value="Musik sinematik sesuai emosi cerita, ambience lokasi, dan efek suara realistis."></div>
 <div class="field"><label for="extra">Arahan tambahan (opsional)</label><textarea id="extra" placeholder="Contoh: ending logo, caption Inggris, hindari unsur tertentu..."></textarea></div></section>
-<div class="panel"><h3><span class="num">05</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
+<section class="panel" id="musicStudio">
+<h3><span class="num">05</span> Music Studio · Suno AI</h3>
+<div class="musicBox">
+<div class="musicTitle"><strong>♫ SUNO MUSIC PROMPT BUILDER</strong><span>FREE PLAN VIA SUNO</span></div>
+<p class="hint">Susun lirik dan arahan musik dari ide video, lalu buka Suno untuk membuat lagu dan mengunduh MP3 melalui akun Suno.</p>
+<div class="grid">
+<div class="field"><label for="musicGenre">Genre musik</label><select id="musicGenre"><option>Pop Bali modern</option><option>Dangdut koplo</option><option>Pop Indonesia</option><option>Cinematic orchestral</option><option>Rock</option><option>Acoustic folk</option><option>EDM</option><option>Instrumental cinematic</option></select></div>
+<div class="field"><label for="musicMood">Suasana</label><select id="musicMood"><option>Semangat dan ceria</option><option>Haru dan menyentuh</option><option>Epik dan megah</option><option>Romantis dan hangat</option><option>Gelap dan menegangkan</option><option>Tenang dan reflektif</option></select></div>
+<div class="field"><label for="musicVocal">Jenis musik</label><select id="musicVocal"><option>Vokal pria</option><option>Vokal wanita</option><option>Duet pria dan wanita</option><option>Instrumental tanpa vokal</option></select></div>
+<div class="field"><label for="musicLanguage">Bahasa lirik</label><select id="musicLanguage"><option>Bahasa Indonesia</option><option>Bahasa Bali sehari-hari</option><option>Bahasa Bali halus</option><option>Bahasa Inggris</option></select></div>
+</div>
+<div class="field"><label for="musicLyrics">Lirik lagu (bisa diedit)</label><textarea id="musicLyrics" placeholder="Klik Susun Lirik & Prompt dengan AI untuk membuat lirik berdasarkan ide video..."></textarea></div>
+<div class="field"><label for="musicPrompt">Style prompt untuk Suno</label><textarea id="musicPrompt" placeholder="Arahan genre, tempo, instrumen, mood, vokal, dan produksi musik akan muncul di sini..."></textarea></div>
+<div class="musicActions">
+<button class="gold" id="musicGenerate">✦ Susun Lirik & Prompt dengan AI</button>
+<button class="secondary" id="musicCopyLyrics">Salin lirik</button>
+<button class="secondary" id="musicCopyPrompt">Salin style prompt</button>
+<button class="primary" id="musicOpen">Buka Suno AI ↗</button>
+</div>
+<div id="musicStatus" class="status" role="status">Siap menyusun musik berdasarkan ide video.</div>
+<div class="musicNote">Catatan: pembuatan lagu dan MP3 dilakukan di Suno, bukan di server website ini. Paket gratis Suno memiliki batas kredit dan ketentuan penggunaan tersendiri. Periksa lisensi sebelum memakai lagu untuk keperluan komersial.</div>
+</div></section>
+<div class="panel"><h3><span class="num">06</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
 </div>
 <div class="stack">
 <section class="panel" id="outputPanel"><div class="resultHead"><h3>Hasil Studio</h3><span class="pill" id="resultTag">BELUM ADA HASIL</span></div>
@@ -152,7 +184,7 @@ button,input,select,textarea{touch-action:manipulation}
 <div id="storyView"><div class="empty">Hasil cerita dan paket produksi akan muncul di sini setelah Generate.</div></div>
 <div id="storyboardView" class="hidden"></div><div id="imageView" class="hidden"></div><div id="videoView" class="hidden"></div><div id="checkView" class="hidden"></div>
 <div class="actions"><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button></div></section>
-<section class="panel"><h3><span class="num">06</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
+<section class="panel"><h3><span class="num">07</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
 </div></div>
 <footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by Google Gemini</footer>
@@ -202,5 +234,20 @@ function renderSaved(){const arr=JSON.parse(localStorage.getItem("agusStudioProj
 $("savedBtn").onclick=()=>{$("projectList").scrollIntoView({behavior:"smooth",block:"center"});};
 $("resetBtn").onclick=()=>{if(!confirm("Kosongkan semua isian form?"))return;fields.forEach(k=>{if(["idea","title","character","continuity","audio"].includes(k))$(k).value="";else $(k).selectedIndex=0;});project=null;latestText="";$("resultTag").textContent="BELUM ADA HASIL";$("storyView").innerHTML='<div class="empty">Form direset. Buat proyek baru.</div>';["storyboard","image","video","check"].forEach(k=>$(k+"View").innerHTML="");setStatus("Form berhasil direset.");};
 $("reference").onchange=e=>{const files=Array.from(e.target.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5);referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";files.forEach(f=>{const u=URL.createObjectURL(f);referenceUrls.push(u);const img=document.createElement("img");img.src=u;img.alt=f.name;img.title=f.name;img.style.cssText="width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid #40536d";$("refGallery").appendChild(img);});$("refName").textContent=files.length?files.length+" foto dipilih · lampirkan juga manual di Flow":"Belum ada foto dipilih";if((e.target.files||[]).length>5)setStatus("Maksimal 5 foto referensi. Lima foto pertama dipakai untuk pratinjau.","err");};
+
+function setMusicStatus(message,kind=""){const el=$("musicStatus");if(el){el.textContent=message;el.className="status "+kind;}}
+function getMusicBrief(){const d=getData();return {idea:d.idea,title:d.title,genre:d.genre,language:$("musicLanguage").value,voice:$("musicVocal").value,musicGenre:$("musicGenre").value,mood:$("musicMood").value};}
+$("musicGenerate").onclick=async()=>{
+ const d=getMusicBrief();if(!d.idea){setMusicStatus("Isi ide video terlebih dahulu di bagian Ide & Konsep.","err");return;}
+ const btn=$("musicGenerate");btn.disabled=true;btn.textContent="AI menyusun lirik...";
+ setMusicStatus("Menyusun lirik dan arahan musik berdasarkan cerita video...");
+ try{const response=await fetch("/api/music-brief",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});const result=await response.json();if(!response.ok)throw new Error(result.error||"Gagal menyusun musik.");$("musicLyrics").value=result.lyrics||"";$("musicPrompt").value=result.stylePrompt||"";setMusicStatus("Lirik dan style prompt siap. Periksa atau edit, lalu buka Suno.","ok");}
+ catch(error){setMusicStatus(error.message||"Tidak dapat menghubungi AI.","err");}
+ finally{btn.disabled=false;btn.textContent="✦ Susun Lirik & Prompt dengan AI";}
+};
+$("musicCopyLyrics").onclick=()=>{const value=$("musicLyrics").value.trim();if(!value){setMusicStatus("Belum ada lirik untuk disalin.","err");return;}copy(value);setMusicStatus("Lirik disalin. Tempel ke bagian Lyrics di Suno.","ok");};
+$("musicCopyPrompt").onclick=()=>{const value=$("musicPrompt").value.trim();if(!value){setMusicStatus("Belum ada style prompt untuk disalin.","err");return;}copy(value);setMusicStatus("Style prompt disalin. Tempel ke bagian Style of Music di Suno.","ok");};
+$("musicOpen").onclick=()=>{const prompt=$("musicPrompt").value.trim(),lyrics=$("musicLyrics").value.trim();if(!prompt&&!lyrics){setMusicStatus("Susun lirik dan prompt terlebih dahulu.","err");return;}window.open("https://suno.com/create","_blank","noopener,noreferrer");setMusicStatus("Suno dibuka. Tempel style prompt dan lirik pada kolom yang sesuai.","ok");};
+
 renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
 </script></body></html>
