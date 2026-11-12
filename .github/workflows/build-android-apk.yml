@@ -1,0 +1,88 @@
+name: Build AGUS AI STUDIO APK
+
+on:
+  push:
+    paths:
+      - ".github/workflows/build-android-apk.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Prepare Capacitor Android wrapper
+        run: |
+          mkdir -p android-wrapper/www android-wrapper/assets
+          cp public/icon.svg android-wrapper/assets/icon.svg
+          cd android-wrapper
+          npm init -y
+          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets sharp
+          node --input-type=module <<'NODE'
+          import sharp from 'sharp';
+          await sharp('assets/icon.svg').resize(1024, 1024, { fit: 'contain', background: '#101827' }).png().toFile('assets/icon-only.png');
+          NODE
+          cat > www/index.html <<'HTML'
+          <!doctype html>
+          <html lang="id">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+            <meta name="theme-color" content="#101827">
+            <title>AGUS AI STUDIO</title>
+            <style>html,body{margin:0;width:100%;height:100%;background:#0b1220}body{font-family:Arial,sans-serif}</style>
+          </head>
+          <body></body>
+          </html>
+          HTML
+          cat > capacitor.config.json <<'JSON'
+          {
+            "appId": "com.agus.aistudio",
+            "appName": "AGUS AI STUDIO",
+            "webDir": "www",
+            "server": {
+              "url": "https://agus-ai-video-studio.vercel.app",
+              "cleartext": false,
+              "allowNavigation": ["agus-ai-video-studio.vercel.app"]
+            },
+            "android": {
+              "allowMixedContent": false
+            }
+          }
+          JSON
+          npx capacitor-assets generate --android
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        working-directory: android-wrapper/android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: agus-ai-studio-android-apk
+          path: android-wrapper/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
+          retention-days: 14
