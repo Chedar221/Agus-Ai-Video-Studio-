@@ -30,6 +30,8 @@ jobs:
 
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools platforms;android-35 build-tools;35.0.0'
 
       - name: Prepare Android app
         run: |
@@ -37,7 +39,7 @@ jobs:
           cp public/icon.svg android-wrapper/assets/icon.svg
           cd android-wrapper
           npm init -y
-          npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets sharp
+          npm install @capacitor/core@^7 @capacitor/cli@^7 @capacitor/android@^7 @capacitor/assets sharp
           node --input-type=module <<'NODE'
           import sharp from 'sharp';
           await sharp('assets/icon.svg')
