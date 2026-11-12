@@ -12,11 +12,12 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
-      - name: Checkout
+      - name: Checkout source
         uses: actions/checkout@v4
 
-      - name: Set up Node
+      - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -30,7 +31,7 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Prepare Capacitor Android wrapper
+      - name: Prepare Android app
         run: |
           mkdir -p android-wrapper/www android-wrapper/assets
           cp public/icon.svg android-wrapper/assets/icon.svg
@@ -39,7 +40,10 @@ jobs:
           npm install @capacitor/core @capacitor/cli @capacitor/android @capacitor/assets sharp
           node --input-type=module <<'NODE'
           import sharp from 'sharp';
-          await sharp('assets/icon.svg').resize(1024, 1024, { fit: 'contain', background: '#101827' }).png().toFile('assets/icon-only.png');
+          await sharp('assets/icon.svg')
+            .resize(1024, 1024, { fit: 'contain', background: '#101827' })
+            .png()
+            .toFile('assets/icon-only.png');
           NODE
           cat > www/index.html <<'HTML'
           <!doctype html>
@@ -69,8 +73,8 @@ jobs:
             }
           }
           JSON
-          npx capacitor-assets generate --android
           npx cap add android
+          npx capacitor-assets generate --android
           npx cap sync android
 
       - name: Build debug APK
@@ -79,7 +83,7 @@ jobs:
           chmod +x ./gradlew
           ./gradlew assembleDebug --no-daemon
 
-      - name: Upload APK
+      - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
           name: agus-ai-studio-android-apk
