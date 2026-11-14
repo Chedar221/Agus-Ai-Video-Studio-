@@ -62,9 +62,26 @@
  $("copyStoryboard")?.addEventListener("click",()=>$("storyboardCopy")?.click());
  $("applyCharacterLock")?.addEventListener("click",()=>{
   const parts=[$("faceLock").value,$("wardrobeLock").value,$("negativeLock").value].filter(Boolean);
-  $("character").value=[$("character").value.trim(),...parts].filter(Boolean).join("\n\n");
-  $("continuity").value=[$("continuity").value.trim(),"Terapkan seluruh kunci identitas, pakaian, properti, dan larangan perubahan di setiap adegan."].filter(Boolean).join("\n");
-  $("status").textContent="Kunci Character Consistency PRO diterapkan ke deskripsi karakter dan kontinuitas.";
+  const lockMarker="CHEDAR_CHARACTER_LOCK";
+  const lock=lockMarker+"\\n"+parts.join("\\n");
+  $("character").value=[$("character").value.trim(),...parts].filter(Boolean).join("\\n\\n");
+  $("continuity").value=[$("continuity").value.trim(),"Terapkan seluruh kunci identitas, pakaian, properti, dan larangan perubahan di setiap adegan."].filter(Boolean).join("\\n");
+  if(typeof project!=="undefined"&&project?.scenes?.length){
+   project.globalCharacterLock=[project.globalCharacterLock||"",lock].filter(Boolean).join("\\n\\n");
+   project.scenes.forEach(scene=>{
+    for(const key of ["imagePrompt","videoPrompt"]){
+     const current=String(scene[key]||"").replace(/CHEDAR_CHARACTER_LOCK[\\s\\S]*?(?=\\n\\n|$)/g,"").trim();
+     scene[key]=[current,lock].filter(Boolean).join("\\n\\n");
+    }
+   });
+   if(typeof render==="function")render();
+   try{
+    const stored=JSON.parse(localStorage.getItem("agusStudioProjects")||"[]");
+    const item=stored.find(entry=>Number(entry.id)===Number(activeProjectId));
+    if(item){item.project=project;item.form=typeof getData==="function"?getData():item.form;localStorage.setItem("agusStudioProjects",JSON.stringify(stored));localStorage.setItem("agusStudioLastProject",JSON.stringify(item));}
+   }catch(error){console.warn("Penyimpanan kunci karakter gagal",error);}
+  }
+  $("status").textContent=typeof project!=="undefined"&&project?.scenes?.length?"Kunci karakter diterapkan ke semua prompt adegan dan proyek diperbarui.":"Kunci karakter disiapkan untuk paket video berikutnya.";
  });
  $("resetCharacterLock")?.addEventListener("click",()=>{
   $("faceLock").value="Gunakan satu identitas karakter yang sama di seluruh adegan. Pertahankan struktur wajah, jarak mata, bentuk alis, hidung, bibir, rahang, warna kulit, garis rambut, dan usia visual.";
