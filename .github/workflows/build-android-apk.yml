@@ -140,8 +140,7 @@ jobs:
           from pathlib import Path
           p = Path("android/app/src/main/AndroidManifest.xml")
           s = p.read_text()
-          s = s.replace("<manifest", '<manifest xmlns:tools="http://schemas.android.com/tools"', 1)
-          s = s.replace("</manifest>", '  <queries><package android:name="com.google.android.apps.labs.whisk" /></queries>\\n</manifest>')
+          s = s.replace('<application', '<queries><package android:name="com.google.android.apps.labs.whisk" /></queries>\\n    <application', 1)
           p.write_text(s)
           PY
 
