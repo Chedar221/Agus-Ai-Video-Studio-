@@ -1,7 +1,7 @@
 {
-  "name": "AGUS AI VIDEO STUDIO",
-  "short_name": "AGUS AI Studio",
-  "description": "AI Story Director dan Google Flow prompt workspace",
+  "name": "CHEDAR AI KREATOR",
+  "short_name": "CHEDAR AI",
+  "description": "CHEDAR AI KREATOR — AI Story Director dan Google Flow prompt workspace",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
