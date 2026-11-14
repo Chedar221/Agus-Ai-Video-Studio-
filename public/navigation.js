@@ -1,9 +1,9 @@
-/* AGUS AI STUDIO — simplified two-screen navigation */
+/* AGUS AI STUDIO — three-screen navigation */
 (() => {
-  const $ = id => document.getElementById(id);
   const allPanels = [...document.querySelectorAll(".layout > .stack > .panel")];
   function show(id, scroll=true) {
-    const target = id === "outputPanel" ? "outputPanel" : "quickStudio";
+    const allowed = ["quickStudio","outputPanel","savedProjects"];
+    const target = allowed.includes(id) ? id : "quickStudio";
     allPanels.forEach(panel => {
       const visible = panel.id === target;
       panel.classList.toggle("feature-visible", visible);
