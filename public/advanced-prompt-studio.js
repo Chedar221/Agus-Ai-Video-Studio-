@@ -70,11 +70,34 @@
   details.classList.add("panel");
   details.style.width = "100%";
   details.style.boxSizing = "border-box";
-  const intro = host.querySelector(".quickLead");
-  if (intro) intro.insertAdjacentElement("afterend", details);
-  else host.prepend(details);
+  // Studio lanjutan diletakkan di bagian paling bawah form utama dan hanya
+  // ditampilkan saat pengguna memilih mode Lipsync atau Motion Control.
+  details.hidden = true;
+  host.appendChild(details);
   details.open = true;
   const $ = id => document.getElementById(id);
+  function activateAdvancedTool(name) {
+    details.querySelectorAll("[data-advanced]").forEach(btn => {
+      btn.classList.toggle("active", btn.dataset.advanced === name);
+    });
+    details.querySelectorAll(".advancedTool").forEach(section => {
+      section.classList.toggle("active", section.id === "advanced" + name.charAt(0).toUpperCase() + name.slice(1));
+    });
+  }
+  const videoTypeSelect = $("videoType");
+  function syncAdvancedVisibility() {
+    const mode = videoTypeSelect ? videoTypeSelect.value : "auto";
+    const show = mode === "lipsync" || mode === "motion_control";
+    details.hidden = !show;
+    if (!show) {
+      details.open = false;
+      return;
+    }
+    details.open = true;
+    activateAdvancedTool(mode === "lipsync" ? "lip" : "motion");
+  }
+  if (videoTypeSelect) videoTypeSelect.addEventListener("change", syncAdvancedVisibility);
+  syncAdvancedVisibility();
   const status = msg => { $("advancedStatus").textContent = msg; };
   details.querySelectorAll("[data-advanced]").forEach(btn => btn.addEventListener("click", () => {
     details.querySelectorAll("[data-advanced]").forEach(x => x.classList.toggle("active", x === btn));
