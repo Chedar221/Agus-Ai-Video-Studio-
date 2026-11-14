@@ -340,6 +340,25 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
  .musicActions{grid-template-columns:minmax(0,1fr)}
 }
 
+
+/* Unified monochrome icon treatment */
+.btnIcon{
+  display:inline-flex!important;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 1.05em;
+  width:1.05em;
+  height:1.05em;
+  margin-right:1px;
+  color:#e8cf98!important;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:1.12em;
+  font-weight:800;
+  line-height:1;
+  text-shadow:none!important;
+}
+.featureLink.active .btnIcon,.primary .btnIcon,.gold .btnIcon,.quickGenerate .btnIcon,#openGoogleFlowOutput .btnIcon{color:#273143!important}
+
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
