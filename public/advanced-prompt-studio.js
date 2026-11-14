@@ -17,7 +17,7 @@
     .advancedTool textarea{min-height:90px}
     .advancedOutput{min-height:130px!important;font:12px/1.55 ui-monospace,Consolas,monospace!important}
     .advancedHint{font-size:10px;color:#aebdce;line-height:1.5;margin:7px 0}
-    .advancedStatus{font-size:11px;color:#69d6a8;min-height:18px;margin-top:7px}
+    .advancedStatus{font-size:11px;color:#69d6a8;min-height:18px;margin-top:7px}\n    .advancedFileBox{border:1px dashed #73849a;border-radius:10px;padding:10px;background:#0e1928;margin:8px 0 12px}\n    .advancedFileBox input[type=file]{width:100%;font-size:11px;color:#dbe5f0}\n    .advancedFileMeta{font-size:10px;color:#c5d2e0;margin-top:7px;overflow-wrap:anywhere}\n    .advancedPreview{display:block;width:100%;max-height:230px;object-fit:contain;background:#080e17;border-radius:8px;margin-top:8px}\n    .advancedPreview[hidden]{display:none}
     @media(max-width:600px){.advancedTab{font-size:9px;padding:9px 7px}.advancedInner{padding-left:10px;padding-right:10px}}
   `;
   document.head.appendChild(style);
@@ -83,11 +83,11 @@
       "GOOGLE FLOW — LIP SYNC PERFORMANCE PROMPT",
       "Gunakan foto referensi sebagai identitas visual utama. Pertahankan wajah, usia visual, warna kulit, bentuk rambut, pakaian dan aksesori secara konsisten.",
       "Karakter menghadap kamera dengan framing close-up atau medium close-up, wajah dan mulut terlihat jelas, pencahayaan wajah merata, fokus tajam pada mata dan mulut.",
-      "Audio sumber: " + $("advLipAudio").value + ". Durasi target: " + $("advLipDuration").value + ".",
+      "Audio sumber: " + $("advLipAudio").value + ". Durasi target: " + $("advLipDuration").value + ".",\n      "File audio yang dipilih: " + (($("advLipFile").files[0] && $("advLipFile").files[0].name) || "belum dipilih") + ".",
       "Sinkronkan gerakan bibir secara presisi dengan audio yang dilampirkan terpisah. Jangan mengubah, menambah, mengurangi atau mengarang lirik/dialog berikut:",
       lyric,
       "Ekspresi: " + mood + ". Gerakan kepala dan kamera minimal, artikulasi mulut natural, kedipan dan micro-expression realistis. Jangan membuat karakter lain berbicara, jangan menambahkan suara atau lirik, hindari distorsi wajah, gigi dan mulut, identity drift, jitter, serta perubahan pakaian.",
-      "Audio harus dipilih/diunggah terpisah pada fitur lipsync yang mendukung audio reference. Prompt ini tidak mengunggah atau memproses audio secara otomatis."
+      "File MP3 di atas hanya dipilih dan dipratinjau secara lokal di aplikasi. Lampirkan file yang sama secara terpisah di fitur lipsync Google Flow/alat yang mendukung audio reference. Aplikasi ini belum mengirim MP3 ke Flow secara otomatis."
     ].join("\n\n");
     status("Prompt lipsync siap disalin.");
   });
@@ -96,13 +96,13 @@
     if (!action) return status("Isi urutan gerakan terlebih dahulu.");
     $("advMotionOutput").value = [
       "GOOGLE FLOW — MOTION CONTROL DIRECTOR PROMPT",
-      "Sumber gerakan: " + $("advMotionSource").value + ".",
+      "Sumber gerakan: " + $("advMotionSource").value + ".",\n      "Video referensi yang dipilih: " + (($("advMotionFile").files[0] && $("advMotionFile").files[0].name) || "belum dipilih") + ". Gunakan file tersebut sebagai sumber gerak saat mengunggahnya ke alat Motion Control.",
       "Ikuti gerakan dengan urutan, timing, arah, pose, gestur dan ritme yang konsisten. Urutan gerakan: " + action,
       "Framing: " + $("advMotionFrame").value + ". Pastikan bagian tubuh yang diperlukan tetap berada di dalam frame.",
       "Kunci karakter: " + ($("advMotionLock").value.trim() || "gunakan foto referensi sebagai acuan identitas; pertahankan wajah, rambut, pakaian, proporsi tubuh dan aksesori di seluruh frame."),
       "Gerakan harus memiliki anatomi dan biomekanika natural, keseimbangan tubuh masuk akal, kontak kaki dengan lantai akurat, transisi pose halus, timing stabil dan arah gerak terbaca.",
       "Kamera stabil dan tidak memotong anggota tubuh yang sedang bergerak. Hindari perubahan identitas, wajah berubah, pakaian berubah, anggota tubuh tambahan, tangan cacat, jitter, foot sliding, gerakan patah dan objek yang berpindah tanpa sebab.",
-      "Jika memakai video referensi, lampirkan video tersebut pada fitur Motion Control yang mendukungnya. Prompt ini hanya menyiapkan arahan, bukan mengekstrak gerakan dari video."
+      "Video di atas hanya dipilih dan dipratinjau secara lokal di aplikasi. Lampirkan file yang sama secara terpisah pada fitur Motion Control Google Flow/alat yang mendukungnya. Aplikasi ini belum mengirim atau mengekstrak gerakan dari video secara otomatis."
     ].join("\n\n");
     status("Prompt Motion Control siap disalin.");
   });
