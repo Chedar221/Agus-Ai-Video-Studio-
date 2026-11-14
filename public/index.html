@@ -140,7 +140,7 @@ button,input,select,textarea{touch-action:manipulation}
 #storyboardView{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @media(max-width:600px){#storyboardView{grid-template-columns:1fr}}
 
-/* AGUS AI STUDIO — premium editorial finish */
+/* CHEDAR AI KREATOR — premium editorial finish */
 :root{--bg:#080d16;--panel:#111a29;--panel2:#182438;--line:#33445a;--ink:#f4f1e9;--muted:#a4afbd;--gold:#d9b878;--gold2:#f2dca9}
 body{background:radial-gradient(ellipse at 82% -12%,#49391f55 0,transparent 34%),radial-gradient(ellipse at 8% 12%,#1c3650 0,transparent 38%),#080d16}
 header{background:rgba(8,13,22,.94);border-bottom:1px solid #8d74433d;box-shadow:0 8px 30px #0003}
@@ -538,7 +538,7 @@ function fallbackTemplate(){
  });
  return {title:d.title,logline:d.idea,synopsis:d.idea,story:d.idea,duration:total+" detik",sceneCount:n,globalCharacterLock:d.character,scenes,continuityChecklist:[d.continuity,"Wajah dan pakaian konsisten di semua klip","Audio dan karakter suara konsisten","Durasi total tepat "+total+" detik"],flowWorkflow:["Lampirkan foto referensi di Flow bila dibutuhkan","Buat storyboard dari prompt gambar per adegan","Generate klip sesuai urutan adegan","Periksa kontinuitas sebelum menyatukan klip"]};
 }
-function buildText(p){let t="AGUS AI VIDEO STUDIO — PAKET PRODUKSI\n"+p.title+"\n\nLOGLINE\n"+p.logline+"\n\nSINOPSIS\n"+p.synopsis+"\n\nCERITA\n"+p.story+"\n\nCHARACTER LOCK\n"+p.globalCharacterLock+"\n";
+function buildText(p){let t="CHEDAR AI KREATOR — PAKET PRODUKSI\n"+p.title+"\n\nLOGLINE\n"+p.logline+"\n\nSINOPSIS\n"+p.synopsis+"\n\nCERITA\n"+p.story+"\n\nCHARACTER LOCK\n"+p.globalCharacterLock+"\n";
  for(const s of p.scenes||[])t+="\n==============================\nADEGAN "+s.number+" | "+s.timecode+" | "+s.durationSeconds+" detik\n==============================\nTUJUAN: "+s.purpose+"\nVISUAL: "+s.visual+"\nAKSI: "+s.action+"\nDIALOG: "+s.dialogue+"\nNARASI: "+(s.narration||"") + "\nKAMERA: "+s.camera+"\nLIGHTING: "+s.lighting+"\nAUDIO: "+s.sound+"\nTRANSISI: "+s.transition+"\n\nPROMPT GAMBAR:\n"+s.imagePrompt+"\n\nPROMPT VIDEO FLOW:\n"+s.videoPrompt+"\n";
  t+="\nCHECKLIST\n"+(p.continuityChecklist||[]).map(x=>"- "+x).join("\n")+"\n\nALUR FLOW\n"+(p.flowWorkflow||[]).map(x=>"- "+x).join("\n");return t;}
 function render(){
