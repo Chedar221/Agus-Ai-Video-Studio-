@@ -10,7 +10,7 @@
       // Launch the installed Google Flow Android app through an Android intent.
       // Chrome opens the web version automatically if the app cannot be resolved.
       const fallback = encodeURIComponent(flowUrl);
-      const intentUrl = "intent://launch/#Intent;scheme=chedarflow;package=" +
+      const intentUrl = "intent://#Intent;package=" +
         flowPackage +
         ";action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER" +
         ";S.browser_fallback_url=" + fallback + ";end";
