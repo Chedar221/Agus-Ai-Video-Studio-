@@ -201,10 +201,25 @@ main{margin-top:18px}
  main{margin-top:12px}
 }
 @media(prefers-reduced-motion:reduce){.layout>.stack>.panel.feature-visible{animation:none}}
+
+/* SIMPLE QUICK-CREATE EXPERIENCE */
+.quickStudio{border-color:#d9b87870!important;background:linear-gradient(145deg,#1b2b40,#111a29)!important}
+.quickLead{color:#b9c5d4;font-size:13px;margin:0 0 16px}
+.quickUpload{display:flex;align-items:center;gap:12px;padding:13px;border:1px dashed #8d74436b;border-radius:12px;background:#0b1320;position:relative;min-height:76px}
+.quickUploadIcon{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;background:#d9b878;color:#18202b;font-size:23px;font-weight:800}
+.quickUpload b{font-size:12px;color:#f0dfbb}
+.quickUpload input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.quickGallery{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.quickGallery img{width:58px;height:58px;object-fit:cover;border-radius:9px;border:1px solid #806a42}
+.quickOptions{margin-top:12px}
+.quickGenerate{width:100%;min-height:52px;font-size:14px;letter-spacing:.04em;margin-top:5px}
+.quickFoot{font-size:11px;color:#9eacbd;line-height:1.5;margin:10px 0 0}
+#quickStatus{min-height:18px}
+@media(max-width:600px){.quickStudio{padding:15px!important}.quickGenerate{min-height:50px}.quickUpload{padding:11px}.quickLead{font-size:12px}}
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
-<nav class="featureNav" id="featureNav" aria-label="Navigasi fitur"><div class="featureNavInner"><span class="navCaption">JELAJAHI STUDIO</span><div class="featureNavLinks"><button type="button" class="featureLink active" data-target="ideaConcept">01 Ide</button><button type="button" class="featureLink" data-target="productionSettings">02 Produksi</button><button type="button" class="featureLink" data-target="storyboardStudio">03 Storyboard</button><button type="button" class="featureLink" data-target="characterStudio">04 Karakter</button><button type="button" class="featureLink" data-target="promptLibrary">05 Prompt Library</button><button type="button" class="featureLink" data-target="directorStudio">06 Sutradara</button><button type="button" class="featureLink" data-target="musicStudio">07 Musik</button><button type="button" class="featureLink" data-target="outputPanel">08 Hasil</button><button type="button" class="featureLink" data-target="savedProjects">09 Proyek</button><button type="button" class="featureLink" data-target="flowGuide">Panduan Flow</button></div></div></nav>
+<nav class="featureNav" id="featureNav" aria-label="Navigasi fitur"><div class="featureNavInner"><span class="navCaption">JELAJAHI STUDIO</span><div class="featureNavLinks"><button type="button" class="featureLink active" data-target="quickStudio">✦ Buat Video</button><button type="button" class="featureLink" data-target="ideaConcept">Ide</button><button type="button" class="featureLink" data-target="productionSettings">02 Produksi</button><button type="button" class="featureLink" data-target="storyboardStudio">03 Storyboard</button><button type="button" class="featureLink" data-target="characterStudio">04 Karakter</button><button type="button" class="featureLink" data-target="promptLibrary">05 Prompt Library</button><button type="button" class="featureLink" data-target="directorStudio">06 Sutradara</button><button type="button" class="featureLink" data-target="musicStudio">07 Musik</button><button type="button" class="featureLink" data-target="outputPanel">08 Hasil</button><button type="button" class="featureLink" data-target="savedProjects">09 Proyek</button><button type="button" class="featureLink" data-target="flowGuide">Panduan Flow</button></div></div></nav>
 
 <main>
 <section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
@@ -238,7 +253,7 @@ main{margin-top:18px}
 <div class="field"><label for="negativeLock">Hindari perubahan karakter</label><textarea id="negativeLock">No face morphing, no identity drift, no age change, no hairstyle change, no wardrobe changes, no duplicate character, no distorted face or hands.</textarea></div></div>
 <div class="actions"><button class="secondary small" id="applyCharacterLock">Terapkan kunci ke semua prompt</button><button class="ghost small" id="resetCharacterLock">Pulihkan kunci standar</button></div>
 <div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi yang saya lampirkan sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, usia visual, dan ciri khas yang sama di semua adegan.</textarea></div>
-<div class="field"><label>Foto referensi (opsional)</label><div class="preview"><div id="refGallery" style="display:flex;gap:6px;flex-wrap:wrap"></div><div class="hint" id="refName">Pilih hingga 5 foto referensi. Foto tidak dikirim ke server.</div><input id="reference" type="file" accept="image/*" multiple style="max-width:150px;padding:7px;font-size:11px"></div></div>
+
 <div class="grid"><div class="field"><label for="wardrobe">Pakaian / properti wajib</label><input id="wardrobe" placeholder="Contoh: kemeja hitam, Suzuki Ertiga putih"></div><div class="field"><label for="location">Lokasi / latar</label><input id="location" placeholder="Contoh: Ubud, Bali malam hari"></div></div>
 <div class="field"><label for="continuity">Aturan konsistensi</label><textarea id="continuity">Jangan mengubah wajah, usia visual, gaya rambut, bentuk tubuh, pakaian, kendaraan, atau identitas karakter antaradegan. Jaga kontinuitas waktu, lokasi, arah gerak, dan properti. Anatomi tangan dan jari natural.</textarea></div></section>
 
@@ -289,7 +304,7 @@ main{margin-top:18px}
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
-const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];\nasync function getReferenceImages(){const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5);const out=[];for(const file of files){const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);});out.push({name:file.name,dataUrl:data});}return out;}
 function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -320,7 +335,7 @@ document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.t
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
 $("aiBtn").onclick=async()=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(d)});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,referenceImages:await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
  catch(e){setStatus(e.message,"err");}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
