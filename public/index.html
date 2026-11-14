@@ -226,6 +226,21 @@ main{margin-top:18px}
 <div class="notice"><b>Catatan:</b> Generate AI menggunakan Google Gemini API. Paket gratis tersedia dengan batas penggunaan; ketersediaan dan kuota mengikuti akun Google AI Studio. Foto referensi dapat dipilih hingga 5 gambar untuk acuan karakter. Gambar tetap di perangkat ini dan perlu dilampirkan manual di Google Flow.</div>
 <div class="layout">
 <div class="stack">
+<section class="panel quickStudio feature-visible" id="quickStudio">
+<h3><span class="num">✦</span> Buat video dari ide</h3>
+<p class="quickLead">Ceritakan ide Anda, tambahkan foto referensi, lalu biarkan AI menyiapkan seluruh paket produksi.</p>
+<div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali..." rows="5"></textarea></div>
+<div class="field"><label>FOTO REFERENSI (OPSIONAL)</label>
+<div class="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div>
+<div id="refGallery" class="quickGallery"></div></div>
+<div class="grid quickOptions">
+<div class="field"><label for="quickDuration">DURASI VIDEO</label><select id="quickDuration"><option value="30">30 detik</option><option value="60" selected>60 detik</option><option value="90">90 detik</option><option value="120">120 detik</option></select></div>
+<div class="field"><label for="quickRatio">FORMAT VIDEO</label><select id="quickRatio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div>
+</div>
+<button class="gold quickGenerate" id="quickGenerate">✦ BUAT PAKET VIDEO SAYA</button>
+<p class="quickFoot">AI akan membuat konsep, naskah, storyboard, prompt gambar, prompt video Flow, narasi, dan arahan produksi.</p>
+<div id="quickStatus" class="status" role="status"></div>
+</section>
 <section class="panel" id="ideaConcept"><h3><span class="num">01</span> Ide & konsep cerita</h3>
 <div class="field"><label for="idea">IDE VIDEO</label><textarea id="idea" placeholder="Ceritakan ide video secara bebas...">Seorang driver pariwisata Bali bekerja pada malam hari. Ia menerima pesanan, menjemput tamu, mengantar dengan aman melewati suasana Bali malam, dan tetap semangat mencari nafkah.</textarea></div>
 <div class="grid">
