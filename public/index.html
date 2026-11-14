@@ -635,4 +635,4 @@ $("musicCopyPrompt").onclick=()=>{const value=$("musicPrompt").value.trim();if(!
 $("musicOpen").onclick=()=>{const prompt=$("musicPrompt").value.trim(),lyrics=$("musicLyrics").value.trim();if(!prompt&&!lyrics){setMusicStatus("Susun lirik dan prompt terlebih dahulu.","err");return;}window.open("https://suno.com/create","_blank","noopener,noreferrer");setMusicStatus("Suno dibuka. Tempel style prompt dan lirik pada kolom yang sesuai.","ok");};
 
 renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
-</script><script src="/studio-features.js?v=20261114-2"></script><script src="/backup-tools.js?v=20261114-2"></script><script src="/navigation.js"></script></body></html>
+</script><script src="/advanced-prompt-studio.js?v=20261114-1"></script><script src="/studio-features.js?v=20261114-2"></script><script src="/backup-tools.js?v=20261114-2"></script><script src="/navigation.js"></script></body></html>
