@@ -405,7 +405,7 @@ $("quickGenerate").onclick=async()=>{
  if(isAd&&!$("productName").value.trim()){$("quickStatus").textContent="Isi nama produk atau merek terlebih dahulu."; $("productName").focus(); return;}
  $("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
  $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
- $("style").value=isAd?"Cinematic realistis · iklan komersial":"Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Drama realistis";
+ $("style").value="Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Drama realistis";
  $("language").value="Bahasa Indonesia";$("voice").value="Natural dan bersahaja";
  button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
  $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
