@@ -1,6 +1,36 @@
 /* AGUS AI STUDIO — three-screen navigation */
 (() => {
   const allPanels = [...document.querySelectorAll(".layout > .stack > .panel")];
+  const flowUrl = "https://labs.google/fx/tools/flow";
+  const navLinks = document.querySelector(".featureNavLinks");
+  if (navLinks && !document.getElementById("openGoogleFlowNav")) {
+    const flowLink = document.createElement("a");
+    flowLink.id = "openGoogleFlowNav";
+    flowLink.className = "featureLink";
+    flowLink.href = flowUrl;
+    flowLink.target = "_blank";
+    flowLink.rel = "noopener noreferrer";
+    flowLink.textContent = "↗ Buka Google Flow";
+    flowLink.setAttribute("aria-label", "Buka Google Flow di tab baru");
+    navLinks.appendChild(flowLink);
+  }
+  const outputActions = document.querySelector("#outputPanel > .actions");
+  if (outputActions && !document.getElementById("openGoogleFlowOutput")) {
+    const flowButton = document.createElement("a");
+    flowButton.id = "openGoogleFlowOutput";
+    flowButton.href = flowUrl;
+    flowButton.target = "_blank";
+    flowButton.rel = "noopener noreferrer";
+    flowButton.textContent = "↗ Buka Google Flow";
+    flowButton.setAttribute("aria-label", "Buka Google Flow di tab baru");
+    Object.assign(flowButton.style, {
+      display: "inline-flex", alignItems: "center", justifyContent: "center",
+      textDecoration: "none", font: "700 11px system-ui", borderRadius: "10px",
+      padding: "8px 11px", background: "linear-gradient(135deg,#f0d9a6,#bd8d48)",
+      color: "#1b2433", border: "1px solid #e8d4a5", whiteSpace: "nowrap"
+    });
+    outputActions.appendChild(flowButton);
+  }
   function show(id, scroll=true) {
     const allowed = ["quickStudio","outputPanel","savedProjects"];
     const target = allowed.includes(id) ? id : "quickStudio";
