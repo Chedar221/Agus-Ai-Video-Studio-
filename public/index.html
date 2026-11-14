@@ -222,6 +222,14 @@ main{margin-top:18px}
 .quickOptions{margin-top:12px}
 .quickGenerate{width:100%;min-height:52px;font-size:14px;letter-spacing:.04em;margin-top:5px}
 .quickFoot{font-size:11px;color:#9eacbd;line-height:1.5;margin:10px 0 0}
+.quickSubnav{display:flex;gap:7px;overflow-x:auto;margin:12px 0;padding:3px 1px 8px;scrollbar-width:none}
+.quickSubtab{flex:1 0 auto;background:#111d2d;border:1px solid #40516a;color:#c8d5e6;border-radius:10px;padding:10px 12px;font-size:11px;white-space:nowrap}
+.quickSubtab.active{background:linear-gradient(135deg,#f0dba9,#c49a58);border-color:#e6cc96;color:#17202c}
+.quickSubpanel{padding:2px 0}
+.speakerCard{border:1px solid #6c5838;background:#111b29;border-radius:12px;padding:12px;margin:10px 0}
+.speakerCard[hidden]{display:none!important}.speakerCard h4{font-size:11px;color:#e8d09e;margin:0 0 10px;letter-spacing:.1em}
+.speakerCard textarea{min-height:64px}
+@media(max-width:600px){.quickSubtab{font-size:10px;padding:9px 10px}}
 #quickStatus{min-height:18px}
 @media(max-width:600px){.quickStudio{padding:15px!important}.quickGenerate{min-height:50px}.quickUpload{padding:11px}.quickLead{font-size:12px}}
 </style></head>
@@ -247,10 +255,12 @@ main{margin-top:18px}
 <div class="field"><label for="productCTA">AJAKAN / KONTAK (OPSIONAL)</label><input id="productCTA" placeholder="Contoh: Pesan sekarang melalui WhatsApp"></div>
 <div class="field"><label for="productLock">KUNCI IDENTITAS PRODUK</label><textarea id="productLock" rows="4">Produk harus sama persis dengan foto referensi: pertahankan bentuk, proporsi, warna, material, tekstur, tutup, label, logo, tulisan, tipografi, susunan elemen, dan detail kemasan. Jangan mendesain ulang, mengganti merek, mengarang tulisan, menambah/mengurangi komponen, atau mengubah isi/ukuran produk. Tampilkan produk sebagai objek yang sama di setiap adegan.</textarea><div class="hint">Unggah foto produk asli yang jelas, terutama tampak depan. Foto tambahan bisa menunjukkan sisi dan detail produk.</div></div>
 </div>
-<div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali..." rows="5"></textarea></div>
-<div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label>
-<div class="quickUpload" id="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div>
-<div id="refGallery" class="quickGallery"></div></div>
+<div class="quickSubnav" role="tablist" aria-label="Bagian pembuatan video"><button type="button" class="quickSubtab active" data-quicktab="quickIdeaPanel">01 · IDE CERITA</button><button type="button" class="quickSubtab" data-quicktab="quickReferencePanel">02 · FOTO REFERENSI</button><button type="button" class="quickSubtab" data-quicktab="quickDialoguePanel">03 · DIALOG</button></div>
+<div class="quickSubpanel" id="quickIdeaPanel"><div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali..." rows="5"></textarea></div></div>
+<div class="quickSubpanel hidden" id="quickReferencePanel"><div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label><div class="quickUpload" id="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div><div id="refGallery" class="quickGallery"></div></div></div>
+<div class="quickSubpanel hidden" id="quickDialoguePanel"><div class="field"><label for="dialogueCount">JUMLAH ORANG YANG BERDIALOG</label><select id="dialogueCount"><option value="1">1 orang</option><option value="2">2 orang</option><option value="3">3 orang</option><option value="4">4 orang</option></select><div class="hint">Pilih 1–4 tokoh. Setiap tokoh punya nama, karakter suara, dan dialog sendiri.</div></div><div id="speakerFields">
+<div class="speakerCard" id="speakerCard1" ><h4>PEMBICARA 1</h4><div class="field"><label for="speaker1Name">NAMA TOKOH 1</label><input id="speaker1Name" placeholder="Contoh: Agus / Ibu / Pemandu"></div><div class="field"><label for="speaker1Voice">KARAKTER SUARA</label><select id="speaker1Voice"><option>Natural dan bersahaja</option><option>Pria dewasa, berat dan tenang</option><option>Pria muda, ceria</option><option>Wanita dewasa, lembut</option><option>Wanita muda, ceria</option><option>Anak-anak, polos</option></select></div><div class="field"><label for="speaker1Dialogue">DIALOG TOKOH 1 (OPSIONAL)</label><textarea id="speaker1Dialogue" rows="2" placeholder="Tulis kalimat wajib. Kosongkan agar AI menyusun dialog."></textarea></div></div><div class="speakerCard" id="speakerCard2" hidden><h4>PEMBICARA 2</h4><div class="field"><label for="speaker2Name">NAMA TOKOH 2</label><input id="speaker2Name" placeholder="Contoh: Agus / Ibu / Pemandu"></div><div class="field"><label for="speaker2Voice">KARAKTER SUARA</label><select id="speaker2Voice"><option>Natural dan bersahaja</option><option>Pria dewasa, berat dan tenang</option><option>Pria muda, ceria</option><option>Wanita dewasa, lembut</option><option>Wanita muda, ceria</option><option>Anak-anak, polos</option></select></div><div class="field"><label for="speaker2Dialogue">DIALOG TOKOH 2 (OPSIONAL)</label><textarea id="speaker2Dialogue" rows="2" placeholder="Tulis kalimat wajib. Kosongkan agar AI menyusun dialog."></textarea></div></div><div class="speakerCard" id="speakerCard3" hidden><h4>PEMBICARA 3</h4><div class="field"><label for="speaker3Name">NAMA TOKOH 3</label><input id="speaker3Name" placeholder="Contoh: Agus / Ibu / Pemandu"></div><div class="field"><label for="speaker3Voice">KARAKTER SUARA</label><select id="speaker3Voice"><option>Natural dan bersahaja</option><option>Pria dewasa, berat dan tenang</option><option>Pria muda, ceria</option><option>Wanita dewasa, lembut</option><option>Wanita muda, ceria</option><option>Anak-anak, polos</option></select></div><div class="field"><label for="speaker3Dialogue">DIALOG TOKOH 3 (OPSIONAL)</label><textarea id="speaker3Dialogue" rows="2" placeholder="Tulis kalimat wajib. Kosongkan agar AI menyusun dialog."></textarea></div></div><div class="speakerCard" id="speakerCard4" hidden><h4>PEMBICARA 4</h4><div class="field"><label for="speaker4Name">NAMA TOKOH 4</label><input id="speaker4Name" placeholder="Contoh: Agus / Ibu / Pemandu"></div><div class="field"><label for="speaker4Voice">KARAKTER SUARA</label><select id="speaker4Voice"><option>Natural dan bersahaja</option><option>Pria dewasa, berat dan tenang</option><option>Pria muda, ceria</option><option>Wanita dewasa, lembut</option><option>Wanita muda, ceria</option><option>Anak-anak, polos</option></select></div><div class="field"><label for="speaker4Dialogue">DIALOG TOKOH 4 (OPSIONAL)</label><textarea id="speaker4Dialogue" rows="2" placeholder="Tulis kalimat wajib. Kosongkan agar AI menyusun dialog."></textarea></div></div>
+</div><div class="hint">AI akan membagi percakapan sesuai adegan, menjaga nama dan suara pembicara, serta tidak mencampur dialog.</div></div>
 <div class="grid quickOptions">
 <div class="field"><label for="quickDuration">DURASI VIDEO</label><select id="quickDuration"><option value="30">30 detik</option><option value="60" selected>60 detik</option><option value="90">90 detik</option><option value="120">120 detik</option></select></div>
 <div class="field"><label for="quickRatio">FORMAT VIDEO</label><select id="quickRatio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div>
@@ -337,7 +347,7 @@ main{margin-top:18px}
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
-const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock"];
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
  for(const file of files){
@@ -370,6 +380,11 @@ function updateProjectType(){
  $("quickIdea").placeholder=ad?"Contoh: Buat iklan profesional untuk produk ini, tampilkan detail dan ajakan membeli...":"Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali...";
 }
 $("projectType").addEventListener("change",updateProjectType);updateProjectType();
+function updateDialogueCount(){const count=Number($("dialogueCount").value||1);[1,2,3,4].forEach(n=>{$("speakerCard"+n).hidden=n>count;});}
+$("dialogueCount").addEventListener("change",updateDialogueCount);updateDialogueCount();
+document.querySelectorAll("[data-quicktab]").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll("[data-quicktab]").forEach(x=>x.classList.toggle("active",x===tab));["quickIdeaPanel","quickReferencePanel","quickDialoguePanel"].forEach(id=>$(id).classList.toggle("hidden",id!==tab.dataset.quicktab));}));
+function buildSpeakerBrief(){const count=Number($("dialogueCount").value||1),lines=[];for(let n=1;n<=count;n++){const name=$("speaker"+n+"Name").value.trim()||"Tokoh "+n;lines.push("PEMBICARA "+n+": "+name+" | SUARA: "+$("speaker"+n+"Voice").value+" | DIALOG: "+($("speaker"+n+"Dialogue").value.trim()||"AI susun dialog alami sesuai cerita"));}$("dialogue").value="Jumlah pembicara: "+count+".\\n"+lines.join("\\n");}
+
 
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
@@ -403,7 +418,7 @@ $("quickGenerate").onclick=async()=>{
  if(!idea){$("quickStatus").textContent="Tulis tujuan iklan terlebih dahulu."; $("quickIdea").focus(); return;}
  if(isAd&&!Array.from($("reference").files||[]).some(f=>f.type.startsWith("image/"))){$("quickStatus").textContent="Mode iklan produk memerlukan minimal satu foto produk asli."; $("reference").click(); return;}
  if(isAd&&!$("productName").value.trim()){$("quickStatus").textContent="Isi nama produk atau merek terlebih dahulu."; $("productName").focus(); return;}
- $("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
+ buildSpeakerBrief();$("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
  $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
  $("style").value="Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Drama realistis";
  $("language").value="Bahasa Indonesia";$("voice").value="Natural dan bersahaja";
