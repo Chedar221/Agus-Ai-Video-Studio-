@@ -136,6 +136,9 @@ button,input,select,textarea{touch-action:manipulation}
 .promptLibraryCard button{font-size:10px;padding:7px 8px;flex:1}
 @media(max-width:600px){.storyboardGrid,.promptLibraryGrid{grid-template-columns:1fr}}
 
+/* Storyboard view uses a compact panel grid */
+#storyboardView{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media(max-width:600px){#storyboardView{grid-template-columns:1fr}}
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
@@ -222,7 +225,7 @@ button,input,select,textarea{touch-action:manipulation}
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
-const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
 function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
