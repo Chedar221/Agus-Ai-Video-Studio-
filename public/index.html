@@ -237,9 +237,19 @@ main{margin-top:18px}
 <section class="panel quickStudio feature-visible" id="quickStudio">
 <h3><span class="num">✦</span> Buat video dari ide</h3>
 <p class="quickLead">Ceritakan ide Anda, tambahkan foto referensi, lalu biarkan AI menyiapkan seluruh paket produksi.</p>
+<div class="field"><label for="projectType">JENIS VIDEO</label><select id="projectType"><option value="story">Video cerita / konten biasa</option><option value="product_ad">Iklan produk profesional</option></select><div class="hint">Mode iklan mengunci detail produk dari foto referensi.</div></div>
+<div id="productAdFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
+<h3>✦ Pengaturan iklan produk</h3>
+<div class="field"><label for="productName">NAMA PRODUK / MEREK</label><input id="productName" placeholder="Nama produk atau merek"></div>
+<div class="field"><label for="productDescription">DESKRIPSI PRODUK</label><textarea id="productDescription" rows="3" placeholder="Fungsi, bahan, rasa, ukuran, dan keunggulan faktual"></textarea></div>
+<div class="field"><label for="productAudience">TARGET PEMBELI</label><input id="productAudience" placeholder="Contoh: wisatawan, keluarga, pecinta kopi"></div>
+<div class="field"><label for="productOffer">PROMO / PENAWARAN (OPSIONAL)</label><input id="productOffer" placeholder="Promo yang benar-benar berlaku"></div>
+<div class="field"><label for="productCTA">AJAKAN / KONTAK (OPSIONAL)</label><input id="productCTA" placeholder="Contoh: Pesan sekarang melalui WhatsApp"></div>
+<div class="field"><label for="productLock">KUNCI IDENTITAS PRODUK</label><textarea id="productLock" rows="4">Produk harus sama persis dengan foto referensi: pertahankan bentuk, proporsi, warna, material, tekstur, tutup, label, logo, tulisan, tipografi, susunan elemen, dan detail kemasan. Jangan mendesain ulang, mengganti merek, mengarang tulisan, menambah/mengurangi komponen, atau mengubah isi/ukuran produk. Tampilkan produk sebagai objek yang sama di setiap adegan.</textarea><div class="hint">Unggah foto produk asli yang jelas, terutama tampak depan. Foto tambahan bisa menunjukkan sisi dan detail produk.</div></div>
+</div>
 <div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali..." rows="5"></textarea></div>
-<div class="field"><label>FOTO REFERENSI (OPSIONAL)</label>
-<div class="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div>
+<div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label>
+<div class="quickUpload" id="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div>
 <div id="refGallery" class="quickGallery"></div></div>
 <div class="grid quickOptions">
 <div class="field"><label for="quickDuration">DURASI VIDEO</label><select id="quickDuration"><option value="30">30 detik</option><option value="60" selected>60 detik</option><option value="90">90 detik</option><option value="120">120 detik</option></select></div>
@@ -327,7 +337,7 @@ main{margin-top:18px}
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
-const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
  for(const file of files){
@@ -351,6 +361,16 @@ async function getReferenceImages(){
  return out;
 }
 function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
+function updateProjectType(){
+ const ad=$("projectType").value==="product_ad";
+ $("productAdFields").classList.toggle("hidden",!ad);
+ $("referenceLabel").textContent=ad?"FOTO PRODUK (WAJIB)":"FOTO REFERENSI (OPSIONAL)";
+ $("quickUpload").querySelector("b").textContent=ad?"Tambahkan foto produk asli":"Tambahkan foto karakter atau lokasi";
+ $("quickUpload").querySelector(".hint").textContent=ad?"Unggah foto produk yang jelas. AI menjadikannya acuan utama.":"Pilih hingga 5 foto untuk acuan visual.";
+ $("quickIdea").placeholder=ad?"Contoh: Buat iklan profesional untuk produk ini, tampilkan detail dan ajakan membeli...":"Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali...";
+}
+$("projectType").addEventListener("change",updateProjectType);updateProjectType();
+
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function timecode(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");}
@@ -379,11 +399,13 @@ function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
 $("quickGenerate").onclick=async()=>{
- const idea=$("quickIdea").value.trim(),button=$("quickGenerate");
- if(!idea){$("quickStatus").textContent="Tulis ide cerita terlebih dahulu."; $("quickIdea").focus(); return;}
- $("idea").value=idea;$("title").value="Video dari Ide Baru";$("duration").value="10";
+ const idea=$("quickIdea").value.trim(),button=$("quickGenerate"),isAd=$("projectType").value==="product_ad";
+ if(!idea){$("quickStatus").textContent="Tulis tujuan iklan terlebih dahulu."; $("quickIdea").focus(); return;}
+ if(isAd&&!Array.from($("reference").files||[]).some(f=>f.type.startsWith("image/"))){$("quickStatus").textContent="Mode iklan produk memerlukan minimal satu foto produk asli."; $("reference").click(); return;}
+ if(isAd&&!$("productName").value.trim()){$("quickStatus").textContent="Isi nama produk atau merek terlebih dahulu."; $("productName").focus(); return;}
+ $("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
  $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
- $("style").value="Cinematic realistis";$("genre").value="Drama realistis";
+ $("style").value=isAd?"Cinematic realistis · iklan komersial":"Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Drama realistis";
  $("language").value="Bahasa Indonesia";$("voice").value="Natural dan bersahaja";
  button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
  $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
