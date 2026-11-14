@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  const allowed = ["idea","title","genre","style","ratio","videoType","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+  const allowed = ["idea","title","genre","style","ratio","videoType","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
   const clean = {};
   for (const key of allowed) if (d[key] !== undefined) clean[key] = String(d[key]).slice(0, ["idea","character","continuity"].includes(key) ? 5000 : 2000);
   if (!clean.idea?.trim()) return send(res, 400, { error: "Ide cerita belum diisi." });
@@ -38,6 +38,22 @@ export default async function handler(req, res) {
       " | KARAKTER SUARA: " + (clean["speaker" + n + "Voice"] || "Natural dan bersahaja") +
       " | DIALOG WAJIB/ARAHAN: " + (clean["speaker" + n + "Dialogue"] || "AI susun dialog sesuai cerita");
   }).join("\\n");
+  const audioMode = clean.audioMode || "both";
+  const audioModeLabel = ({both:"narasi dan dialog",narration_only:"narasi saja",dialogue_only:"dialog saja",none:"tanpa suara manusia"})[audioMode] || "narasi dan dialog";
+  const audioInstructions = [
+    "SMART AUDIO & DIALOGUE ENGINE — ATURAN PRODUKSI WAJIB:",
+    "Mode suara: " + audioModeLabel + ". Jangan membuat jenis suara yang tidak diizinkan.",
+    "NARASI/VOICE-OVER adalah suara narator off-screen. Karakter di layar TIDAK menggerakkan bibir dan tidak melakukan lip-sync pada narasi.",
+    "DIALOG adalah ucapan langsung karakter di layar. Setiap baris diawali nama pembicara; hanya karakter yang disebut boleh menggerakkan bibir. Tokoh lain diam.",
+    "Kolom narration hanya berisi teks voice-over. Kolom dialogue hanya berisi percakapan karakter. Jangan mencampur keduanya.",
+    "Mode narasi saja: isi narration, kosongkan dialogue. Mode dialog saja: isi dialogue, kosongkan narration. Mode tanpa suara manusia: kosongkan keduanya.",
+    "Mode narasi + dialog: keduanya terpisah, ringkas, tidak mengulang, dan tidak berbicara bersamaan kecuali timing mengizinkan.",
+    "Timing: " + (clean.audioTiming === "layered" ? "tumpang tindih hanya jika diperlukan dan disebutkan eksplisit" : "bergantian tanpa tumpang tindih; beri jeda sekitar 0,3 detik dan tulis rentang waktu mulai-selesai yang masuk akal per scene"),
+    "Suara narator: " + (clean.narratorVoice || clean.voice || "Pria dewasa, berat, tenang dan berwibawa") + ". Jangan samakan suara narator dengan karakter kecuali diminta.",
+    "Mix audio: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") + ". Musik dan SFX tidak boleh menutupi ucapan.",
+    "Setiap videoPrompt wajib memuat blok AUDIO TRACKS berlabel NARASI/VOICE-OVER, DIALOG KARAKTER, MUSIK, SFX/AMBIENCE, TIMING & MIX. Isi narasi/dialog verbatim; tulis TIDAK ADA jika track kosong.",
+    "Jangan membuat narator tambahan, suara manusia latar, dialog spontan, atau lip-sync pada track yang salah."
+  ].join("\\n");
   const dialogueInstructions = [
     "DIALOG MULTI-PEMBICARA — ATURAN KETAT:",
     "Jumlah pembicara yang diizinkan tepat " + speakerCount + " orang. Jangan menambah pembicara lain.",
@@ -160,8 +176,22 @@ WAJIB:
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
       scene.imagePrompt = String(scene.imagePrompt || "") + "\n\n" + proLock;
       scene.narration = String(scene.narration || "");
-      if (scene.narration.trim()) scene.videoPrompt = String(scene.videoPrompt || "") + `\n\nNARASI/VOICE-OVER (ucapkan persis, jangan dihilangkan): "${scene.narration}". Suara: ${clean.voice || "suara pria dewasa"}, bahasa ${clean.language || "Bahasa Indonesia"}, artikulasi jelas, tempo natural, sinkron dengan adegan.`;
-      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") + "\n\nDIALOG MULTI-PEMBICARA: Jumlah pembicara tepat ${speakerCount}. Ikuti nama, karakter suara, dan dialog sesuai brief; jangan menukar pembicara. Setiap baris dialog diawali nama pembicara dan hanya pembicara itu yang melakukan lip-sync. Jangan menambahkan tokoh bersuara lain.\n\n" + proLock + (isProductAd ? "\n\nPRODUCT REFERENCE DI GOOGLE FLOW: Lampirkan foto produk master yang sama pada klip ini. Jangan mengubah bentuk, warna, logo, label, teks, atau detail produk. Prioritaskan kestabilan identitas produk daripada gerakan kamera kompleks." : "");
+      scene.dialogue = String(scene.dialogue || "");
+      if (audioMode === "narration_only" || audioMode === "none") scene.dialogue = "";
+      if (audioMode === "dialogue_only" || audioMode === "none") scene.narration = "";
+      const narrationTrack = scene.narration.trim()
+        ? 'NARASI/VOICE-OVER OFF-SCREEN: "' + scene.narration + '". Narator: ' + (clean.narratorVoice || clean.voice || "Pria dewasa, berat, tenang dan berwibawa") + '; bahasa ' + (clean.language || "Bahasa Indonesia") + '; karakter di layar tidak lip-sync.'
+        : "NARASI/VOICE-OVER: TIDAK ADA.";
+      const dialogueTrack = scene.dialogue.trim()
+        ? 'DIALOG KARAKTER: "' + scene.dialogue + '". Hanya pembicara yang disebut melakukan lip-sync; suara dan nama tidak boleh tertukar.'
+        : "DIALOG KARAKTER: TIDAK ADA.";
+      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") +
+        "\\n\\nDIALOG MULTI-PEMBICARA: Jumlah pembicara tepat ${speakerCount}. Ikuti nama dan karakter suara sesuai brief; jangan menukar pembicara. Setiap baris dialog diawali nama pembicara dan hanya pembicara itu yang melakukan lip-sync. Jangan menambahkan tokoh bersuara lain.\\n\\n" +
+        "SMART AUDIO — TRACK TERPISAH:\\n" + narrationTrack + "\\n" + dialogueTrack +
+        "\\nMUSIK: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") +
+        "\\nSFX/AMBIENCE: " + (scene.sound || "Ambience lokasi halus; tanpa suara manusia tambahan") +
+        "\\nTIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya bila disebut eksplisit." : "Narasi dan dialog bergantian, tidak tumpang tindih; beri jeda sekitar 0,3 detik; musik diturunkan saat ada ucapan.") +
+        "\\n\\n" + proLock + (isProductAd ? "\\n\\nPRODUCT REFERENCE DI GOOGLE FLOW: Lampirkan foto produk master yang sama pada klip ini. Jangan mengubah bentuk, warna, logo, label, teks, atau detail produk. Prioritaskan kestabilan identitas produk daripada gerakan kamera kompleks." : "");
       return scene;
     });
     return send(res, 200, { project });
