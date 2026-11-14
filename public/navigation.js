@@ -7,6 +7,14 @@
   const flowPackage = "com.google.android.apps.labs.whisk";
   const playStoreUrl = "https://play.google.com/store/apps/details?id=" + flowPackage;
   const launchFlow = () => {
+    // Native CHEDAR APK uses its Android plugin to launch the installed Flow app.
+    const nativeFlow = window.Capacitor?.Plugins?.FlowLauncher;
+    if (nativeFlow && typeof nativeFlow.openFlow === "function") {
+      nativeFlow.openFlow().catch(() => {
+        window.open(flowUrl, "_blank", "noopener,noreferrer");
+      });
+      return;
+    }
     const isAndroid = /Android/i.test(navigator.userAgent);
     if (isAndroid) {
       const fallback = encodeURIComponent(playStoreUrl);
