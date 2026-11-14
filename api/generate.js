@@ -95,6 +95,8 @@ ${dialogueInstructions}
 
 ${productInstructions}
 
+${videoTypeInstructions.join("\\n")}
+
 Keluarkan SATU objek JSON valid saja, tanpa markdown, dengan struktur:
 {"title":"judul","logline":"satu kalimat","synopsis":"sinopsis ringkas","story":"alur lengkap awal-tengah-akhir","duration":"${totalDuration} detik","sceneCount":${sceneCount},"globalCharacterLock":"deskripsi karakter, pakaian, properti dan kontinuitas","scenes":[{"number":1,"timecode":"00:00-00:10","durationSeconds":10,"purpose":"fungsi cerita","visual":"visual storyboard detail","action":"aksi dan ekspresi","dialogue":"dialog karakter jika ada","narration":"teks narasi lengkap untuk scene ini","camera":"shot, angle, movement","lighting":"pencahayaan","sound":"ambience, musik, SFX","transition":"transisi","imagePrompt":"prompt gambar storyboard mandiri dan detail","videoPrompt":"prompt video Flow mandiri dan detail"}],"continuityChecklist":["..."],"flowWorkflow":["..."]}
 
