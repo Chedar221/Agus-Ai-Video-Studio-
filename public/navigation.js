@@ -36,7 +36,8 @@
     // Remove leading emoji/decorative glyphs from the label; the icon is supplied separately.
     for (const node of [...el.childNodes]) {
       if (node.nodeType !== Node.TEXT_NODE) continue;
-      node.textContent = node.textContent.replace(/^\s*(?:(?:[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]|[✦↗▣▶])\uFE0F?\s*)+/u, "");
+      const cleaned = node.textContent.replace(/^\s*(?:(?:[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}]|[✦↗▣▶])\uFE0F?\s*)+/u, "");
+      if (cleaned !== node.textContent) node.textContent = cleaned;
       if (node.textContent.trim()) break;
     }
   };
