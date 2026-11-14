@@ -331,12 +331,22 @@ const fields=["idea","title","genre","style","ratio","duration","scenes","langua
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
  for(const file of files){
-  const bitmap=await createImageBitmap(file),scale=Math.min(1,1280/Math.max(bitmap.width,bitmap.height));
-  const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(bitmap.width*scale));canvas.height=Math.max(1,Math.round(bitmap.height*scale));
-  const ctx=canvas.getContext("2d");ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);bitmap.close?.();
-  const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.78));
-  const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});
-  out.push({name:file.name,dataUrl:data});
+  let source,width,height,bitmap=null;
+  try{
+   if("createImageBitmap" in window){bitmap=await createImageBitmap(file);source=bitmap;width=bitmap.width;height=bitmap.height;}
+   else{
+    source=await new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Foto tidak bisa dibaca: "+file.name));};img.src=url;});
+    width=source.naturalWidth;height=source.naturalHeight;
+   }
+   const scale=Math.min(1,1024/Math.max(width,height));
+   const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));
+   const ctx=canvas.getContext("2d");if(!ctx)throw new Error("Browser tidak bisa memproses foto.");
+   ctx.drawImage(source,0,0,canvas.width,canvas.height);bitmap?.close?.();
+   const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.65));
+   if(!blob)throw new Error("Foto gagal dikompres: "+file.name);
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Foto gagal dibaca: "+file.name));reader.readAsDataURL(blob);});
+   out.push({name:file.name,dataUrl:data});
+  }catch(error){bitmap?.close?.();throw error;}
  }
  return out;
 }
