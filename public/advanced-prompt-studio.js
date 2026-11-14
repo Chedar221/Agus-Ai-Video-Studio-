@@ -65,9 +65,10 @@
       </section>
       <div class="advancedStatus" id="advancedStatus" role="status"></div>
     </div>`;
-  const anchor = host.querySelector(".quickOptions");
-  if (anchor) host.insertBefore(details, anchor);
-  else host.appendChild(details);
+  details.classList.add("panel");
+  details.style.width = "100%";
+  details.style.boxSizing = "border-box";
+  host.insertAdjacentElement("afterend", details);
   const $ = id => document.getElementById(id);
   const status = msg => { $("advancedStatus").textContent = msg; };
   details.querySelectorAll("[data-advanced]").forEach(btn => btn.addEventListener("click", () => {
