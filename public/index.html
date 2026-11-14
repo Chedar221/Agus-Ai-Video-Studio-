@@ -203,6 +203,13 @@ main{margin-top:18px}
 @media(prefers-reduced-motion:reduce){.layout>.stack>.panel.feature-visible{animation:none}}
 
 .topright #promptLibraryBtn,.topright #savedBtn{display:none!important}
+
+/* Clear visible photo-selection feedback */
+.quickUpload{cursor:pointer}
+.quickPhotoItem{display:inline-flex;flex-direction:column;gap:3px;width:76px}
+.quickPhotoItem img{width:68px;height:68px;object-fit:cover;border-radius:9px;border:1px solid #d9b878}
+.quickPhotoItem small{font-size:9px;color:#cbd4df;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:76px}
+.quickPhotoCount{color:#69d6a8!important;font-weight:800}
 /* SIMPLE QUICK-CREATE EXPERIENCE */
 .quickStudio{border-color:#d9b87870!important;background:linear-gradient(145deg,#1b2b40,#111a29)!important}
 .quickLead{color:#b9c5d4;font-size:13px;margin:0 0 16px}
@@ -320,7 +327,8 @@ main{margin-top:18px}
 </main>
 <script>
 const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[];
-const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];\nasync function getReferenceImages(){
+const fields=["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
  for(const file of files){
   const bitmap=await createImageBitmap(file),scale=Math.min(1,1280/Math.max(bitmap.width,bitmap.height));
@@ -360,24 +368,25 @@ function render(){
 function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));["story","storyboard","image","video","check"].forEach(k=>$ (k+"View").classList.toggle("hidden",k!==tab));}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
-$("quickGenerate").onclick=()=>{
- const idea=$("quickIdea").value.trim();
+$("quickGenerate").onclick=async()=>{
+ const idea=$("quickIdea").value.trim(),button=$("quickGenerate");
  if(!idea){$("quickStatus").textContent="Tulis ide cerita terlebih dahulu."; $("quickIdea").focus(); return;}
- $("idea").value=idea;
- $("title").value="Video dari Ide Baru";
- $("duration").value="10";
- $("scenes").value=String(Number($("quickDuration").value)/10);
- $("ratio").value=$("quickRatio").value;
- $("style").value="Cinematic realistis";
- $("genre").value="Drama realistis";
- $("language").value="Bahasa Indonesia";
- $("voice").value="Suara pria dewasa";
- $("quickStatus").textContent="AI sedang menyusun seluruh paket produksi...";
- $("aiBtn").click();
+ $("idea").value=idea;$("title").value="Video dari Ide Baru";$("duration").value="10";
+ $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
+ $("style").value="Cinematic realistis";$("genre").value="Drama realistis";
+ $("language").value="Bahasa Indonesia";$("voice").value="Suara pria dewasa";
+ button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
+ $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
+ try{
+  const photos=await getReferenceImages();
+  $("quickStatus").textContent=photos.length?photos.length+" foto siap dikirim. AI sedang menyusun paket video...":"Tidak ada foto referensi. AI sedang menyusun paket video...";
+  await $("aiBtn").onclick(photos);
+ }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
+ finally{button.disabled=false;button.textContent="✦ BUAT PAKET VIDEO SAYA";}
 };
-$("aiBtn").onclick=async()=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
+$("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,referenceImages:await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
  catch(e){setStatus(e.message,"err");if($("quickStatus"))$("quickStatus").textContent=e.message;}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
@@ -388,7 +397,22 @@ function renderSaved(){const arr=JSON.parse(localStorage.getItem("agusStudioProj
  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{const next=arr.filter(x=>x.id!==Number(b.dataset.delete));localStorage.setItem("agusStudioProjects",JSON.stringify(next));renderSaved();});}
 $("savedBtn").onclick=()=>{$("projectList").scrollIntoView({behavior:"smooth",block:"center"});};
 $("resetBtn").onclick=()=>{if(!confirm("Kosongkan semua isian form?"))return;fields.forEach(k=>{if(["idea","title","character","faceLock","wardrobeLock","negativeLock","continuity","audio"].includes(k))$(k).value="";else $(k).selectedIndex=0;});project=null;latestText="";$("resultTag").textContent="BELUM ADA HASIL";$("storyView").innerHTML='<div class="empty">Form direset. Buat proyek baru.</div>';["storyboard","image","video","check"].forEach(k=>$(k+"View").innerHTML="");setStatus("Form berhasil direset.");};
-$("reference").onchange=e=>{const files=Array.from(e.target.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5);referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";files.forEach(f=>{const u=URL.createObjectURL(f);referenceUrls.push(u);const img=document.createElement("img");img.src=u;img.alt=f.name;img.title=f.name;img.style.cssText="width:54px;height:54px;object-fit:cover;border-radius:8px;border:1px solid #40536d";$("refGallery").appendChild(img);});$("refName").textContent=files.length?files.length+" foto dipilih · lampirkan juga manual di Flow":"Belum ada foto dipilih";if((e.target.files||[]).length>5)setStatus("Maksimal 5 foto referensi. Lima foto pertama dipakai untuk pratinjau.","err");};
+$("reference").onchange=e=>{
+ const selected=Array.from(e.target.files||[]),valid=selected.filter(f=>f.type.startsWith("image/")).slice(0,5);
+ referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";
+ valid.forEach((f,i)=>{
+  const u=URL.createObjectURL(f);referenceUrls.push(u);
+  const item=document.createElement("div");item.className="quickPhotoItem";
+  const img=document.createElement("img");img.src=u;img.alt="Foto referensi "+(i+1);img.title=f.name;
+  const name=document.createElement("small");name.textContent=f.name;
+  item.append(img,name);$("refGallery").appendChild(item);
+ });
+ $("refName").textContent=valid.length?valid.length+" FOTO SIAP DIPAKAI AI · "+valid.map(f=>f.name).join(", "):"Belum ada foto dipilih";
+ $("refName").classList.toggle("quickPhotoCount",valid.length>0);
+ if(selected.length>5)$("quickStatus").textContent="Maksimal 5 foto. Lima foto pertama akan digunakan.";
+ else if(selected.length!==valid.length)$("quickStatus").textContent="Ada file yang bukan gambar dan tidak digunakan.";
+ else $("quickStatus").textContent=valid.length?"Pratinjau foto berhasil dimuat. Foto akan dikirim ke AI saat Generate ditekan.":"";
+};
 
 function setMusicStatus(message,kind=""){const el=$("musicStatus");if(el){el.textContent=message;el.className="status "+kind;}}
 function getMusicBrief(){const d=getData();return {idea:d.idea,title:d.title,genre:d.genre,language:$("musicLanguage").value,voice:$("musicVocal").value,musicGenre:$("musicGenre").value,mood:$("musicMood").value};}
