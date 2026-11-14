@@ -123,9 +123,22 @@ button,input,select,textarea{touch-action:manipulation}
 .musicBox .musicActions button{flex:1 1 135px}
 .musicNote{font-size:11px;color:#b6c2d4;line-height:1.5;margin-top:8px}
 .musicBox .field{margin-bottom:10px}
+
+.storyboardGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#storyboardView .scene{margin:0;border-top:3px solid var(--gold);min-width:0}
+#storyboardView .sceneTop{margin-bottom:8px}
+#storyboardView .scene p{line-height:1.55}
+.promptLibraryGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.promptLibraryCard{background:#0d1929;border:1px solid #344a65;border-radius:11px;padding:11px;min-width:0}
+.promptLibraryCard b{display:block;font-size:12px;color:#f0d39c;margin-bottom:4px}
+.promptLibraryCard p{font-size:11px;color:#c3d0df;line-height:1.45;margin:0 0 9px;max-height:76px;overflow:auto}
+.promptLibraryCard .actions{margin:0;gap:6px}
+.promptLibraryCard button{font-size:10px;padding:7px 8px;flex:1}
+@media(max-width:600px){.storyboardGrid,.promptLibraryGrid{grid-template-columns:1fr}}
+
 </style></head>
 <body>
-<header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
+<header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
 <main>
 <section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
 <div class="notice"><b>Catatan:</b> Generate AI menggunakan Google Gemini API. Paket gratis tersedia dengan batas penggunaan; ketersediaan dan kuota mengikuti akun Google AI Studio. Foto referensi dapat dipilih hingga 5 gambar untuk acuan karakter. Gambar tetap di perangkat ini dan perlu dilampirkan manual di Google Flow.</div>
@@ -144,18 +157,36 @@ button,input,select,textarea{touch-action:manipulation}
 <div class="field"><label for="scenes">Jumlah adegan</label><select id="scenes"><option selected>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>8</option><option>9</option><option>10</option><option>12</option></select><div class="hint">Pilih 1 adegan untuk uji coba.</div></div>
 <div class="field"><label for="language">Bahasa dialog/narasi</label><select id="language"><option>Bahasa Indonesia</option><option>Bahasa Bali sehari-hari</option><option>Bahasa Bali halus</option><option>Bahasa Inggris</option><option>Tanpa dialog</option></select></div>
 <div class="field"><label for="voice">Karakter suara</label><select id="voice"><option>Natural dan bersahaja</option><option>Berat, tenang, berwibawa</option><option>Ceria dan ekspresif</option><option>Tegang dan misterius</option><option>Suara pria dewasa</option><option>Suara wanita dewasa</option><option>Tanpa narator</option></select></div></div></section>
-<section class="panel"><h3><span class="num">03</span> Character lock & referensi</h3>
+
+<section class="panel" id="storyboardStudio"><h3><span class="num">03</span> AI Storyboard Studio</h3>
+<p class="hint">Susun storyboard 6, 9, atau 12 panel. Setiap panel berisi tujuan adegan, visual, prompt gambar, dan prompt video Google Flow.</p>
+<div class="grid"><div class="field"><label for="storyboardCount">Jumlah panel storyboard</label><select id="storyboardCount"><option value="6" selected>6 panel</option><option value="9">9 panel</option><option value="12">12 panel</option></select></div>
+<div class="field"><label for="storyboardMode">Mode pembuatan</label><select id="storyboardMode"><option value="ai" selected>AI lengkap (Gemini)</option><option value="template">Template lokal (tanpa AI)</option></select></div></div>
+<div class="actions"><button class="gold" id="storyboardBuild">✦ Buat Storyboard</button><button class="secondary" id="storyboardCopy">Salin semua prompt panel</button></div>
+<div class="hint">Catatan: Studio menyusun panel dan prompt. Render gambar storyboard dilakukan di Google Flow atau alat gambar pilihan Anda.</div></section>
+<section class="panel"><h3><span class="num">04</span> Character Consistency PRO & referensi</h3>
+
+<div class="field"><label for="faceLock">Kunci identitas wajah (PRO)</label><textarea id="faceLock">Gunakan satu identitas karakter yang sama di seluruh adegan. Pertahankan struktur wajah, jarak mata, bentuk alis, hidung, bibir, rahang, warna kulit, garis rambut, dan usia visual.</textarea><div class="hint">Deskripsi teks ini membantu prompt menjaga konsistensi. Foto tetap perlu dilampirkan manual di Flow.</div></div>
+<div class="grid"><div class="field"><label for="wardrobeLock">Kunci pakaian & properti</label><textarea id="wardrobeLock">Pakaian, aksesori, kendaraan, dan properti utama harus sama antaradegan kecuali perubahan memang diminta dalam cerita.</textarea></div>
+<div class="field"><label for="negativeLock">Hindari perubahan karakter</label><textarea id="negativeLock">No face morphing, no identity drift, no age change, no hairstyle change, no wardrobe changes, no duplicate character, no distorted face or hands.</textarea></div></div>
+<div class="actions"><button class="secondary small" id="applyCharacterLock">Terapkan kunci ke semua prompt</button><button class="ghost small" id="resetCharacterLock">Pulihkan kunci standar</button></div>
 <div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi yang saya lampirkan sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, usia visual, dan ciri khas yang sama di semua adegan.</textarea></div>
 <div class="field"><label>Foto referensi (opsional)</label><div class="preview"><div id="refGallery" style="display:flex;gap:6px;flex-wrap:wrap"></div><div class="hint" id="refName">Pilih hingga 5 foto referensi. Foto tidak dikirim ke server.</div><input id="reference" type="file" accept="image/*" multiple style="max-width:150px;padding:7px;font-size:11px"></div></div>
 <div class="grid"><div class="field"><label for="wardrobe">Pakaian / properti wajib</label><input id="wardrobe" placeholder="Contoh: kemeja hitam, Suzuki Ertiga putih"></div><div class="field"><label for="location">Lokasi / latar</label><input id="location" placeholder="Contoh: Ubud, Bali malam hari"></div></div>
 <div class="field"><label for="continuity">Aturan konsistensi</label><textarea id="continuity">Jangan mengubah wajah, usia visual, gaya rambut, bentuk tubuh, pakaian, kendaraan, atau identitas karakter antaradegan. Jaga kontinuitas waktu, lokasi, arah gerak, dan properti. Anatomi tangan dan jari natural.</textarea></div></section>
-<section class="panel"><h3><span class="num">04</span> Arahan sutradara</h3>
+
+<section class="panel" id="promptLibrary"><h3><span class="num">05</span> Prompt Library</h3>
+<p class="hint">Pilih template siap pakai, cari berdasarkan kategori, lalu tambahkan ke arahan proyek atau salin untuk Google Flow.</p>
+<div class="grid"><div class="field"><label for="promptCategory">Kategori</label><select id="promptCategory"><option value="all">Semua kategori</option><option value="visual">Gaya visual</option><option value="camera">Kamera & shot</option><option value="lighting">Pencahayaan</option><option value="flow">Kualitas Google Flow</option><option value="genre">Genre & suasana</option></select></div>
+<div class="field"><label for="promptSearch">Cari prompt</label><input id="promptSearch" placeholder="Cari cinematic, close-up, horor..."></div></div>
+<div id="promptResults" class="promptLibraryGrid"></div><div id="promptLibraryStatus" class="status" role="status">Pilih prompt untuk digunakan.</div></section>
+<section class="panel"><h3><span class="num">06</span> Arahan sutradara</h3>
 <div class="grid"><div class="field"><label for="camera">Gaya kamera</label><select id="camera"><option>Variatif dan sinematik</option><option>Wide shot dan establishing shot</option><option>Close-up emosional</option><option>Tracking shot halus</option><option>Handheld dokumenter</option><option>Drone dan aerial</option></select></div><div class="field"><label for="lighting">Pencahayaan</label><select id="lighting"><option>Natural cinematic lighting</option><option>Golden hour</option><option>Low-key malam hari</option><option>Soft lighting</option><option>Kontras dramatis</option><option>Neon cinematic</option></select></div></div>
 <div class="field"><label for="dialogue">Dialog khusus (opsional)</label><textarea id="dialogue" placeholder="Kalimat wajib yang harus diucapkan karakter..."></textarea></div>
 <div class="field"><label for="audio">Musik & efek suara</label><input id="audio" value="Musik sinematik sesuai emosi cerita, ambience lokasi, dan efek suara realistis."></div>
 <div class="field"><label for="extra">Arahan tambahan (opsional)</label><textarea id="extra" placeholder="Contoh: ending logo, caption Inggris, hindari unsur tertentu..."></textarea></div></section>
 <section class="panel" id="musicStudio">
-<h3><span class="num">05</span> Music Studio · Suno AI</h3>
+<h3><span class="num">07</span> Music Studio · Suno AI</h3>
 <div class="musicBox">
 <div class="musicTitle"><strong>♫ SUNO MUSIC PROMPT BUILDER</strong><span>FREE PLAN VIA SUNO</span></div>
 <p class="hint">Susun lirik dan arahan musik dari ide video, lalu buka Suno untuk membuat lagu dan mengunduh MP3 melalui akun Suno.</p>
@@ -176,15 +207,15 @@ button,input,select,textarea{touch-action:manipulation}
 <div id="musicStatus" class="status" role="status">Siap menyusun musik berdasarkan ide video.</div>
 <div class="musicNote">Catatan: pembuatan lagu dan MP3 dilakukan di Suno, bukan di server website ini. Paket gratis Suno memiliki batas kredit dan ketentuan penggunaan tersendiri. Periksa lisensi sebelum memakai lagu untuk keperluan komersial.</div>
 </div></section>
-<div class="panel"><h3><span class="num">06</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
+<div class="panel"><h3><span class="num">08</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
 </div>
 <div class="stack">
 <section class="panel" id="outputPanel"><div class="resultHead"><h3>Hasil Studio</h3><span class="pill" id="resultTag">BELUM ADA HASIL</span></div>
 <div class="tabs"><button class="tab active" data-tab="story">Cerita</button><button class="tab" data-tab="storyboard">Storyboard</button><button class="tab" data-tab="image">Prompt gambar</button><button class="tab" data-tab="video">Prompt video</button><button class="tab" data-tab="check">Checklist</button></div>
 <div id="storyView"><div class="empty">Hasil cerita dan paket produksi akan muncul di sini setelah Generate.</div></div>
 <div id="storyboardView" class="hidden"></div><div id="imageView" class="hidden"></div><div id="videoView" class="hidden"></div><div id="checkView" class="hidden"></div>
-<div class="actions"><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button></div></section>
-<section class="panel"><h3><span class="num">07</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
+<div class="actions"><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="copyStoryboard">Salin storyboard</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button></div></section>
+<section class="panel"><h3><span class="num">09</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
 </div></div>
 <footer>AGUS AI VIDEO STUDIO · Studio produksi prompt pribadi · Powered by Google Gemini</footer>
@@ -250,4 +281,4 @@ $("musicCopyPrompt").onclick=()=>{const value=$("musicPrompt").value.trim();if(!
 $("musicOpen").onclick=()=>{const prompt=$("musicPrompt").value.trim(),lyrics=$("musicLyrics").value.trim();if(!prompt&&!lyrics){setMusicStatus("Susun lirik dan prompt terlebih dahulu.","err");return;}window.open("https://suno.com/create","_blank","noopener,noreferrer");setMusicStatus("Suno dibuka. Tempel style prompt dan lirik pada kolom yang sesuai.","ok");};
 
 renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
-</script></body></html>
+</script><script src="/studio-features.js"></script></body></html>
