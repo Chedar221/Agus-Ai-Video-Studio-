@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 ${JSON.stringify(clean, null, 2)}
 
 Keluarkan SATU objek JSON valid saja, tanpa markdown, dengan struktur:
-{"title":"judul","logline":"satu kalimat","synopsis":"sinopsis ringkas","story":"alur lengkap awal-tengah-akhir","duration":"${totalDuration} detik","sceneCount":${sceneCount},"globalCharacterLock":"deskripsi karakter, pakaian, properti dan kontinuitas","scenes":[{"number":1,"timecode":"00:00-00:10","durationSeconds":10,"purpose":"fungsi cerita","visual":"visual storyboard detail","action":"aksi dan ekspresi","dialogue":"dialog/narasi","camera":"shot, angle, movement","lighting":"pencahayaan","sound":"ambience, musik, SFX","transition":"transisi","imagePrompt":"prompt gambar storyboard mandiri dan detail","videoPrompt":"prompt video Flow mandiri dan detail"}],"continuityChecklist":["..."],"flowWorkflow":["..."]}
+{"title":"judul","logline":"satu kalimat","synopsis":"sinopsis ringkas","story":"alur lengkap awal-tengah-akhir","duration":"${totalDuration} detik","sceneCount":${sceneCount},"globalCharacterLock":"deskripsi karakter, pakaian, properti dan kontinuitas","scenes":[{"number":1,"timecode":"00:00-00:10","durationSeconds":10,"purpose":"fungsi cerita","visual":"visual storyboard detail","action":"aksi dan ekspresi","dialogue":"dialog karakter jika ada","narration":"teks narasi lengkap untuk scene ini","camera":"shot, angle, movement","lighting":"pencahayaan","sound":"ambience, musik, SFX","transition":"transisi","imagePrompt":"prompt gambar storyboard mandiri dan detail","videoPrompt":"prompt video Flow mandiri dan detail"}],"continuityChecklist":["..."],"flowWorkflow":["..."]}
 
 WAJIB:
 - Tepat ${sceneCount} adegan. SETIAP ADEGAN WAJIB tepat ${duration} detik. Total keseluruhan ${totalDuration} detik.
@@ -45,6 +45,9 @@ WAJIB:
 - Karakter utama: ${clean.character || "karakter sesuai ide"}. Pakaian: ${clean.wardrobe || "sesuai cerita"}. Lokasi: ${clean.location || "sesuai cerita"}. Konsistensi: ${clean.continuity || "jaga kontinuitas visual"}.
 - Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, kunci pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Gabungkan ke globalCharacterLock dan ulangi instruksi ini di setiap imagePrompt dan videoPrompt.
 - Bahasa: ${clean.language || "Bahasa Indonesia"}; karakter suara: ${clean.voice || "Natural dan bersahaja"}. Dialog khusus: ${clean.dialogue || "buat dialog alami sesuai cerita"}.
+- DETEKSI PERMINTAAN NARASI: jika ide/brief pengguna meminta narasi, narator, voice over, VO, atau saya sebagai narator, WAJIB buat NARASI yang benar-benar tertulis dan bisa langsung diucapkan. Jangan hanya menulis instruksi "narator berbicara".
+- Tambahkan properti "narration" pada SETIAP objek scene berisi kalimat narasi lengkap dalam Bahasa yang diminta. Untuk video bernarasi, setiap scene wajib memiliki teks narasi yang relevan dengan adegan, berkesinambungan antar-scene, tidak kosong, bukan placeholder, dan cukup untuk durasi scene. Isi juga "dialogue" bila ada dialog karakter; jangan mengganti narasi dengan dialog.
+- Setiap videoPrompt WAJIB memuat bagian AUDIO/NARASI dengan teks narration secara verbatim, jenis suara ${clean.voice || "suara pria dewasa"}, bahasa ${clean.language || "Bahasa Indonesia"}, tempo, intonasi, dan instruksi voice-over yang jelas. Narasi terdengar jelas, tidak tertukar dengan dialog karakter, tanpa suara narator lain. Jika pengguna meminta saya sebagai narator, narator adalah karakter utama yang sama.
 - Cerita harus berkembang dan berakhir. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
@@ -88,6 +91,8 @@ WAJIB:
       scene.durationSeconds = duration;
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
       scene.imagePrompt = String(scene.imagePrompt || "") + "\n\n" + proLock;
+      scene.narration = String(scene.narration || "");
+      if (scene.narration.trim()) scene.videoPrompt = String(scene.videoPrompt || "") + `\n\nNARASI/VOICE-OVER (ucapkan persis, jangan dihilangkan): "${scene.narration}". Suara: ${clean.voice || "suara pria dewasa"}, bahasa ${clean.language || "Bahasa Indonesia"}, artikulasi jelas, tempo natural, sinkron dengan adegan.`;
       scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") + "\n\n" + proLock;
       return scene;
     });
