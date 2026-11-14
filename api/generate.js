@@ -64,7 +64,8 @@ export default async function handler(req, res) {
     "Jika satu scene hanya menampilkan satu tokoh berbicara, hanya tokoh itu yang mengucapkan dialog; tokoh lain diam dan tidak melakukan lip-sync.",
     "Jika dialog wajib diberikan, pertahankan kalimatnya persis; bagikan ke scene yang sesuai dan jangan mengubah siapa yang mengucapkannya.",
     "Pisahkan narasi/voice-over dari dialog karakter.",
-    "Dalam setiap videoPrompt, sertakan blok DIALOG dengan nama pembicara, kalimat verbatim, karakter suara, bahasa, dan instruksi lip-sync hanya untuk pembicara yang sedang berbicara.",\n    "Jika pembicara dipilih bersuara anak kecil lucu, gunakan suara anak yang imut, ceria, polos, ekspresif dan artikulasi mudah dipahami; jangan membuatnya terdengar seperti orang dewasa atau terlalu melengking. Jaga suara tokoh anak tetap konsisten."
+    "Dalam setiap videoPrompt, sertakan blok DIALOG dengan nama pembicara, kalimat verbatim, karakter suara, bahasa, dan instruksi lip-sync hanya untuk pembicara yang sedang berbicara.",
+    "Jika pembicara dipilih bersuara anak kecil lucu, gunakan suara anak yang imut, ceria, polos, ekspresif dan artikulasi mudah dipahami; jangan membuatnya terdengar seperti orang dewasa atau terlalu melengking. Jaga suara tokoh anak tetap konsisten."
   ].join("\\n");
 
   const isProductAd = clean.projectType === "product_ad";
@@ -96,7 +97,9 @@ export default async function handler(req, res) {
     movie_universe: ["AI MOVIE UNIVERSE: Ciptakan dunia cerita orisinal dengan aturan, tokoh utama, karakter pendukung, konflik inti, simbol visual, dan benih sekuel; susun pembuka, pembangunan dunia, konflik, klimaks, dan cliffhanger/penutup yang memuaskan; jaga character bible dan continuity antaradegan.","Visual: original cinematic universe, distinctive production design, recurring visual motifs, consistent character wardrobe and props, large-scale memorable set pieces."]
   };
   const videoTypeGuide = videoTypeGuides[clean.videoType] || [];
-  const isChibi3D = clean.videoType === "chibi_3d";\n  const chibiAudioInstruction = isChibi3D ? "GAYA SUARA CHIBI 3D: Utamakan suara anak kecil lucu, imut, ceria dan ekspresif untuk tokoh anak; suara tetap jelas, natural, tidak terlalu melengking. Jika tokoh bukan anak, jangan otomatis mengubahnya menjadi suara anak. Pertahankan suara tiap tokoh secara konsisten." : "";\n  const videoTypeInstructions = videoTypeGuide.length ? ["JENIS VIDEO TERPILIH: " + clean.videoType, ...videoTypeGuide, chibiAudioInstruction, "Terapkan arahan jenis video ini pada sinopsis, setiap adegan, imagePrompt, videoPrompt, kamera, pencahayaan, audio, transisi dan checklist kontinuitas. Jangan hanya menyebut nama genrenya."] : [];
+  const isChibi3D = clean.videoType === "chibi_3d";
+  const chibiAudioInstruction = isChibi3D ? "GAYA SUARA CHIBI 3D: Utamakan suara anak kecil lucu, imut, ceria dan ekspresif untuk tokoh anak; suara tetap jelas, natural, tidak terlalu melengking. Jika tokoh bukan anak, jangan otomatis mengubahnya menjadi suara anak. Pertahankan suara tiap tokoh secara konsisten." : "";
+  const videoTypeInstructions = videoTypeGuide.length ? ["JENIS VIDEO TERPILIH: " + clean.videoType, ...videoTypeGuide, chibiAudioInstruction, "Terapkan arahan jenis video ini pada sinopsis, setiap adegan, imagePrompt, videoPrompt, kamera, pencahayaan, audio, transisi dan checklist kontinuitas. Jangan hanya menyebut nama genrenya."] : [];
   const productInstructions = isProductAd ? [
     "MODE IKLAN PRODUK PROFESIONAL — WAJIB:",
     "Foto produk yang dilampirkan adalah MASTER REFERENCE. Semua adegan harus menampilkan benda fisik yang sama, bukan desain ulang.",
