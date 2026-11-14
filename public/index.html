@@ -177,6 +177,30 @@ button:hover{filter:brightness(1.08);transform:translateY(-1px)}
 footer{color:#9b8a68}
 @media(max-width:700px){.featureNavInner{display:block;padding:8px 10px 7px}.navCaption{display:block;margin:0 2px 5px}.featureNavLinks{gap:6px}.featureLink{padding:8px 10px;font-size:10px}.hero{padding-top:13px}.sectionNav{gap:6px}.sectionNav button{padding:8px 9px;font-size:9px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}button,.panel{transition:none}}
+
+/* Simplified single-feature workspace */
+.featureNav{position:sticky;top:66px;z-index:19;background:rgba(8,13,22,.97);border-bottom:1px solid #8d74434a;box-shadow:0 8px 22px #0003}
+.featureNavInner{max-width:1120px;margin:auto;padding:10px 16px;display:block}
+.navCaption{display:none}
+.featureNavLinks{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:2px 1px 5px}
+.featureNavLinks::-webkit-scrollbar{display:none}
+.featureLink{padding:9px 14px;font-size:11px;background:#121d2c;border-color:#34445a;color:#cbd4df}
+.featureLink.active{background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c;border-color:#e6cc96}
+main{margin-top:18px}
+.hero,.notice{display:none!important}
+.layout{display:block;max-width:820px;margin:0 auto}
+.layout>.stack{display:contents}
+.layout>.stack>.panel{display:none}
+.layout>.stack>.panel.feature-visible{display:block;animation:featureIn .2s ease-out}
+.layout>.stack>.panel .sectionNav{display:none}
+@keyframes featureIn{from{opacity:.65;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media(max-width:700px){
+ .featureNav{top:60px}
+ .featureNavInner{padding:7px 9px}
+ .featureLink{padding:9px 12px;font-size:10px}
+ main{margin-top:12px}
+}
+@media(prefers-reduced-motion:reduce){.layout>.stack>.panel.feature-visible{animation:none}}
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
@@ -250,7 +274,7 @@ footer{color:#9b8a68}
 <div id="musicStatus" class="status" role="status">Siap menyusun musik berdasarkan ide video.</div>
 <div class="musicNote">Catatan: pembuatan lagu dan MP3 dilakukan di Suno, bukan di server website ini. Paket gratis Suno memiliki batas kredit dan ketentuan penggunaan tersendiri. Periksa lisensi sebelum memakai lagu untuk keperluan komersial.</div>
 </div></section>
-<div class="panel"><h3><span class="num">08</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
+<div class="panel" id="productionGenerate"><h3><span class="num">08</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
 </div>
 <div class="stack">
 <section class="panel" id="outputPanel"><div class="resultHead"><h3>Hasil Studio</h3><span class="pill" id="resultTag">BELUM ADA HASIL</span></div>
