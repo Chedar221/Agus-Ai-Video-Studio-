@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  const allowed = ["idea","title","genre","style","ratio","duration","scenes","language","voice","character","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
+  const allowed = ["idea","title","genre","style","ratio","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra"];
   const clean = {};
   for (const key of allowed) if (d[key] !== undefined) clean[key] = String(d[key]).slice(0, ["idea","character","continuity"].includes(key) ? 5000 : 2000);
   if (!clean.idea?.trim()) return send(res, 400, { error: "Ide cerita belum diisi." });
@@ -36,6 +36,7 @@ WAJIB:
 - Format ${clean.ratio || "Vertikal 9:16"}, gaya ${clean.style || "Cinematic realistis"}, genre ${clean.genre || "Drama realistis"}.
 - Setiap imagePrompt dan videoPrompt berdiri sendiri, tidak boleh menulis same as above. Ulangi detail wajah/karakter, pakaian, kendaraan/properti dan lokasi relevan di setiap adegan.
 - Karakter utama: ${clean.character || "karakter sesuai ide"}. Pakaian: ${clean.wardrobe || "sesuai cerita"}. Lokasi: ${clean.location || "sesuai cerita"}. Konsistensi: ${clean.continuity || "jaga kontinuitas visual"}.
+- Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, kunci pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Gabungkan ke globalCharacterLock dan ulangi instruksi ini di setiap imagePrompt dan videoPrompt.
 - Bahasa: ${clean.language || "Bahasa Indonesia"}; karakter suara: ${clean.voice || "Natural dan bersahaja"}. Dialog khusus: ${clean.dialogue || "buat dialog alami sesuai cerita"}.
 - Cerita harus berkembang dan berakhir. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
@@ -65,13 +66,22 @@ WAJIB:
     if (!Array.isArray(project.scenes) || project.scenes.length !== sceneCount) return send(res, 502, { error: "Jumlah adegan hasil AI tidak sesuai. Silakan generate ulang." });
     project.sceneCount = sceneCount;
     project.duration = `${totalDuration} detik`;
+    const proLock = [
+      clean.character && "CHARACTER IDENTITY LOCK: " + clean.character,
+      clean.faceLock && "FACE IDENTITY LOCK: " + clean.faceLock,
+      clean.wardrobeLock && "WARDROBE AND PROP LOCK: " + clean.wardrobeLock,
+      clean.negativeLock && "NEGATIVE CHARACTER CONSTRAINTS: " + clean.negativeLock,
+      clean.continuity && "CONTINUITY RULES: " + clean.continuity
+    ].filter(Boolean).join("\\n");
+    project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\\n");
     project.scenes = project.scenes.map((scene, index) => {
       const start = index * duration;
       const end = start + duration;
       scene.number = index + 1;
       scene.durationSeconds = duration;
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
-      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "");
+      scene.imagePrompt = String(scene.imagePrompt || "") + "\\n\\n" + proLock;
+      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") + "\\n\\n" + proLock;
       return scene;
     });
     return send(res, 200, { project });
