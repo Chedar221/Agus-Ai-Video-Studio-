@@ -37,6 +37,7 @@
         <div class="field"><label for="advLipDuration">DURASI KLIP</label><select id="advLipDuration"><option>5–10 detik</option><option>10–15 detik</option><option>15–30 detik</option><option>Lebih dari 30 detik (pecah menjadi beberapa klip)</option></select></div>
         <div class="field"><label for="advLipText">LIRIK / DIALOG PERSIS</label><textarea id="advLipText" placeholder="Tempel lirik atau dialog yang harus diucapkan."></textarea></div>
         <div class="field"><label for="advLipMood">EKSPRESI DAN GAYA</label><input id="advLipMood" placeholder="Contoh: emosional, senyum hangat, pop Bali ceria"></div>
+        <div class="advancedFileBox"><label for="advLipFile">UNGGAH FILE AUDIO MP3</label><input id="advLipFile" type="file" accept=".mp3,audio/mpeg"><div class="advancedFileMeta" id="advLipMeta">Belum ada file MP3 dipilih.</div><audio id="advLipPreview" class="advancedPreview" controls hidden></audio></div>
         <div class="actions"><button type="button" class="gold" id="advLipMake">BUAT PROMPT LIPSYNC</button><button type="button" class="secondary" data-copy-advanced="advLipOutput">SALIN PROMPT</button></div>
         <div class="field"><label for="advLipOutput">PROMPT SIAP FLOW</label><textarea id="advLipOutput" class="advancedOutput" readonly placeholder="Prompt lipsync akan muncul di sini."></textarea></div>
         <p class="advancedHint">Gunakan foto karakter sebagai referensi. Lampirkan MP3/audio secara terpisah pada fitur lipsync yang tersedia. Jika fitur tidak tersedia di akun atau mode Flow Anda, prompt ini tidak mengaktifkannya secara otomatis.</p>
@@ -47,6 +48,7 @@
         <div class="field"><label for="advMotionAction">URUTAN GERAKAN</label><textarea id="advMotionAction" placeholder="Contoh: berjalan tiga langkah, berhenti, menoleh ke kamera, lalu mengangkat tangan kanan."></textarea></div>
         <div class="field"><label for="advMotionFrame">FRAMING KAMERA</label><select id="advMotionFrame"><option>Full body — seluruh tubuh terlihat</option><option>Medium shot — pinggang ke atas</option><option>Close-up — wajah dan bahu</option><option>Wide shot — karakter dan lingkungan</option></select></div>
         <div class="field"><label for="advMotionLock">KUNCI KARAKTER / ARAHAN TAMBAHAN</label><textarea id="advMotionLock" placeholder="Pertahankan wajah, pakaian, proporsi tubuh, dan lokasi."></textarea></div>
+        <div class="advancedFileBox"><label for="advMotionFile">UNGGAH VIDEO REFERENSI (MP4 / MOV / WEBM)</label><input id="advMotionFile" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"><div class="advancedFileMeta" id="advMotionMeta">Belum ada video referensi dipilih.</div><video id="advMotionPreview" class="advancedPreview" controls playsinline hidden></video></div>
         <div class="actions"><button type="button" class="gold" id="advMotionMake">BUAT PROMPT GERAKAN</button><button type="button" class="secondary" data-copy-advanced="advMotionOutput">SALIN PROMPT</button></div>
         <div class="field"><label for="advMotionOutput">PROMPT SIAP FLOW</label><textarea id="advMotionOutput" class="advancedOutput" readonly placeholder="Prompt motion control akan muncul di sini."></textarea></div>
         <p class="advancedHint">Jika memakai video referensi, unggah video gerakan tersebut pada fitur Motion Control di alat yang mendukungnya. Prompt ini hanya memberi arahan gerakan.</p>
@@ -76,6 +78,20 @@
     details.querySelectorAll(".advancedTool").forEach(x => x.classList.toggle("active", x.id === "advanced" + btn.dataset.advanced.charAt(0).toUpperCase() + btn.dataset.advanced.slice(1)));
     status("");
   }));
+  function previewFile(inputId, metaId, previewId, kind, maxMB) {
+    $(inputId).addEventListener("change", () => {
+      const file = $(inputId).files && $(inputId).files[0], preview = $(previewId);
+      if (!file) { preview.hidden = true; $(metaId).textContent = "Belum ada file dipilih."; return; }
+      const valid = kind === "audio" ? (file.type === "audio/mpeg" || /\.mp3$/i.test(file.name)) : (/^video\/(mp4|quicktime|webm)$/.test(file.type) || /\.(mp4|mov|webm)$/i.test(file.name));
+      if (!valid || file.size > maxMB * 1024 * 1024) { $(inputId).value = ""; preview.hidden = true; $(metaId).textContent = valid ? "Ukuran melebihi " + maxMB + " MB." : "Format file tidak didukung."; status("Periksa format dan ukuran file."); return; }
+      if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+      const url = URL.createObjectURL(file); preview.dataset.objectUrl = url; preview.src = url; preview.hidden = false;
+      $(metaId).textContent = file.name + " · " + (file.size / 1024 / 1024).toFixed(2) + " MB";
+      status("File berhasil dipilih dan siap dipratinjau.");
+    });
+  }
+  previewFile("advLipFile", "advLipMeta", "advLipPreview", "audio", 50);
+  previewFile("advMotionFile", "advMotionMeta", "advMotionPreview", "video", 200);
   $("advLipMake").addEventListener("click", () => {
     const lyric = $("advLipText").value.trim();
     if (!lyric) return status("Isi lirik atau dialog terlebih dahulu.");
@@ -84,7 +100,8 @@
       "GOOGLE FLOW — LIP SYNC PERFORMANCE PROMPT",
       "Gunakan foto referensi sebagai identitas visual utama. Pertahankan wajah, usia visual, warna kulit, bentuk rambut, pakaian dan aksesori secara konsisten.",
       "Karakter menghadap kamera dengan framing close-up atau medium close-up, wajah dan mulut terlihat jelas, pencahayaan wajah merata, fokus tajam pada mata dan mulut.",
-      "Audio sumber: " + $("advLipAudio").value + ". Durasi target: " + $("advLipDuration").value + ".",\n      "File audio yang dipilih: " + (($("advLipFile").files[0] && $("advLipFile").files[0].name) || "belum dipilih") + ".",
+      "Audio sumber: " + $("advLipAudio").value + ". Durasi target: " + $("advLipDuration").value + ".",
+      "File audio yang dipilih: " + (($("advLipFile").files[0] && $("advLipFile").files[0].name) || "belum dipilih") + ".",
       "Sinkronkan gerakan bibir secara presisi dengan audio yang dilampirkan terpisah. Jangan mengubah, menambah, mengurangi atau mengarang lirik/dialog berikut:",
       lyric,
       "Ekspresi: " + mood + ". Gerakan kepala dan kamera minimal, artikulasi mulut natural, kedipan dan micro-expression realistis. Jangan membuat karakter lain berbicara, jangan menambahkan suara atau lirik, hindari distorsi wajah, gigi dan mulut, identity drift, jitter, serta perubahan pakaian.",
@@ -97,7 +114,8 @@
     if (!action) return status("Isi urutan gerakan terlebih dahulu.");
     $("advMotionOutput").value = [
       "GOOGLE FLOW — MOTION CONTROL DIRECTOR PROMPT",
-      "Sumber gerakan: " + $("advMotionSource").value + ".",\n      "Video referensi yang dipilih: " + (($("advMotionFile").files[0] && $("advMotionFile").files[0].name) || "belum dipilih") + ". Gunakan file tersebut sebagai sumber gerak saat mengunggahnya ke alat Motion Control.",
+      "Sumber gerakan: " + $("advMotionSource").value + ".",
+      "Video referensi yang dipilih: " + (($("advMotionFile").files[0] && $("advMotionFile").files[0].name) || "belum dipilih") + ". Gunakan file tersebut sebagai sumber gerak saat mengunggahnya ke alat Motion Control.",
       "Ikuti gerakan dengan urutan, timing, arah, pose, gestur dan ritme yang konsisten. Urutan gerakan: " + action,
       "Framing: " + $("advMotionFrame").value + ". Pastikan bagian tubuh yang diperlukan tetap berada di dalam frame.",
       "Kunci karakter: " + ($("advMotionLock").value.trim() || "gunakan foto referensi sebagai acuan identitas; pertahankan wajah, rambut, pakaian, proporsi tubuh dan aksesori di seluruh frame."),
