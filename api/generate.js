@@ -72,16 +72,16 @@ WAJIB:
       clean.wardrobeLock && "WARDROBE AND PROP LOCK: " + clean.wardrobeLock,
       clean.negativeLock && "NEGATIVE CHARACTER CONSTRAINTS: " + clean.negativeLock,
       clean.continuity && "CONTINUITY RULES: " + clean.continuity
-    ].filter(Boolean).join("\\n");
-    project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\\n");
+    ].filter(Boolean).join("\n");
+    project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\n");
     project.scenes = project.scenes.map((scene, index) => {
       const start = index * duration;
       const end = start + duration;
       scene.number = index + 1;
       scene.durationSeconds = duration;
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
-      scene.imagePrompt = String(scene.imagePrompt || "") + "\\n\\n" + proLock;
-      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") + "\\n\\n" + proLock;
+      scene.imagePrompt = String(scene.imagePrompt || "") + "\n\n" + proLock;
+      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") + "\n\n" + proLock;
       return scene;
     });
     return send(res, 200, { project });
