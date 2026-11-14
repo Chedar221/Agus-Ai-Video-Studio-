@@ -32,10 +32,11 @@ export default async function handler(req, res) {
   const formatTime = (seconds) => String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
   const model = (process.env.GEMINI_MODEL || "gemini-3.5-flash-lite").trim();
   const speakerCount = Math.max(1, Math.min(4, Number.parseInt(clean.dialogueCount || "1", 10) || 1));
+  const isChibi3D = clean.videoType === "chibi_3d";
   const speakerBrief = Array.from({ length: speakerCount }, (_, i) => {
     const n = i + 1;
     return "PEMBICARA " + n + ": " + (clean["speaker" + n + "Name"] || "Tokoh " + n) +
-      " | KARAKTER SUARA: " + (clean["speaker" + n + "Voice"] || "Natural dan bersahaja") +
+      " | KARAKTER SUARA: " + (clean["speaker" + n + "Voice"] || (isChibi3D ? "Anak kecil lucu, imut, ceria dan ekspresif" : "Natural dan bersahaja")) +
       " | DIALOG WAJIB/ARAHAN: " + (clean["speaker" + n + "Dialogue"] || "AI susun dialog sesuai cerita");
   }).join("\\n");
   const audioMode = clean.audioMode || "both";
@@ -49,7 +50,7 @@ export default async function handler(req, res) {
     "Mode narasi saja: isi narration, kosongkan dialogue. Mode dialog saja: isi dialogue, kosongkan narration. Mode tanpa suara manusia: kosongkan keduanya.",
     "Mode narasi + dialog: keduanya terpisah, ringkas, tidak mengulang, dan tidak berbicara bersamaan kecuali timing mengizinkan.",
     "Timing: " + (clean.audioTiming === "layered" ? "tumpang tindih hanya jika diperlukan dan disebutkan eksplisit" : "bergantian tanpa tumpang tindih; beri jeda sekitar 0,3 detik dan tulis rentang waktu mulai-selesai yang masuk akal per scene"),
-    "Suara narator: " + (clean.narratorVoice || clean.voice || "Pria dewasa, berat, tenang dan berwibawa") + ". Jika dipilih suara anak kecil lucu, gunakan suara anak yang ceria, imut, artikulasi jelas, pitch alami anak, tidak terlalu melengking; pertahankan karakter suara yang sama. Jangan samakan suara narator dengan karakter kecuali diminta.",
+    "Suara narator: " + (clean.narratorVoice || (isChibi3D ? "Suara anak kecil lucu, imut, ceria dan ekspresif" : clean.voice || "Pria dewasa, berat, tenang dan berwibawa")) + ". Jika dipilih suara anak kecil lucu, gunakan suara anak yang ceria, imut, artikulasi jelas, pitch alami anak, tidak terlalu melengking; pertahankan karakter suara yang sama. Jangan samakan suara narator dengan karakter kecuali diminta.",
     "Mix audio: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") + ". Musik dan SFX tidak boleh menutupi ucapan.",
     "Setiap videoPrompt wajib memuat blok AUDIO TRACKS berlabel NARASI/VOICE-OVER, DIALOG KARAKTER, MUSIK, SFX/AMBIENCE, TIMING & MIX. Isi narasi/dialog verbatim; tulis TIDAK ADA jika track kosong.",
     "Jangan membuat narator tambahan, suara manusia latar, dialog spontan, atau lip-sync pada track yang salah."
@@ -97,7 +98,6 @@ export default async function handler(req, res) {
     movie_universe: ["AI MOVIE UNIVERSE: Ciptakan dunia cerita orisinal dengan aturan, tokoh utama, karakter pendukung, konflik inti, simbol visual, dan benih sekuel; susun pembuka, pembangunan dunia, konflik, klimaks, dan cliffhanger/penutup yang memuaskan; jaga character bible dan continuity antaradegan.","Visual: original cinematic universe, distinctive production design, recurring visual motifs, consistent character wardrobe and props, large-scale memorable set pieces."]
   };
   const videoTypeGuide = videoTypeGuides[clean.videoType] || [];
-  const isChibi3D = clean.videoType === "chibi_3d";
   const chibiAudioInstruction = isChibi3D ? "GAYA SUARA CHIBI 3D: Utamakan suara anak kecil lucu, imut, ceria dan ekspresif untuk tokoh anak; suara tetap jelas, natural, tidak terlalu melengking. Jika tokoh bukan anak, jangan otomatis mengubahnya menjadi suara anak. Pertahankan suara tiap tokoh secara konsisten." : "";
   const videoTypeInstructions = videoTypeGuide.length ? ["JENIS VIDEO TERPILIH: " + clean.videoType, ...videoTypeGuide, chibiAudioInstruction, "Terapkan arahan jenis video ini pada sinopsis, setiap adegan, imagePrompt, videoPrompt, kamera, pencahayaan, audio, transisi dan checklist kontinuitas. Jangan hanya menyebut nama genrenya."] : [];
   const productInstructions = isProductAd ? [
