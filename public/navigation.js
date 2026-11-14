@@ -169,6 +169,7 @@
     document.getElementById("editScenePurpose").focus();
   };
   const closeSceneEditor = () => { editorOverlay.classList.remove("open"); editingSceneIndex = -1; };
+  window.AgusStudioEditScene = openSceneEditor;
   document.getElementById("cancelSceneEdit").addEventListener("click",closeSceneEditor);
   editorOverlay.addEventListener("click",event=>{if(event.target===editorOverlay)closeSceneEditor();});
   document.addEventListener("keydown",event=>{if(event.key==="Escape"&&editorOverlay.classList.contains("open"))closeSceneEditor();});
