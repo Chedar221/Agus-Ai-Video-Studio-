@@ -232,6 +232,49 @@ main{margin-top:18px}
 @media(max-width:600px){.quickSubtab{font-size:10px;padding:9px 10px}}
 #quickStatus{min-height:18px}
 @media(max-width:600px){.quickStudio{padding:15px!important}.quickGenerate{min-height:50px}.quickUpload{padding:11px}.quickLead{font-size:12px}}
+
+/* ALL BUTTON LABELS: UPPERCASE + POLISHED MICRO-INTERACTIONS */
+button, input[type="button"], input[type="submit"], a.featureLink, #openGoogleFlowOutput {
+  text-transform: uppercase;
+  letter-spacing: .045em;
+}
+button, a.featureLink, #openGoogleFlowOutput {
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease, background-color .2s ease;
+}
+button:hover:not(:disabled), a.featureLink:hover, #openGoogleFlowOutput:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+button:active:not(:disabled), a.featureLink:active, #openGoogleFlowOutput:active {
+  transform: translateY(0) scale(.98);
+}
+#openGoogleFlowNav {
+  position: relative;
+  overflow: hidden;
+  border-color: #d9b878 !important;
+  background: linear-gradient(120deg,#f4dfb2,#c99a55,#f4dfb2) !important;
+  background-size: 200% 200% !important;
+  color: #17202c !important;
+  font-weight: 900 !important;
+  box-shadow: 0 0 0 1px #e8ce9655, 0 5px 18px #d9b87830;
+  animation: flowNavGlow 3.2s ease-in-out infinite;
+}
+#openGoogleFlowOutput {
+  animation: flowOutputPulse 2.8s ease-in-out infinite;
+}
+@keyframes flowNavGlow {
+  0%,100% { background-position: 0% 50%; box-shadow: 0 0 0 1px #e8ce9655, 0 5px 16px #d9b87825; }
+  50% { background-position: 100% 50%; box-shadow: 0 0 0 2px #e8ce9680, 0 7px 22px #d9b87855; }
+}
+@keyframes flowOutputPulse {
+  0%,100% { box-shadow: 0 3px 12px #d9b87822; }
+  50% { box-shadow: 0 4px 18px #d9b87866; }
+}
+@media (prefers-reduced-motion: reduce) {
+  button, a.featureLink, #openGoogleFlowOutput { transition: none; }
+  #openGoogleFlowNav, #openGoogleFlowOutput { animation: none; }
+}
+
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo">AV</div><div><h1>AGUS AI VIDEO STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
