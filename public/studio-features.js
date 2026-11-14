@@ -22,6 +22,14 @@
   {name:"Komedi ekspresif",category:"genre",text:"Lighthearted cinematic comedy, clear readable facial expressions, natural physical timing, believable reactions, clean staging and playful pacing."}
  ];
  const catNames={visual:"Gaya visual",camera:"Kamera & shot",lighting:"Pencahayaan",flow:"Kualitas Google Flow",genre:"Genre & suasana"};
+ const originalFallbackTemplate=fallbackTemplate;
+ fallbackTemplate=function(){
+  const p=originalFallbackTemplate();
+  const lock=["FACE IDENTITY LOCK: "+$("faceLock").value,"WARDROBE AND PROP LOCK: "+$("wardrobeLock").value,"NEGATIVE CHARACTER CONSTRAINTS: "+$("negativeLock").value].filter(Boolean).join("\n");
+  p.globalCharacterLock=[p.globalCharacterLock,lock].filter(Boolean).join("\n");
+  p.scenes.forEach(s=>{s.imagePrompt+="\n\n"+lock;s.videoPrompt+="\n\n"+lock;});
+  return p;
+ };
  function renderLibrary(){
   const host=$("promptResults");if(!host)return;
   const cat=$("promptCategory")?.value||"all",q=($("promptSearch")?.value||"").toLowerCase().trim();
