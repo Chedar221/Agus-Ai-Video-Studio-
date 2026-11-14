@@ -51,7 +51,8 @@
         icon.setAttribute("aria-hidden", "true");
         el.insertBefore(icon, el.firstChild);
       }
-      icon.textContent = iconFor(el);
+      const nextIcon = iconFor(el);
+      if (icon.textContent !== nextIcon) icon.textContent = nextIcon;
       stripLeadingDecor(el);
     });
   };
