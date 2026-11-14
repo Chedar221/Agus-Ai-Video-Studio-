@@ -70,7 +70,10 @@
   details.classList.add("panel");
   details.style.width = "100%";
   details.style.boxSizing = "border-box";
-  host.insertAdjacentElement("afterend", details);
+  const intro = host.querySelector(".quickLead");
+  if (intro) intro.insertAdjacentElement("afterend", details);
+  else host.prepend(details);
+  details.open = true;
   const $ = id => document.getElementById(id);
   const status = msg => { $("advancedStatus").textContent = msg; };
   details.querySelectorAll("[data-advanced]").forEach(btn => btn.addEventListener("click", () => {
