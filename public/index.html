@@ -359,10 +359,25 @@ function render(){
 function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));["story","storyboard","image","video","check"].forEach(k=>$ (k+"View").classList.toggle("hidden",k!==tab));}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
+$("quickGenerate").onclick=()=>{
+ const idea=$("quickIdea").value.trim();
+ if(!idea){$("quickStatus").textContent="Tulis ide cerita terlebih dahulu."; $("quickIdea").focus(); return;}
+ $("idea").value=idea;
+ $("title").value="Video dari Ide Baru";
+ $("duration").value="10";
+ $("scenes").value=String(Number($("quickDuration").value)/10);
+ $("ratio").value=$("quickRatio").value;
+ $("style").value="Cinematic realistis";
+ $("genre").value="Drama realistis";
+ $("language").value="Bahasa Indonesia";
+ $("voice").value="Suara pria dewasa";
+ $("quickStatus").textContent="AI sedang menyusun seluruh paket produksi...";
+ $("aiBtn").click();
+};
 $("aiBtn").onclick=async()=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,referenceImages:await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
- catch(e){setStatus(e.message,"err");}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,referenceImages:await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;render();switchTab("story");setStatus("Paket produksi berhasil dibuat. Periksa setiap adegan sebelum digunakan di Flow.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ catch(e){setStatus(e.message,"err");if($("quickStatus"))$("quickStatus").textContent=e.message;}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
 $("download").onclick=()=>{if(!project){setStatus("Belum ada hasil.","err");return;}const a=document.createElement("a"),u=URL.createObjectURL(new Blob([latestText],{type:"text/plain;charset=utf-8"}));a.href=u;a.download=(project.title||"AGUS-AI-VIDEO").replace(/[^a-z0-9-_]+/gi,"-")+".txt";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
