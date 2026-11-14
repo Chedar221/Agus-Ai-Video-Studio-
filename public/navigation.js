@@ -2,6 +2,23 @@
 (() => {
   const allPanels = [...document.querySelectorAll(".layout > .stack > .panel")];
   const flowUrl = "https://labs.google/fx/tools/flow";
+  const flowPackage = "com.google.android.apps.labs.whisk";
+  const playStoreUrl = "https://play.google.com/store/apps/details?id=" + flowPackage;
+  const launchFlow = () => {
+    const isAndroid = /Android/i.test(navigator.userAgent);
+    if (isAndroid) {
+      // Launch the installed Google Flow Android app through an Android intent.
+      // Chrome opens the web version automatically if the app cannot be resolved.
+      const fallback = encodeURIComponent(flowUrl);
+      const intentUrl = "intent://launch/#Intent;scheme=chedarflow;package=" +
+        flowPackage +
+        ";action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER" +
+        ";S.browser_fallback_url=" + fallback + ";end";
+      window.location.href = intentUrl;
+      return;
+    }
+    window.open(flowUrl, "_blank", "noopener,noreferrer");
+  };
 
   // One monochrome, text-based icon per control. No colorful emoji duplicates.
   const iconFor = (el) => {
@@ -70,10 +87,9 @@
     flowLink.id = "openGoogleFlowNav";
     flowLink.className = "featureLink";
     flowLink.href = flowUrl;
-    flowLink.target = "_blank";
-    flowLink.rel = "noopener noreferrer";
     flowLink.textContent = "BUKA FLOW";
-    flowLink.setAttribute("aria-label", "Buka Google Flow di tab baru");
+    flowLink.setAttribute("aria-label", "Buka aplikasi Google Flow atau versi web");
+    flowLink.addEventListener("click", event => { event.preventDefault(); launchFlow(); });
     navLinks.appendChild(flowLink);
   }
   const outputActions = document.querySelector("#outputPanel > .actions");
@@ -81,10 +97,9 @@
     const flowButton = document.createElement("a");
     flowButton.id = "openGoogleFlowOutput";
     flowButton.href = flowUrl;
-    flowButton.target = "_blank";
-    flowButton.rel = "noopener noreferrer";
     flowButton.textContent = "BUKA FLOW";
-    flowButton.setAttribute("aria-label", "Buka Google Flow di tab baru");
+    flowButton.setAttribute("aria-label", "Buka aplikasi Google Flow atau versi web");
+    flowButton.addEventListener("click", event => { event.preventDefault(); launchFlow(); });
     Object.assign(flowButton.style, {
       display: "inline-flex", alignItems: "center", justifyContent: "center",
       textDecoration: "none", font: "700 11px system-ui", borderRadius: "10px",
