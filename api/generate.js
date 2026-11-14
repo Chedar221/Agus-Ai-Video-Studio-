@@ -186,12 +186,12 @@ WAJIB:
         ? 'DIALOG KARAKTER: "' + scene.dialogue + '". Hanya pembicara yang disebut melakukan lip-sync; suara dan nama tidak boleh tertukar.'
         : "DIALOG KARAKTER: TIDAK ADA.";
       scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") +
-        "\\n\\nDIALOG MULTI-PEMBICARA: Jumlah pembicara tepat ${speakerCount}. Ikuti nama dan karakter suara sesuai brief; jangan menukar pembicara. Setiap baris dialog diawali nama pembicara dan hanya pembicara itu yang melakukan lip-sync. Jangan menambahkan tokoh bersuara lain.\\n\\n" +
-        "SMART AUDIO — TRACK TERPISAH:\\n" + narrationTrack + "\\n" + dialogueTrack +
-        "\\nMUSIK: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") +
-        "\\nSFX/AMBIENCE: " + (scene.sound || "Ambience lokasi halus; tanpa suara manusia tambahan") +
-        "\\nTIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya bila disebut eksplisit." : "Narasi dan dialog bergantian, tidak tumpang tindih; beri jeda sekitar 0,3 detik; musik diturunkan saat ada ucapan.") +
-        "\\n\\n" + proLock + (isProductAd ? "\\n\\nPRODUCT REFERENCE DI GOOGLE FLOW: Lampirkan foto produk master yang sama pada klip ini. Jangan mengubah bentuk, warna, logo, label, teks, atau detail produk. Prioritaskan kestabilan identitas produk daripada gerakan kamera kompleks." : "");
+        "\n\nDIALOG MULTI-PEMBICARA: Jumlah pembicara tepat " + speakerCount + ". Ikuti nama dan karakter suara sesuai brief; jangan menukar pembicara. Setiap baris dialog diawali nama pembicara dan hanya pembicara itu yang melakukan lip-sync. Jangan menambahkan tokoh bersuara lain.\n\n" +
+        "SMART AUDIO — TRACK TERPISAH:\n" + narrationTrack + "\n" + dialogueTrack +
+        "\nMUSIK: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") +
+        "\nSFX/AMBIENCE: " + (scene.sound || "Ambience lokasi halus; tanpa suara manusia tambahan") +
+        "\nTIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya bila disebut eksplisit." : "Narasi dan dialog bergantian, tidak tumpang tindih; beri jeda sekitar 0,3 detik; musik diturunkan saat ada ucapan.") +
+        "\n\n" + proLock + (isProductAd ? "\n\nPRODUCT REFERENCE DI GOOGLE FLOW: Lampirkan foto produk master yang sama pada klip ini. Jangan mengubah bentuk, warna, logo, label, teks, atau detail produk. Prioritaskan kestabilan identitas produk daripada gerakan kamera kompleks." : "");
       return scene;
     });
     return send(res, 200, { project });
