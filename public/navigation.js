@@ -113,6 +113,113 @@
   document.querySelectorAll('.featureLink[data-target]').forEach(btn =>
     btn.addEventListener("click",()=>show(btn.dataset.target))
   );
+
+  // AI Scene Editor: edit one scene without rebuilding the full project.
+  const editorStyle = document.createElement("style");
+  editorStyle.textContent = `
+    .sceneEditorOverlay{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:16px;background:#050a12d9;backdrop-filter:blur(8px)}
+    .sceneEditorOverlay.open{display:flex}
+    .sceneEditorDialog{width:min(760px,100%);max-height:88vh;overflow:auto;background:linear-gradient(145deg,#19283d,#0e1725);border:1px solid #b99a5a70;border-radius:17px;padding:17px;box-shadow:0 24px 80px #0009}
+    .sceneEditorDialog h3{margin:0 0 5px;color:#f0d9a6;font-size:16px}
+    .sceneEditorDialog .editorIntro{margin:0 0 13px;color:#aebdce;font-size:12px}
+    .sceneEditorFields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .sceneEditorField{min-width:0}
+    .sceneEditorField.wide{grid-column:1/-1}
+    .sceneEditorField label{display:block;margin:0 0 5px;color:#d9c69d;font-size:11px;font-weight:800}
+    .sceneEditorField textarea{width:100%;min-height:76px;resize:vertical;background:#090f1a;color:#f4f1e9;border:1px solid #40516a;border-radius:9px;padding:10px;font:12px/1.5 system-ui}
+    .sceneEditorActions{display:flex;justify-content:flex-end;gap:8px;margin-top:13px}
+    .sceneEditorActions button{min-width:100px}
+    @media(max-width:600px){.sceneEditorOverlay{padding:9px}.sceneEditorDialog{padding:13px;max-height:92vh}.sceneEditorFields{grid-template-columns:1fr}.sceneEditorField.wide{grid-column:auto}.sceneEditorActions{display:grid;grid-template-columns:1fr 1fr}.sceneEditorActions button{min-width:0}}
+  `;
+  document.head.appendChild(editorStyle);
+
+  const editorOverlay = document.createElement("div");
+  editorOverlay.className = "sceneEditorOverlay";
+  editorOverlay.innerHTML = `
+    <section class="sceneEditorDialog" role="dialog" aria-modal="true" aria-labelledby="sceneEditorTitle">
+      <h3 id="sceneEditorTitle">EDIT ADEGAN</h3>
+      <p class="editorIntro">Ubah hanya bagian adegan ini. Adegan lainnya tetap aman.</p>
+      <div class="sceneEditorFields">
+        <div class="sceneEditorField"><label for="editScenePurpose">TUJUAN ADEGAN</label><textarea id="editScenePurpose"></textarea></div>
+        <div class="sceneEditorField"><label for="editSceneAction">AKSI / GERAKAN</label><textarea id="editSceneAction"></textarea></div>
+        <div class="sceneEditorField wide"><label for="editSceneVisual">VISUAL CERITA</label><textarea id="editSceneVisual"></textarea></div>
+        <div class="sceneEditorField"><label for="editSceneDialogue">DIALOG</label><textarea id="editSceneDialogue"></textarea></div>
+        <div class="sceneEditorField"><label for="editSceneNarration">NARASI</label><textarea id="editSceneNarration"></textarea></div>
+        <div class="sceneEditorField wide"><label for="editSceneImage">PROMPT GAMBAR</label><textarea id="editSceneImage" style="min-height:115px"></textarea></div>
+        <div class="sceneEditorField wide"><label for="editSceneVideo">PROMPT VIDEO GOOGLE FLOW</label><textarea id="editSceneVideo" style="min-height:135px"></textarea></div>
+      </div>
+      <div class="sceneEditorActions"><button type="button" class="secondary" id="cancelSceneEdit">BATAL</button><button type="button" class="gold" id="saveSceneEdit">SIMPAN PERUBAHAN</button></div>
+    </section>`;
+  document.body.appendChild(editorOverlay);
+  let editingSceneIndex = -1;
+  const editorFields = {
+    purpose:"editScenePurpose", action:"editSceneAction", visual:"editSceneVisual",
+    dialogue:"editSceneDialogue", narration:"editSceneNarration",
+    imagePrompt:"editSceneImage", videoPrompt:"editSceneVideo"
+  };
+  const openSceneEditor = (index) => {
+    if (typeof project === "undefined" || !project || !project.scenes?.[index]) return;
+    editingSceneIndex = index;
+    const scene = project.scenes[index];
+    Object.entries(editorFields).forEach(([key,id]) => {
+      document.getElementById(id).value = scene[key] || "";
+    });
+    document.getElementById("sceneEditorTitle").textContent = "EDIT ADEGAN " + (scene.number || index + 1);
+    editorOverlay.classList.add("open");
+    document.getElementById("editScenePurpose").focus();
+  };
+  const closeSceneEditor = () => { editorOverlay.classList.remove("open"); editingSceneIndex = -1; };
+  document.getElementById("cancelSceneEdit").addEventListener("click",closeSceneEditor);
+  editorOverlay.addEventListener("click",event=>{if(event.target===editorOverlay)closeSceneEditor();});
+  document.addEventListener("keydown",event=>{if(event.key==="Escape"&&editorOverlay.classList.contains("open"))closeSceneEditor();});
+  document.getElementById("saveSceneEdit").addEventListener("click",()=>{
+    if (typeof project === "undefined" || !project?.scenes?.[editingSceneIndex]) return;
+    const scene = project.scenes[editingSceneIndex];
+    Object.entries(editorFields).forEach(([key,id])=>{scene[key]=document.getElementById(id).value.trim();});
+    if (typeof render === "function") render();
+    if (typeof switchTab === "function") switchTab("storyboard");
+    // Keep the edited package in the same local saved-project record.
+    try {
+      const stored = JSON.parse(localStorage.getItem("agusStudioProjects") || "[]");
+      let item = stored.find(entry=>Number(entry.id)===Number(activeProjectId));
+      if (!item) {
+        item = {id:Date.now(),title:project.title||"Paket Video",form:typeof getData==="function"?getData():{},savedAt:new Date().toLocaleString("id-ID")};
+        activeProjectId = item.id;
+        stored.unshift(item);
+      }
+      item.project = project;
+      item.title = project.title || item.title;
+      localStorage.setItem("agusStudioProjects",JSON.stringify(stored.slice(0,20)));
+      localStorage.setItem("agusStudioLastProject",JSON.stringify(item));
+      if (typeof renderSaved === "function") renderSaved();
+      if (typeof setStatus === "function") setStatus("Adegan berhasil diperbarui dan perubahan tersimpan di perangkat ini.","ok");
+    } catch(error) {
+      if (typeof setStatus === "function") setStatus("Adegan diperbarui, tetapi penyimpanan gagal. Unduh paket sebagai cadangan.","err");
+    }
+    closeSceneEditor();
+  });
+
+  const addSceneEditorButtons = () => {
+    const host = document.getElementById("storyboardView");
+    if (!host || typeof project === "undefined" || !project?.scenes?.length) return;
+    [...host.querySelectorAll(".scene")].forEach((card,index)=>{
+      if (card.querySelector(".sceneEditorAction")) return;
+      const actions=document.createElement("div");
+      actions.className="actions sceneEditorAction";
+      const button=document.createElement("button");
+      button.type="button";button.className="secondary small";
+      button.textContent="Edit adegan";
+      button.addEventListener("click",()=>openSceneEditor(index));
+      actions.appendChild(button);card.appendChild(actions);
+    });
+  };
+  const sceneEditorObserver = new MutationObserver(addSceneEditorButtons);
+  const storyboardHost = document.getElementById("storyboardView");
+  if (storyboardHost) {
+    sceneEditorObserver.observe(storyboardHost,{childList:true,subtree:true});
+    addSceneEditorButtons();
+  }
+
   window.AgusStudioNavigate = show;
   show("quickStudio",false);
 })();
