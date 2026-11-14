@@ -1,20 +1,13 @@
 /* AGUS AI STUDIO — navigation and unified button icons */
 (() => {
   const allPanels = [...document.querySelectorAll(".layout > .stack > .panel")];
-  const flowUrl = "https://labs.google/fx/tools/flow";
-  const flowPackage = "com.google.android.apps.labs.whisk";
-  const playStoreUrl = "https://play.google.com/store/apps/details?id=" + flowPackage;
+  // Use Google's current Flow URL. On Android, verified App Links can hand
+  // this HTTPS link to the installed native Flow app; otherwise it opens Flow web.
+  const flowUrl = "https://flow.google.com/";
   const launchFlow = () => {
     const isAndroid = /Android/i.test(navigator.userAgent);
     if (isAndroid) {
-      // Launch the installed Google Flow Android app through an Android intent.
-      // Chrome opens the web version automatically if the app cannot be resolved.
-      const fallback = encodeURIComponent(flowUrl);
-      const intentUrl = "intent://#Intent;package=" +
-        flowPackage +
-        ";action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER" +
-        ";S.browser_fallback_url=" + fallback + ";end";
-      window.location.href = intentUrl;
+      window.location.href = flowUrl;
       return;
     }
     window.open(flowUrl, "_blank", "noopener,noreferrer");
