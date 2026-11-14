@@ -62,16 +62,15 @@
  $("copyStoryboard")?.addEventListener("click",()=>$("storyboardCopy")?.click());
  $("applyCharacterLock")?.addEventListener("click",()=>{
   const parts=[$("faceLock").value,$("wardrobeLock").value,$("negativeLock").value].filter(Boolean);
-  const lockMarker="CHEDAR_CHARACTER_LOCK";
-  const lock=lockMarker+"\\n"+parts.join("\\n");
-  $("character").value=[$("character").value.trim(),...parts].filter(Boolean).join("\\n\\n");
-  $("continuity").value=[$("continuity").value.trim(),"Terapkan seluruh kunci identitas, pakaian, properti, dan larangan perubahan di setiap adegan."].filter(Boolean).join("\\n");
+  const lock="CHEDAR_CHARACTER_LOCK\n"+parts.join("\n");
+  const stripLock=value=>String(value||"").replace(/(?:^|\n\n)CHEDAR_CHARACTER_LOCK[\s\S]*?(?=\n\n|$)/g,"").trim();
+  $("character").value=[$("character").value.trim(),...parts].filter(Boolean).join("\n\n");
+  $("continuity").value=[$("continuity").value.trim(),"Terapkan seluruh kunci identitas, pakaian, properti, dan larangan perubahan di setiap adegan."].filter(Boolean).join("\n");
   if(typeof project!=="undefined"&&project?.scenes?.length){
-   project.globalCharacterLock=[project.globalCharacterLock||"",lock].filter(Boolean).join("\\n\\n");
+   project.globalCharacterLock=[stripLock(project.globalCharacterLock),lock].filter(Boolean).join("\n\n");
    project.scenes.forEach(scene=>{
     for(const key of ["imagePrompt","videoPrompt"]){
-     const current=String(scene[key]||"").replace(/CHEDAR_CHARACTER_LOCK[\\s\\S]*?(?=\\n\\n|$)/g,"").trim();
-     scene[key]=[current,lock].filter(Boolean).join("\\n\\n");
+     scene[key]=[stripLock(scene[key]),lock].filter(Boolean).join("\n\n");
     }
    });
    if(typeof render==="function")render();
