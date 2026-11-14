@@ -34,5 +34,5 @@
     btn.addEventListener("click",()=>show(btn.dataset.target))
   );
   window.AgusStudioNavigate = show;
-  show("ideaConcept",false);
+  show("quickStudio",false);
 })();
