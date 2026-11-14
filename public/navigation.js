@@ -10,7 +10,7 @@
     flowLink.href = flowUrl;
     flowLink.target = "_blank";
     flowLink.rel = "noopener noreferrer";
-    flowLink.textContent = "↗ Buka Google Flow";
+    flowLink.textContent = "↗ BUKA FLOW";
     flowLink.setAttribute("aria-label", "Buka Google Flow di tab baru");
     navLinks.appendChild(flowLink);
   }
@@ -21,7 +21,7 @@
     flowButton.href = flowUrl;
     flowButton.target = "_blank";
     flowButton.rel = "noopener noreferrer";
-    flowButton.textContent = "↗ Buka Google Flow";
+    flowButton.textContent = "↗ BUKA FLOW";
     flowButton.setAttribute("aria-label", "Buka Google Flow di tab baru");
     Object.assign(flowButton.style, {
       display: "inline-flex", alignItems: "center", justifyContent: "center",
