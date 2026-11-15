@@ -495,7 +495,19 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <footer>CHEDAR AI KREATOR · Studio produksi prompt AI · Powered by Google Gemini</footer>
 </main>
 <script>
-const $=id=>document.getElementById(id);let project=null,latestText="",referenceUrls=[],activeProjectId=null;
+const $=id=>document.getElementById(id);
+function removeLiteralNewlineArtifacts(root=document.body){
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+ const remove=[];
+ while(walker.nextNode()){
+  const node=walker.currentNode;
+  if(/^(?:\\[nr])+$/i.test((node.nodeValue||"").trim())) remove.push(node);
+ }
+ remove.forEach(node=>node.remove());
+}
+removeLiteralNewlineArtifacts();
+new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,{childList:true,subtree:true,characterData:true});
+let project=null,latestText="",referenceUrls=[],activeProjectId=null;
 const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
