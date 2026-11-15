@@ -534,7 +534,7 @@ $("projectType").addEventListener("change",updateProjectType);updateProjectType(
 function updateDialogueCount(){const count=Number($("dialogueCount").value||1);[1,2,3,4].forEach(n=>{$("speakerCard"+n).hidden=n>count;});}
 $("dialogueCount").addEventListener("change",updateDialogueCount);updateDialogueCount();
 document.querySelectorAll("[data-quicktab]").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll("[data-quicktab]").forEach(x=>x.classList.toggle("active",x===tab));["quickIdeaPanel","quickReferencePanel","quickDialoguePanel"].forEach(id=>$(id).classList.toggle("hidden",id!==tab.dataset.quicktab));}));
-function buildSpeakerBrief(){const count=Number($("dialogueCount").value||1),lines=[];for(let n=1;n<=count;n++){const name=$("speaker"+n+"Name").value.trim()||"Tokoh "+n;lines.push("PEMBICARA "+n+": "+name+" | SUARA: "+$("speaker"+n+"Voice").value+" | DIALOG: "+($("speaker"+n+"Dialogue").value.trim()||"AI susun dialog alami sesuai cerita"));}$("dialogue").value="Jumlah pembicara: "+count+".\\n"+lines.join("\\n");}
+function buildSpeakerBrief(){const count=Number($("dialogueCount").value||1),lines=[];for(let n=1;n<=count;n++){const name=$("speaker"+n+"Name").value.trim()||"Tokoh "+n;lines.push("PEMBICARA "+n+": "+name+" | SUARA: "+$("speaker"+n+"Voice").value+" | DIALOG: "+($("speaker"+n+"Dialogue").value.trim()||"AI susun dialog alami sesuai cerita"));}$("dialogue").value="Jumlah pembicara: "+count+"\n"+lines.join("\n");}
 
 
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
