@@ -284,30 +284,4 @@ $("musicCopyPrompt").onclick=()=>{const value=$("musicPrompt").value.trim();if(!
 $("musicOpen").onclick=()=>{const prompt=$("musicPrompt").value.trim(),lyrics=$("musicLyrics").value.trim();if(!prompt&&!lyrics){setMusicStatus("Susun lirik dan prompt terlebih dahulu.","err");return;}window.open("https://suno.com/create","_blank","noopener,noreferrer");setMusicStatus("Suno dibuka. Tempel style prompt dan lirik pada kolom yang sesuai.","ok");};
 
 renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
-</script><script src="/studio-features.js"></script><script>
-/* Bersihkan escape newline yang mungkin tersimpan sebagai teks literal di UI. */
-(function(){
-  function cleanLiteralNewlines(root){
-    if(!root)return;
-    const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
-    const nodes=[];
-    while(walker.nextNode())nodes.push(walker.currentNode);
-    for(const node of nodes){
-      const parent=node.parentElement;
-      if(parent&&/^(SCRIPT|STYLE|TEXTAREA)$/i.test(parent.tagName))continue;
-      if(/\\[rn]/.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/\\r?\\n/g," ").replace(/\\n/g," ");
-    }
-    root.querySelectorAll("*").forEach(el=>{
-      for(const attr of ["placeholder","title","aria-label"]){
-        const value=el.getAttribute(attr);
-        if(value&&/\\[rn]/.test(value))el.setAttribute(attr,value.replace(/\\r?\\n/g," ").replace(/\\n/g," "));
-      }
-    });
-  }
-  const run=()=>cleanLiteralNewlines(document.body);
-  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",run,{once:true});else run();
-  const observer=new MutationObserver(()=>run());
-  observer.observe(document.documentElement,{subtree:true,childList:true,characterData:true});
-})();
-</script>
-</body></html>
+</script><script src="/studio-features.js"></script></body></html>
