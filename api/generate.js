@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     return "PEMBICARA " + n + ": " + (clean["speaker" + n + "Name"] || "Tokoh " + n) +
       " | KARAKTER SUARA: " + (clean["speaker" + n + "Voice"] || (isChibi3D ? "Anak kecil lucu, imut, ceria dan ekspresif" : "Natural dan bersahaja")) +
       " | DIALOG WAJIB/ARAHAN: " + (clean["speaker" + n + "Dialogue"] || "AI susun dialog sesuai cerita");
-  }).join("\\n");
+  }).join("\n");
   const audioMode = isSilentPopup ? "none" : (clean.audioMode || "both");
   const audioModeLabel = ({both:"narasi dan dialog",narration_only:"narasi saja",dialogue_only:"dialog saja",none:"tanpa suara manusia"})[audioMode] || "narasi dan dialog";
   const audioInstructions = [
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
     "Mix audio: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") + ". Musik dan SFX tidak boleh menutupi ucapan.",
     "Setiap videoPrompt wajib memuat blok AUDIO TRACKS berlabel NARASI/VOICE-OVER, DIALOG KARAKTER, MUSIK, SFX/AMBIENCE, TIMING & MIX. Isi narasi/dialog verbatim; tulis TIDAK ADA jika track kosong.",
     "Jangan membuat narator tambahan, suara manusia latar, dialog spontan, atau lip-sync pada track yang salah."
-  ].join("\\n");
+  ].join("\n");
   const dialogueInstructions = [
     "DIALOG MULTI-PEMBICARA — ATURAN KETAT:",
     "Jumlah pembicara yang diizinkan tepat " + speakerCount + " orang. Jangan menambah pembicara lain.",
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
     "Pisahkan narasi/voice-over dari dialog karakter.",
     "Dalam setiap videoPrompt, sertakan blok DIALOG dengan nama pembicara, kalimat verbatim, karakter suara, bahasa, dan instruksi lip-sync hanya untuk pembicara yang sedang berbicara.",
     "Jika pembicara dipilih bersuara anak kecil lucu, gunakan suara anak yang imut, ceria, polos, ekspresif dan artikulasi mudah dipahami; jangan membuatnya terdengar seperti orang dewasa atau terlalu melengking. Jaga suara tokoh anak tetap konsisten."
-  ].join("\\n");
+  ].join("\n");
 
   const isProductAd = clean.projectType === "product_ad";
   const productLock = [
@@ -130,7 +130,7 @@ ${dialogueInstructions}
 
 ${productInstructions}
 
-${videoTypeInstructions.join("\\n")}
+${videoTypeInstructions.join("\n")}
 
 ${isSilentPopup ? "SILENT POP-UP MODE — OVERRIDE MUTLAK: seluruh scene wajib tanpa ucapan manusia, tanpa narator, tanpa voice-over, tanpa dialog lisan, tanpa lip-sync dan tanpa gerakan mulut berbicara. Setiap scene memiliki kolom narration kosong dan dialogue kosong. Masukkan pesan yang ingin disampaikan ke dalam visual/action sebagai teks pop-up eksplisit, serta tulis teks dan timing kemunculannya di videoPrompt. Musik instrumental dan ambience boleh ada, tetapi tidak boleh ada suara manusia." : ""}
 
