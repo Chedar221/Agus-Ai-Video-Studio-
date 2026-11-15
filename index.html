@@ -295,12 +295,12 @@ renderSaved();if("serviceWorker" in navigator && location.protocol.startsWith("h
     for(const node of nodes){
       const parent=node.parentElement;
       if(parent&&/^(SCRIPT|STYLE|TEXTAREA)$/i.test(parent.tagName))continue;
-      if(/\\\\[rn]/.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/\\\\r?\\\\n/g," ").replace(/\\\\n/g," ");
+      if(/\\[rn]/.test(node.nodeValue))node.nodeValue=node.nodeValue.replace(/\\r?\\n/g," ").replace(/\\n/g," ");
     }
     root.querySelectorAll("*").forEach(el=>{
       for(const attr of ["placeholder","title","aria-label"]){
         const value=el.getAttribute(attr);
-        if(value&&/\\\\[rn]/.test(value))el.setAttribute(attr,value.replace(/\\\\r?\\\\n/g," ").replace(/\\\\n/g," "));
+        if(value&&/\\[rn]/.test(value))el.setAttribute(attr,value.replace(/\\r?\\n/g," ").replace(/\\n/g," "));
       }
     });
   }
