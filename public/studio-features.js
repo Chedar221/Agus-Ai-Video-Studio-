@@ -89,7 +89,7 @@
   $("status").textContent="Kunci karakter standar dipulihkan.";
  });
  const productionSuiteLoader=document.createElement("script");
- productionSuiteLoader.src="/production-suite.js?v=20261116-1";
+ productionSuiteLoader.src="/production-suite.js?v=20261116-2";
  productionSuiteLoader.defer=true;
  document.body.appendChild(productionSuiteLoader);
  renderLibrary();
