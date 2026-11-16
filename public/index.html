@@ -414,7 +414,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="quickDuration">DURASI VIDEO</label><select id="quickDuration"><option value="30">30 detik</option><option value="60" selected>60 detik</option><option value="90">90 detik</option><option value="120">120 detik</option></select></div>
 <div class="field"><label for="quickRatio">FORMAT VIDEO</label><select id="quickRatio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div>
 </div>
-<button class="gold quickGenerate" id="quickGenerate">✦ BUAT PAKET VIDEO SAYA</button>
+<button class="gold quickGenerate" id="quickGenerate">✦ BUAT VIDEO + 5 FITUR OTOMATIS</button>
 <p class="quickFoot">AI akan membuat konsep, naskah, storyboard, prompt gambar, prompt video Flow, narasi, dan arahan produksi.</p>
 <div id="quickStatus" class="status" role="status"></div>
 </section>
@@ -590,9 +590,9 @@ $("quickGenerate").onclick=async()=>{
  try{
   const photos=await getReferenceImages();
   $("quickStatus").textContent=photos.length?photos.length+" foto siap dikirim. AI sedang menyusun paket video...":"Tidak ada foto referensi. AI sedang menyusun paket video...";
-  await $("aiBtn").onclick(photos);
+  const previousProject=project;\n  await $("aiBtn").onclick(photos);\n  if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Sekarang lima fitur AI bekerja otomatis...";await window.ChedarProductionSuite.runAll();}\n  else if(project===previousProject){$("quickStatus").textContent="Paket utama belum berhasil dibuat. Periksa pesan error sebelum mencoba lagi.";}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
- finally{button.disabled=false;button.textContent="✦ BUAT PAKET VIDEO SAYA";}
+ finally{button.disabled=false;button.textContent="✦ BUAT VIDEO + 5 FITUR OTOMATIS";}
 };
 $("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
