@@ -44,7 +44,7 @@
   const section = document.createElement("section");
   section.id = "chedarProductionSuite";
   section.innerHTML = `
-    <div class="suiteHead"><strong>✦ CHEDAR PRODUCTION DIRECTOR · 5 FITUR PRO</strong><p>Lima alat produksi terintegrasi. Gunakan proyek yang sudah dibuat atau susun arahan secara mandiri. Hasil AI dapat disalin dan ditempel ke Google Flow atau Suno.</p></div>
+    <div class="suiteHead"><strong>✦ CHEDAR PRODUCTION DIRECTOR · 5 FITUR PRO</strong><p>Lima alat produksi terintegrasi. Jalankan otomatis setelah membuat paket video, atau jalankan ulang pada proyek aktif. Hasil AI siap disalin ke Google Flow atau Suno.</p><div class="suiteActions"><button type="button" class="suitePrimary" id="suiteRunAll">✦ JALANKAN 5 FITUR OTOMATIS</button></div></div>
     <div class="suiteTabs" role="tablist">
       <button type="button" class="suiteTab active" data-suite-tab="character">01 Character</button>
       <button type="button" class="suiteTab" data-suite-tab="storyboard">02 Storyboard</button>
@@ -275,5 +275,55 @@
     setStatus("Style prompt dipindahkan ke Suno Music Studio. Buka bagian Music Studio untuk melanjutkan.","ok");
     $("musicPrompt")?.scrollIntoView({behavior:"smooth",block:"center"});
   });
-  window.ChedarProductionSuite={run:runAI,local:localFns};
+  const runAll=async()=>{
+    const p=activeProject();
+    if(!p){setStatus("Buat paket video utama terlebih dahulu, lalu jalankan lima fitur otomatis.","err");return false;}
+    const button=$("suiteRunAll");
+    if(button){button.disabled=true;button.textContent="AI MENJALANKAN 5 FITUR...";}
+    setStatus("Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director dalam satu proses...");
+    const settings={
+      videoType:$("videoType")?.value,style:$("style")?.value,ratio:$("ratio")?.value,
+      duration:$("duration")?.value,language:$("language")?.value,voice:$("voice")?.value,
+      character:$("character")?.value,faceLock:$("faceLock")?.value,wardrobeLock:$("wardrobeLock")?.value,
+      wardrobe:$("wardrobe")?.value,location:$("location")?.value,continuity:$("continuity")?.value,
+      camera:$("camera")?.value,lighting:$("lighting")?.value,dialogue:$("dialogue")?.value,
+      audio:$("audio")?.value,audioMode:$("audioMode")?.value,narratorVoice:$("narratorVoice")?.value,
+      musicGenre:$("musicGenre")?.value,musicMood:$("musicMood")?.value,musicVocal:$("musicVocal")?.value,
+      musicLanguage:$("musicLanguage")?.value,musicLyrics:$("musicLyrics")?.value,musicPrompt:$("musicPrompt")?.value
+    };
+    const brief=baseBrief();
+    const payload={
+      tool:"auto",title:p.title||"Proyek video",
+      idea:$("quickIdea")?.value?.trim()||$("idea")?.value?.trim()||p.synopsis||"",
+      project:brief.project,
+      settings,
+      auto:{
+        character:{name:$("csName").value,role:$("csRole").value,appearance:$("csAppearance").value,wardrobe:$("csWardrobe").value,props:$("csProps").value},
+        storyboard:{count:p.scenes.length,style:$("sbStyle").value,notes:$("sbNotes").value},
+        continuity:{checks:["ccFace","ccWardrobe","ccLocation","ccScreen","ccAudio","ccTiming"].filter(id=>$(id).checked),notes:$("ccNotes").value},
+        voice:{type:$("vdType").value,tone:$("vdTone").value,language:$("vdLanguage").value,pace:$("vdPace").value,emotion:$("vdEmotion").value,position:$("vdPosition").value,text:$("vdText").value},
+        music:{genre:$("mdGenre").value,mood:$("mdMood").value,tempo:$("mdTempo").value,vocal:$("mdVocal").value,instruments:$("mdInstruments").value}
+      }
+    };
+    try{
+      const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(payload)});
+      const result=await response.json();
+      if(!response.ok)throw new Error(result.error||"Lima fitur otomatis gagal dijalankan.");
+      const outputs=result.results||{};
+      $("csOutput").textContent=outputs.character;
+      $("sbOutput").textContent=outputs.storyboard;
+      $("ccOutput").textContent=outputs.continuity;
+      $("vdOutput").textContent=outputs.voice;
+      $("mdOutput").textContent=outputs.music;
+      setStatus("Selesai! Kelima fitur sudah bekerja otomatis dan hasilnya masuk ke masing-masing tab.","ok");
+      return true;
+    }catch(error){
+      setStatus(error.message||"Gagal menjalankan lima fitur otomatis.","err");
+      return false;
+    }finally{
+      if(button){button.disabled=false;button.textContent="✦ JALANKAN 5 FITUR OTOMATIS";}
+    }
+  };
+  $("suiteRunAll").addEventListener("click",runAll);
+  window.ChedarProductionSuite={run:runAI,local:localFns,runAll};
 })();
