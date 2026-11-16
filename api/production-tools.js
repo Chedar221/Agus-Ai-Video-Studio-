@@ -28,7 +28,7 @@ export default async function handler(req,res){
   try{
     const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{
       method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},
-      body:JSON.stringify({contents:[{role:"user",parts:[{text:prompts[tool]+"\n\nATURAN UMUM: "+rules}]}],generationConfig:{temperature:0.55,maxOutputTokens:7000}})
+      body:JSON.stringify({contents:[{role:"user",parts:[{text:prompts[tool]+"\n\nATURAN UMUM: "+rules}]}],generationConfig:{temperature:0.45,maxOutputTokens:tool==="auto"?12000:7000,...(tool==="auto"?{responseMimeType:"application/json"}:{})}})
     });
     const payload=await response.json().catch(()=>({}));
     if(!response.ok){
