@@ -88,5 +88,9 @@
   $("negativeLock").value="No face morphing, no identity drift, no age change, no hairstyle change, no wardrobe changes, no duplicate character, no distorted face or hands.";
   $("status").textContent="Kunci karakter standar dipulihkan.";
  });
+ const productionSuiteLoader=document.createElement("script");
+ productionSuiteLoader.src="/production-suite.js?v=20261116-1";
+ productionSuiteLoader.defer=true;
+ document.body.appendChild(productionSuiteLoader);
  renderLibrary();
 })();
