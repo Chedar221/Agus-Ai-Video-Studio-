@@ -38,6 +38,13 @@ export default async function handler(req,res){
     }
     const result=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     if(!result)return send(res,502,{error:"AI tidak mengembalikan hasil. Silakan coba lagi."});
-    if(tool==="auto"){\n      let results;try{results=JSON.parse(result);}catch{const match=result.match(/\\{[\\s\\S]*\\}/);if(match){try{results=JSON.parse(match[0]);}catch{}}}\n      const keys=["character","storyboard","continuity","voice","music"];\n      if(!results||keys.some(key=>typeof results[key]!=="string"||!results[key].trim()))return send(res,502,{error:"AI belum berhasil mengembalikan kelima hasil dalam format lengkap. Coba jalankan lagi."});\n      return send(res,200,{tool,results});\n    }\n    return send(res,200,{result:result.slice(0,22000),tool});
+    if(tool==="auto"){
+      let results;
+      try{results=JSON.parse(result);}catch{const match=result.match(/\{[\s\S]*\}/);if(match){try{results=JSON.parse(match[0]);}catch{}}}
+      const keys=["character","storyboard","continuity","voice","music"];
+      if(!results||keys.some(key=>typeof results[key]!=="string"||!results[key].trim()))return send(res,502,{error:"AI belum berhasil mengembalikan kelima hasil dalam format lengkap. Coba jalankan lagi."});
+      return send(res,200,{tool,results});
+    }
+    return send(res,200,{result:result.slice(0,22000),tool});
   }catch{return send(res,502,{error:"Server tidak dapat menghubungi Gemini. Coba lagi beberapa saat."});}
 }
