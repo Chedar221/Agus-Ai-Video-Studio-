@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import generateHandler from "./api/generate.js";
+import productionToolsHandler from "./api/production-tools.js";
 
 dotenv.config();
 const app = express();
@@ -19,11 +20,12 @@ app.use(express.static(path.join(__dirname, "public"), {
   }
 }));
 app.post("/api/generate", generateHandler);
-app.get("/api/health", (_req, res) => res.json({ ok: true, service: "AGUS AI VIDEO STUDIO" }));
+app.post("/api/production-tools", productionToolsHandler);
+app.get("/api/health", (_req, res) => res.json({ ok: true, service: "CHEDAR AI KREATOR" }));
 app.get("*", (_req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
 if (process.env.NODE_ENV !== "production" || process.env.VERCEL !== "1") {
-  app.listen(PORT, () => console.log(`AGUS AI VIDEO STUDIO berjalan di http://localhost:${PORT}`));
+  app.listen(PORT, () => console.log(`CHEDAR AI KREATOR berjalan di http://localhost:${PORT}`));
 }
 
 export default app;
