@@ -142,6 +142,7 @@
     } : null };
   };
   const safeText = value => String(value || "").trim();
+  const normalizeOutput = value => String(value ?? "").replace(/\\r\\n|\\n|\\r/g,"\n");
   const localCharacter = () => {
     const data = {name:safeText($("csName").value)||"Karakter Utama",role:safeText($("csRole").value)||"Tokoh utama",appearance:safeText($("csAppearance").value)||"Ikuti foto referensi utama yang dilampirkan pengguna.",wardrobe:safeText($("csWardrobe").value)||"Tetapkan pakaian dari foto referensi dan pertahankan sama.",props:safeText($("csProps").value)||"Pertahankan properti utama yang terlihat.",expression:$("csExpression").value,sheet:$("csSheet").value};
     return [
@@ -237,7 +238,7 @@
     try{
       const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(brief)});
       const result=await response.json();if(!response.ok)throw new Error(result.error||"AI gagal menyusun arahan.");
-      output.textContent=result.result||"AI tidak mengembalikan hasil.";
+      output.textContent=normalizeOutput(result.result||"AI tidak mengembalikan hasil.");
       setStatus("Selesai. Periksa hasil sebelum dipakai di Flow.","ok");
     }catch(error){setStatus(error.message||"Tidak dapat menghubungi AI.","err");}
     finally{if(btn){btn.disabled=false;btn.textContent=({character:"✦ Buat Character Bible AI",storyboard:"✦ Susun Storyboard AI",continuity:"✦ Audit Continuity dengan AI",voice:"✦ Buat Voice Direction AI",music:"✦ Buat Music Direction AI"})[tool];}}
@@ -249,7 +250,7 @@
   }));
   section.querySelectorAll("[data-suite-run]").forEach(btn=>btn.addEventListener("click",()=>runAI(btn.dataset.suiteRun)));
   section.querySelectorAll("[data-suite-local]").forEach(btn=>btn.addEventListener("click",()=>{
-    const tool=btn.dataset.suiteLocal;$(outputId[tool]).textContent=localFns[tool]();setStatus("Arahan lokal berhasil disusun. Ini template terstruktur, bukan hasil analisis AI.","ok");
+    const tool=btn.dataset.suiteLocal;$(outputId[tool]).textContent=normalizeOutput(localFns[tool]());setStatus("Arahan lokal berhasil disusun. Ini template terstruktur, bukan hasil analisis AI.","ok");
   }));
   section.querySelectorAll("[data-suite-copy]").forEach(btn=>btn.addEventListener("click",async()=>{
     const value=$(btn.dataset.suiteCopy).textContent.trim();if(!value)return;
@@ -310,11 +311,11 @@
       const result=await response.json();
       if(!response.ok)throw new Error(result.error||"Lima fitur otomatis gagal dijalankan.");
       const outputs=result.results||{};
-      $("csOutput").textContent=outputs.character;
-      $("sbOutput").textContent=outputs.storyboard;
-      $("ccOutput").textContent=outputs.continuity;
-      $("vdOutput").textContent=outputs.voice;
-      $("mdOutput").textContent=outputs.music;
+      $("csOutput").textContent=normalizeOutput(outputs.character);
+      $("sbOutput").textContent=normalizeOutput(outputs.storyboard);
+      $("ccOutput").textContent=normalizeOutput(outputs.continuity);
+      $("vdOutput").textContent=normalizeOutput(outputs.voice);
+      $("mdOutput").textContent=normalizeOutput(outputs.music);
       setStatus("Selesai! Kelima fitur sudah bekerja otomatis dan hasilnya masuk ke masing-masing tab.","ok");
       return true;
     }catch(error){
