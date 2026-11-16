@@ -126,7 +126,7 @@
       <div class="suiteStatus" id="suiteStatus" role="status">Semua alat siap digunakan.</div>
     </div>`;
   const quickGenerate = document.getElementById("quickGenerate");
-  if (quickGenerate?.parentElement) quickGenerate.parentElement.insertAdjacentElement("afterend", section);
+  if (quickGenerate?.parentElement) quickGenerate.insertAdjacentElement("afterend", section);
   else host.appendChild(section);
 
   const $ = id => document.getElementById(id);
