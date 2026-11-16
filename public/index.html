@@ -598,7 +598,9 @@ $("quickGenerate").onclick=async()=>{
   const photos=await getReferenceImages();
   $("quickStatus").textContent=photos.length?photos.length+" foto siap dikirim. AI sedang menyusun paket video...":"Tidak ada foto referensi. AI sedang menyusun paket video...";
   const previousProject=project;
-  await $("aiBtn").onclick(photos);\n  if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Sekarang lima fitur AI bekerja otomatis...";await window.ChedarProductionSuite.runAll();}\n  else if(project===previousProject){$("quickStatus").textContent="Paket utama belum berhasil dibuat. Periksa pesan error sebelum mencoba lagi.";}
+  await $("aiBtn").onclick(photos);
+  if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Sekarang lima fitur AI bekerja otomatis...";await window.ChedarProductionSuite.runAll();}
+  else if(project===previousProject){$("quickStatus").textContent="Paket utama belum berhasil dibuat. Periksa pesan error sebelum mencoba lagi.";}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
  finally{button.disabled=false;button.textContent="✦ BUAT VIDEO + 5 FITUR OTOMATIS";}
 };
