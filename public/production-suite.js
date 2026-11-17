@@ -10,12 +10,15 @@
     #chedarProductionSuite .suiteHead{padding:15px 14px;border-bottom:1px solid #c5a15a35}
     #chedarProductionSuite .suiteHead strong{display:block;color:#f0d8a5;font-size:14px;letter-spacing:.04em}
     #chedarProductionSuite .suiteHead p{margin:5px 0 0;color:#aebdce;font-size:11px;line-height:1.5}
-    #chedarProductionSuite .suiteTabs{display:flex;gap:6px;padding:11px 12px 8px;overflow-x:auto;scrollbar-width:thin}
+    #chedarProductionSuite .suiteTabs{display:none;gap:6px;padding:11px 12px 8px;overflow-x:auto;scrollbar-width:thin}
+    #chedarProductionSuite .suiteTabs.open{display:flex}
     #chedarProductionSuite .suiteTab{flex:0 0 auto;background:#101c2b;border:1px solid #3d5067;color:#cbd5e1;border-radius:9px;padding:9px 11px;font-size:10px;font-weight:800}
     #chedarProductionSuite .suiteTab.active{background:linear-gradient(135deg,#f0dba9,#c49a58);border-color:#e6cc96;color:#17202c}
     #chedarProductionSuite .suiteBody{padding:8px 13px 14px}
     #chedarProductionSuite .suitePane{display:none}
     #chedarProductionSuite .suitePane.active{display:block}
+    #chedarProductionSuite .suiteToggle{width:100%;margin-top:11px;background:#101c2b;border:1px solid #9b8050;color:#f0d8a5;text-align:left;padding:12px 14px;border-radius:10px;font-size:12px}
+    #chedarProductionSuite .suiteToggle[aria-expanded="true"]{background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c}
     #chedarProductionSuite .suitePane h4{font-size:13px;color:#f0d8a5;margin:6px 0 10px}
     #chedarProductionSuite .suiteGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}
     #chedarProductionSuite .suiteField{margin:0 0 10px;min-width:0}
@@ -44,16 +47,17 @@
   const section = document.createElement("section");
   section.id = "chedarProductionSuite";
   section.innerHTML = `
-    <div class="suiteHead"><strong>✦ CHEDAR PRODUCTION DIRECTOR · 5 FITUR PRO</strong><p>Lima alat produksi terintegrasi. Jalankan otomatis setelah membuat paket video, atau jalankan ulang pada proyek aktif. Hasil AI siap disalin ke Google Flow atau Suno.</p><div class="suiteActions"><button type="button" class="suitePrimary" id="suiteRunAll">✦ JALANKAN 5 FITUR OTOMATIS</button></div></div>
-    <div class="suiteTabs" role="tablist">
+    <div class="suiteHead"><strong>✦ CHEDAR PRODUCTION DIRECTOR · 5 FITUR PRO</strong><p>Lima alat produksi terintegrasi. Jalankan otomatis setelah membuat paket video, atau jalankan ulang pada proyek aktif. Hasil AI siap disalin ke Google Flow atau Suno.</p><button type="button" class="suiteToggle" id="suiteMenuToggle" aria-expanded="false">⚙️ BUKA 5 FITUR OTOMATIS <span style="float:right">＋</span></button></div>
+    <div class="suiteTabs" id="suiteTabs" role="tablist">
       <button type="button" class="suiteTab active" data-suite-tab="character">01 Character</button>
       <button type="button" class="suiteTab" data-suite-tab="storyboard">02 Storyboard</button>
       <button type="button" class="suiteTab" data-suite-tab="continuity">03 Continuity</button>
       <button type="button" class="suiteTab" data-suite-tab="voice">04 Voice</button>
       <button type="button" class="suiteTab" data-suite-tab="music">05 Music</button>
+      <button type="button" class="suitePrimary" id="suiteRunAll">✦ JALANKAN 5 FITUR OTOMATIS</button>
     </div>
     <div class="suiteBody">
-      <section class="suitePane active" data-suite-pane="character">
+      <section class="suitePane" data-suite-pane="character">
         <h4>CHARACTER STUDIO · Character Bible & Identity Lock</h4>
         <div class="suiteGrid">
           <div class="suiteField"><label>NAMA KARAKTER</label><input id="csName" placeholder="Contoh: Agus / Ranie"></div>
@@ -130,7 +134,15 @@
   else host.appendChild(section);
 
   const $ = id => document.getElementById(id);
-  let activeTool = "character";
+  let activeTool = "";
+  const menuToggle = $("suiteMenuToggle");
+  const suiteTabs = $("suiteTabs");
+  menuToggle.addEventListener("click",()=>{
+    const open=!suiteTabs.classList.contains("open");
+    suiteTabs.classList.toggle("open",open);
+    menuToggle.setAttribute("aria-expanded",String(open));
+    menuToggle.innerHTML=(open?"⚙️ TUTUP MENU 5 FITUR":"⚙️ BUKA 5 FITUR OTOMATIS")+" <span style=\"float:right\">"+(open?"−":"＋")+"</span>";
+  });
   const setStatus = (msg, type = "") => { $("suiteStatus").textContent = msg; $("suiteStatus").className = "suiteStatus " + type; };
   const activeProject = () => typeof project !== "undefined" && project?.scenes?.length ? project : null;
   const baseBrief = () => {
@@ -247,6 +259,7 @@
     activeTool=btn.dataset.suiteTab;
     section.querySelectorAll("[data-suite-tab]").forEach(x=>x.classList.toggle("active",x===btn));
     section.querySelectorAll("[data-suite-pane]").forEach(x=>x.classList.toggle("active",x.dataset.suitePane===activeTool));
+    suiteTabs.classList.remove("open");menuToggle.setAttribute("aria-expanded","false");menuToggle.innerHTML="⚙️ BUKA 5 FITUR OTOMATIS <span style=\"float:right\">＋</span>";
   }));
   section.querySelectorAll("[data-suite-run]").forEach(btn=>btn.addEventListener("click",()=>runAI(btn.dataset.suiteRun)));
   section.querySelectorAll("[data-suite-local]").forEach(btn=>btn.addEventListener("click",()=>{
