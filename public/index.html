@@ -882,4 +882,24 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   .featureNavLinks>.generatorChooser .makeVideoToggle{font-size:9px;padding-left:3px;padding-right:3px}
 }
 
+
+/* Empat tombol navigasi memakai tema merah yang seragam */
+.featureNavLinks>.featureLink,
+.featureNavLinks>.generatorChooser .makeVideoToggle{
+  background:linear-gradient(135deg,#ef4444,#b91c1c)!important;
+  border:1px solid #f87171!important;
+  color:#fff!important;
+  box-shadow:0 4px 12px #991b1b44!important;
+}
+.featureNavLinks>.featureLink.active{
+  background:linear-gradient(135deg,#dc2626,#991b1b)!important;
+  border-color:#fecaca!important;
+  color:#fff!important;
+  box-shadow:0 4px 14px #dc262655!important;
+}
+.featureNavLinks>.featureLink:hover,
+.featureNavLinks>.generatorChooser .makeVideoToggle:hover{
+  filter:brightness(1.12);
+}
+
 <!-- UI cleanup cache refresh v20 -->
