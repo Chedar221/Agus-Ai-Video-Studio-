@@ -381,7 +381,13 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 
 
 /* External AI video generator shortcuts */
-.generatorChooser{margin:0 0 15px;padding:13px;border:1px solid #b99a5a55;border-radius:14px;background:linear-gradient(145deg,#111e30,#0c1421)}
+.generatorChooser{margin:0 0 15px}
+.makeVideoToggle{width:100%;min-height:52px;display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid #e5c989;border-radius:12px;background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c;font-size:13px;font-weight:950;letter-spacing:.06em;text-align:left;box-shadow:0 5px 16px #c49b5526}
+.makeVideoToggle>span:first-child{font-size:20px}
+.makeVideoChevron{margin-left:auto;font-size:20px;font-weight:500;transition:transform .18s}
+.makeVideoToggle[aria-expanded="true"] .makeVideoChevron{transform:rotate(180deg)}
+.generatorChoiceMenu{margin-top:9px;padding:12px;border:1px solid #b99a5a55;border-radius:13px;background:linear-gradient(145deg,#111e30,#0c1421)}
+.generatorChoiceMenu[hidden]{display:none!important}
 .generatorChooserHead{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;color:#e9d09e;font-size:11px;font-weight:900;letter-spacing:.08em}
 .generatorChooserHead small{font-size:10px;font-weight:500;letter-spacing:0;color:#9eacbd}
 .generatorChooserGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
@@ -444,16 +450,21 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <h3><span class="num">✦</span> Buat video dari ide</h3>
 <p class="quickLead">Ceritakan ide Anda, tambahkan foto referensi, lalu biarkan AI menyiapkan seluruh paket produksi.</p>
 <div class="generatorChooser" aria-label="Pilih generator video">
-  <div class="generatorChooserHead"><span>🚀 PILIH GENERATOR VIDEO</span><small>Buka layanan pilihan Anda</small></div>
-  <div class="generatorChooserGrid">
-    <a class="generatorChoice flowChoice" href="https://labs.google/fx/tools/flow" target="_blank" rel="noopener noreferrer">
-      <span class="generatorChoiceIcon">🎬</span><span class="generatorChoiceText"><b>GOOGLE FLOW</b><small>Video sinematik dengan Veo</small></span><span class="generatorChoiceArrow">↗</span>
-    </a>
-    <a class="generatorChoice leonardoChoice" href="https://leonardo.ai/" target="_blank" rel="noopener noreferrer">
-      <span class="generatorChoiceIcon">🎨</span><span class="generatorChoiceText"><b>LEONARDO AI</b><small>Gambar, animasi, dan video AI</small></span><span class="generatorChoiceArrow">↗</span>
-    </a>
+  <button type="button" class="makeVideoToggle" id="makeVideoToggle" aria-expanded="false" aria-controls="generatorChoiceMenu">
+    <span>🎬</span><b>BUAT VIDEO</b><span class="makeVideoChevron">⌄</span>
+  </button>
+  <div class="generatorChoiceMenu" id="generatorChoiceMenu" hidden>
+    <div class="generatorChooserHead"><span>PILIH GENERATOR VIDEO</span><small>Mau membuat video di mana?</small></div>
+    <div class="generatorChooserGrid">
+      <a class="generatorChoice flowChoice" href="https://labs.google/fx/tools/flow" target="_blank" rel="noopener noreferrer">
+        <span class="generatorChoiceIcon">🎬</span><span class="generatorChoiceText"><b>GOOGLE FLOW</b><small>Buka Flow untuk membuat video</small></span><span class="generatorChoiceArrow">↗</span>
+      </a>
+      <a class="generatorChoice leonardoChoice" href="https://leonardo.ai/" target="_blank" rel="noopener noreferrer">
+        <span class="generatorChoiceIcon">🎨</span><span class="generatorChoiceText"><b>LEONARDO AI</b><small>Buka Leonardo untuk membuat video</small></span><span class="generatorChoiceArrow">↗</span>
+      </a>
+    </div>
+    <p class="generatorChooserNote">Prompt dari CHEDAR AI KREATOR disalin dan ditempel secara manual di layanan pilihan.</p>
   </div>
-  <p class="generatorChooserNote">Pilih salah satu untuk membuka situs resminya di tab baru. Prompt dari CHEDAR AI KREATOR tetap disalin dan ditempel secara manual.</p>
 </div>
 <select id="projectType" class="hidden" aria-hidden="true" tabindex="-1"><option value="story">Video cerita / konten biasa</option><option value="product_ad">Iklan produk profesional</option></select>
 <div class="field"><button type="button" id="videoTypeToggle" class="videoTypeToggle" aria-expanded="false" aria-controls="videoTypeCards"><span>🎞️ JENIS VIDEO</span><span id="videoTypeToggleValue">Otomatis berdasarkan ide</span><span class="toggleChevron">⌄</span></button><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option></select>
@@ -786,5 +797,20 @@ $("musicCopyPrompt").onclick=()=>{const value=$("musicPrompt").value.trim();if(!
 $("musicOpen").onclick=()=>{const prompt=$("musicPrompt").value.trim(),lyrics=$("musicLyrics").value.trim();if(!prompt&&!lyrics){setMusicStatus("Susun lirik dan prompt terlebih dahulu.","err");return;}window.open("https://suno.com/create","_blank","noopener,noreferrer");setMusicStatus("Suno dibuka. Tempel style prompt dan lirik pada kolom yang sesuai.","ok");};
 
 renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.protocol.startsWith("http"))navigator.serviceWorker.register("/sw.js").catch(()=>{});
-</script><script src="/advanced-prompt-studio.js?v=20261114-7"></script><script src="/studio-features.js?v=20261116-3"></script><script src="/backup-tools.js?v=20261114-2"></script><script src="/navigation.js"></script></body></html>
+</script><script src="/advanced-prompt-studio.js?v=20261114-7"></script><script src="/studio-features.js?v=20261116-3"></script><script src="/backup-tools.js?v=20261114-2"></script><script src="/navigation.js">
+// Toggle menu pilihan generator video
+(function(){
+ const toggle=document.getElementById("makeVideoToggle");
+ const menu=document.getElementById("generatorChoiceMenu");
+ if(!toggle||!menu)return;
+ toggle.addEventListener("click",()=>{
+  const open=toggle.getAttribute("aria-expanded")!=="true";
+  toggle.setAttribute("aria-expanded",String(open));
+  menu.hidden=!open;
+ });
+ menu.querySelectorAll("a.generatorChoice").forEach(link=>{
+  link.addEventListener("click",()=>{toggle.setAttribute("aria-expanded","false");menu.hidden=true;});
+ });
+})();
+</script></body></html>
 <!-- UI cleanup cache refresh v20 -->
