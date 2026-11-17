@@ -823,4 +823,63 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
  });
 })();
 </script></body></html>
+
+/* Samakan ukuran tombol navigasi BUAT VIDEO, HASIL VIDEO, dan PROSES VIDEO */
+.featureNavLinks{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  align-items:stretch;
+  gap:7px;
+  overflow:visible;
+}
+.featureNavLinks>.featureLink,
+.featureNavLinks>.generatorChooser{
+  width:100%;
+  min-width:0;
+  min-height:40px;
+  height:40px;
+  margin:0;
+  flex:none;
+}
+.featureNavLinks>.featureLink{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:8px 6px;
+  border-radius:999px;
+  font-size:10px;
+  line-height:1.15;
+  text-align:center;
+}
+.featureNavLinks>.generatorChooser .makeVideoToggle{
+  width:100%;
+  min-width:0;
+  min-height:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:8px 6px;
+  border-radius:999px;
+  font-size:10px;
+  line-height:1.15;
+  text-align:center;
+}
+.featureNavLinks>.generatorChooser .makeVideoToggle>span:first-child{font-size:13px}
+.featureNavLinks>.generatorChooser .makeVideoToggle .makeVideoChevron{
+  margin-left:0;
+  font-size:14px;
+}
+.featureNavLinks>.generatorChooser .generatorChoiceMenu{
+  right:0;
+  width:min(340px,calc(100vw - 20px));
+}
+@media(max-width:360px){
+  .featureNavLinks{gap:5px}
+  .featureNavLinks>.featureLink,
+  .featureNavLinks>.generatorChooser .makeVideoToggle{font-size:9px;padding-left:3px;padding-right:3px}
+}
+
 <!-- UI cleanup cache refresh v20 -->
