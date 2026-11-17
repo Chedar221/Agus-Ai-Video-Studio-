@@ -92,33 +92,11 @@
   iconObserver.observe(document.body, { childList: true, characterData: true, subtree: true });
 
   const navLinks = document.querySelector(".featureNavLinks");
-  if (navLinks && !document.getElementById("openGoogleFlowNav")) {
-    const flowLink = document.createElement("a");
-    flowLink.id = "openGoogleFlowNav";
-    flowLink.className = "featureLink";
-    flowLink.href = flowUrl;
-    flowLink.textContent = "BUKA FLOW";
-    flowLink.setAttribute("aria-label", "Buka aplikasi Google Flow atau versi web");
-    flowLink.addEventListener("click", event => { event.preventDefault(); launchFlow(); });
-    navLinks.appendChild(flowLink);
+  const processVideoChooser = document.querySelector(".generatorChooser");
+  if (navLinks && processVideoChooser) {
+    // Pindahkan dropdown PROSES VIDEO ke posisi navigasi yang sebelumnya ditempati BUKA FLOW.
+    navLinks.appendChild(processVideoChooser);
   }
-  const outputActions = document.querySelector("#outputPanel > .actions");
-  if (outputActions && !document.getElementById("openGoogleFlowOutput")) {
-    const flowButton = document.createElement("a");
-    flowButton.id = "openGoogleFlowOutput";
-    flowButton.href = flowUrl;
-    flowButton.textContent = "BUKA FLOW";
-    flowButton.setAttribute("aria-label", "Buka aplikasi Google Flow atau versi web");
-    flowButton.addEventListener("click", event => { event.preventDefault(); launchFlow(); });
-    Object.assign(flowButton.style, {
-      display: "inline-flex", alignItems: "center", justifyContent: "center",
-      textDecoration: "none", font: "700 11px system-ui", borderRadius: "10px",
-      padding: "8px 11px", background: "linear-gradient(135deg,#f0d9a6,#bd8d48)",
-      color: "#1b2433", border: "1px solid #e8d4a5", whiteSpace: "normal"
-    });
-    outputActions.appendChild(flowButton);
-  }
-
   function show(id, scroll=true) {
     const allowed = ["quickStudio","outputPanel","savedProjects"];
     const target = allowed.includes(id) ? id : "quickStudio";
