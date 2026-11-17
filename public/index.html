@@ -370,6 +370,14 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 .videoTypeCard:focus-visible{outline:2px solid #f0d9a6;outline-offset:2px}
 @media(max-width:600px){.videoTypeCards{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.videoTypeCard{min-height:84px;padding:10px}.videoTypeCard .typeName{font-size:10px}}
 
+
+.videoTypeToggle{width:100%;display:flex;align-items:center;gap:10px;padding:13px 14px;background:linear-gradient(120deg,#292318,#121d2d);border:1px solid #c9a86688;border-radius:12px;color:#f0d9a6;text-align:left;text-transform:none}
+.videoTypeToggle span:first-child{font-size:12px;font-weight:900;letter-spacing:.05em}
+.videoTypeToggle #videoTypeToggleValue{margin-left:auto;color:#d3dce8;font-size:11px;font-weight:600;text-align:right}
+.videoTypeToggle .toggleChevron{font-size:20px;line-height:1;transition:transform .18s}
+.videoTypeToggle[aria-expanded="true"] .toggleChevron{transform:rotate(180deg)}
+.videoTypeCards{padding-top:9px}
+
 </style></head>
 <body>
 <header><div class="top"><div class="brand"><div class="logo" role="img" aria-label="Logo CHEDAR AI KREATOR"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cakGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b5"/><stop offset=".48" stop-color="#d5a84e"/><stop offset="1" stop-color="#8d6425"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="#080808" stroke="url(#cakGold)" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="url(#cakGold)" stroke-width="1.5"/><circle cx="50" cy="50" r="34" fill="none" stroke="#9d772f" stroke-width="1" stroke-dasharray="2 3"/><path d="M61 28a25 25 0 1 0 11 37l-9-6a14 14 0 1 1 0-18z" fill="url(#cakGold)"/><path d="M43 50h29M62 39l11 11-11 11" fill="none" stroke="#080808" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="m50 8 3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff0b5"/></svg></div><div><h1>CHEDAR AI KREATOR</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.0</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
@@ -384,8 +392,8 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <h3><span class="num">✦</span> Buat video dari ide</h3>
 <p class="quickLead">Ceritakan ide Anda, tambahkan foto referensi, lalu biarkan AI menyiapkan seluruh paket produksi.</p>
 <select id="projectType" class="hidden" aria-hidden="true" tabindex="-1"><option value="story">Video cerita / konten biasa</option><option value="product_ad">Iklan produk profesional</option></select>
-<div class="field"><label for="videoType">JENIS VIDEO</label><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option></select>
-<div id="videoTypeCards" class="videoTypeCards" role="group" aria-label="Pilih jenis video"></div><div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
+<div class="field"><button type="button" id="videoTypeToggle" class="videoTypeToggle" aria-expanded="false" aria-controls="videoTypeCards"><span>🎞️ JENIS VIDEO</span><span id="videoTypeToggleValue">Otomatis berdasarkan ide</span><span class="toggleChevron">⌄</span></button><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option></select>
+<div id="videoTypeCards" class="videoTypeCards hidden" role="group" aria-label="Pilih jenis video"></div><div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
 <div id="ugcFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726"><h3>📱 Pengaturan UGC Creator</h3><div class="field"><label for="ugcFormat">FORMAT UGC</label><select id="ugcFormat"><option value="UGC Product Review">Review Produk</option><option value="UGC Testimoni">Testimoni</option><option value="UGC Storytelling">Storytelling</option><option value="UGC Vlog">Vlog / Daily Experience</option><option value="UGC Soft Selling">Soft Selling</option><option value="UGC Hard Selling">Hard Selling</option><option value="UGC Unboxing">Unboxing</option><option value="UGC Before & After">Before & After</option></select></div><div class="hint">AI akan membuat gaya bicara langsung ke kamera, ekspresi natural, hook singkat, pengalaman autentik, dan CTA sesuai format. Hindari testimoni atau klaim palsu; isi pengalaman dan fakta yang benar pada ide cerita.</div></div>
 <div id="silentPopupFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
 <h3>💬 Pengaturan Silent Character + Pop-up Text</h3>
@@ -556,6 +564,15 @@ function updateVideoTypeFields(){const t=$("videoType").value;$("lipsyncFields")
 const videoTypeIcons={
  auto:["✨","Otomatis berdasarkan ide"],product_ad:["🛍️","Iklan Produk Profesional"],superhero:["🦸","Transformasi Superhero"],kingdom:["👑","Film Kerajaan Epik"],mythology:["🐉","Mitologi dan Legenda"],scifi:["🚀","Sci-Fi Masa Depan"],horror:["👻","Horor Supernatural"],cinema_ad:["🎬","Iklan Kelas Bioskop"],timetravel:["⏳","Time Travel / Lintas Zaman"],action:["💥","Action Movie"],family_drama:["👨‍👩‍👧","Drama Film Keluarga"],chibi_3d:["🧸","Chibi 3D Animasi Lucu"],ugc:["📱","UGC Creator / Konten Natural"],silent_popup:["💬","Silent Character + Pop-up Text"],documentary:["🎥","Dokumenter Sinematik"],movie_universe:["🌌","AI Movie Universe"],lipsync:["🎤","Lipsync Foto / Karakter Bernyanyi"],motion_control:["🕺","Motion Control / Ikuti Gerakan Referensi"]
 };
+
+function setVideoTypePicker(open){
+ const host=$("videoTypeCards"),toggle=$("videoTypeToggle");if(!host||!toggle)return;
+ host.classList.toggle("hidden",!open);toggle.setAttribute("aria-expanded",String(open));
+}
+function updateVideoTypeToggleLabel(){
+ const select=$("videoType"),label=$("videoTypeToggleValue");
+ if(select&&label)label.textContent=select.options[select.selectedIndex]?.textContent||"Pilih jenis video";
+}
 function renderVideoTypeCards(){
  const select=$("videoType"),host=$("videoTypeCards");if(!select||!host)return;
  host.innerHTML=Array.from(select.options).map(option=>{
@@ -563,7 +580,7 @@ function renderVideoTypeCards(){
   return '<button type="button" class="videoTypeCard" data-video-type="'+option.value+'" aria-pressed="false"><span class="typeIcon" aria-hidden="true">'+meta[0]+'</span><span class="typeName">'+meta[1]+'</span></button>';
  }).join("");
  host.querySelectorAll("[data-video-type]").forEach(button=>button.addEventListener("click",()=>{
-  select.value=button.dataset.videoType;select.dispatchEvent(new Event("change",{bubbles:true}));syncVideoTypeCards();
+  select.value=button.dataset.videoType;select.dispatchEvent(new Event("change",{bubbles:true}));syncVideoTypeCards();updateVideoTypeToggleLabel();setVideoTypePicker(false);
  }));
  syncVideoTypeCards();
 }
@@ -576,6 +593,8 @@ function syncVideoTypeCards(){
 
 $("videoType").addEventListener("change",()=>{ $("projectType").value=$("videoType").value==="product_ad"?"product_ad":"story"; updateProjectType(); updateVideoTypeFields(); });updateVideoTypeFields();
 renderVideoTypeCards();
+$("videoTypeToggle").addEventListener("click",()=>setVideoTypePicker($("videoTypeCards").classList.contains("hidden")));
+updateVideoTypeToggleLabel();
 function updateProjectType(){
  const ad=$("projectType").value==="product_ad";
  $("productAdFields").classList.toggle("hidden",!ad);
