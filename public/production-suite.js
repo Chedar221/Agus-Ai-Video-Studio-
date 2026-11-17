@@ -17,8 +17,8 @@
     #chedarProductionSuite .suiteBody{padding:8px 13px 14px}
     #chedarProductionSuite .suitePane{display:none}
     #chedarProductionSuite .suitePane.active{display:block}
-    #chedarProductionSuite .suiteToggle{width:100%;margin-top:11px;background:#101c2b;border:1px solid #9b8050;color:#f0d8a5;text-align:left;padding:12px 14px;border-radius:10px;font-size:12px}
-    #chedarProductionSuite .suiteToggle[aria-expanded="true"]{background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c}
+    #chedarProductionSuite .suiteToggle{width:100%;min-height:48px;margin-top:11px;display:flex;align-items:center;gap:10px;padding:13px 14px;background:linear-gradient(120deg,#292318,#121d2d);border:1px solid #c9a86688;border-radius:12px;color:#f0d9a6;text-align:left;font-size:12px;font-weight:900;letter-spacing:.05em;line-height:20px;box-sizing:border-box}
+    #chedarProductionSuite .suiteToggle[aria-expanded="true"]{background:linear-gradient(120deg,#292318,#121d2d);color:#f0d9a6}\n    #chedarProductionSuite .suiteToggle span{margin-left:auto;font-size:20px;font-weight:400;line-height:1;letter-spacing:0}
     #chedarProductionSuite .suitePane h4{font-size:13px;color:#f0d8a5;margin:6px 0 10px}
     #chedarProductionSuite .suiteGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 10px}
     #chedarProductionSuite .suiteField{margin:0 0 10px;min-width:0}
