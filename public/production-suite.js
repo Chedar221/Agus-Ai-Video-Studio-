@@ -10,10 +10,10 @@
     #chedarProductionSuite .suiteHead{padding:15px 14px;border-bottom:1px solid #c5a15a35}
     #chedarProductionSuite .suiteHead strong{display:block;color:#f0d8a5;font-size:14px;letter-spacing:.04em}
     #chedarProductionSuite .suiteHead p{margin:5px 0 0;color:#aebdce;font-size:11px;line-height:1.5}
-    #chedarProductionSuite .suiteTabs{display:none;gap:6px;padding:11px 12px 8px;overflow-x:auto;scrollbar-width:thin}
-    #chedarProductionSuite .suiteTabs.open{display:flex}
-    #chedarProductionSuite .suiteTab{flex:0 0 auto;background:#101c2b;border:1px solid #3d5067;color:#cbd5e1;border-radius:9px;padding:9px 11px;font-size:10px;font-weight:800}
-    #chedarProductionSuite .suiteTab.active{background:linear-gradient(135deg,#f0dba9,#c49a58);border-color:#e6cc96;color:#17202c}
+    #chedarProductionSuite .suiteTabs{display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:11px 12px 8px}
+    #chedarProductionSuite .suiteTabs.open{display:grid}
+    #chedarProductionSuite .suiteTab{width:100%;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;text-align:center;white-space:normal;background:#101c2b;border:1px solid #3d5067;color:#cbd5e1;border-radius:9px;padding:9px 8px;font-size:10px;font-weight:800;box-sizing:border-box}
+    #chedarProductionSuite .suiteTab.active{background:linear-gradient(135deg,#f0dba9,#c49a58);border-color:#e6cc96;color:#17202c}\n    #chedarProductionSuite #suiteRunAll{grid-column:1/-1;width:100%;min-height:44px;border-radius:9px;padding:9px 12px;font-size:10px;font-weight:850;box-sizing:border-box}
     #chedarProductionSuite .suiteBody{padding:8px 13px 14px}
     #chedarProductionSuite .suitePane{display:none}
     #chedarProductionSuite .suitePane.active{display:block}
