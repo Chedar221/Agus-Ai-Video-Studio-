@@ -380,6 +380,15 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 
 
 
+/* PROSES VIDEO dropdown lives in the former BUKA FLOW navigation slot */
+.featureNavLinks .generatorChooser{position:relative;flex:0 0 auto;margin:0;z-index:30}
+.featureNavLinks .makeVideoToggle{width:auto;min-height:36px;gap:7px;padding:8px 12px;font-size:10px;white-space:nowrap}
+.featureNavLinks .makeVideoToggle>span:first-child{font-size:15px}
+.featureNavLinks .makeVideoChevron{font-size:16px}
+.featureNavLinks .generatorChoiceMenu{position:absolute;top:calc(100% + 7px);right:0;width:min(340px,calc(100vw - 24px));margin:0;z-index:50;box-shadow:0 14px 35px #0009}
+@media(max-width:700px){
+ .featureNavLinks .generatorChoiceMenu{right:0;width:min(330px,calc(100vw - 20px))}
+}
 /* External AI video generator shortcuts */
 .generatorChooser{margin:0 0 15px}
 .makeVideoToggle{width:100%;min-height:52px;display:flex;align-items:center;gap:10px;padding:13px 15px;border:1px solid #e5c989;border-radius:12px;background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c;font-size:13px;font-weight:950;letter-spacing:.06em;text-align:left;box-shadow:0 5px 16px #c49b5526}
@@ -451,7 +460,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <p class="quickLead">Ceritakan ide Anda, tambahkan foto referensi, lalu biarkan AI menyiapkan seluruh paket produksi.</p>
 <div class="generatorChooser" aria-label="Pilih generator video">
   <button type="button" class="makeVideoToggle" id="makeVideoToggle" aria-expanded="false" aria-controls="generatorChoiceMenu">
-    <span>🎬</span><b>BUAT VIDEO</b><span class="makeVideoChevron">⌄</span>
+    <span>🎬</span><b>PROSES VIDEO</b><span class="makeVideoChevron">⌄</span>
   </button>
   <div class="generatorChoiceMenu" id="generatorChoiceMenu" hidden>
     <div class="generatorChooserHead"><span>PILIH GENERATOR VIDEO</span><small>Mau membuat video di mana?</small></div>
