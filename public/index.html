@@ -680,6 +680,16 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 </div></div>
 <footer>CHEDAR AI KREATOR · Studio produksi prompt AI · Powered by OpenAI</footer>
 </main>
+<div id="legacyCompatibilityFields" hidden aria-hidden="true">
+<select id="dialogueCount"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+<select id="audioMode"><option value="both" selected>both</option><option value="none">none</option><option value="voice">voice</option></select>
+<select id="narratorVoice"><option value="natural">natural</option></select>
+<div id="speakerCard1"><input id="speaker1Name"><input id="speaker1Voice"><textarea id="speaker1Dialogue"></textarea></div>
+<div id="speakerCard2"><input id="speaker2Name"><input id="speaker2Voice"><textarea id="speaker2Dialogue"></textarea></div>
+<div id="speakerCard3"><input id="speaker3Name"><input id="speaker3Voice"><textarea id="speaker3Dialogue"></textarea></div>
+<div id="speakerCard4"><input id="speaker4Name"><input id="speaker4Voice"><textarea id="speaker4Dialogue"></textarea></div>
+<div id="audioQualitySummary"></div><div id="suiteStatus"></div>
+</div>
 <script>
 const $=id=>document.getElementById(id);
 function removeLiteralNewlineArtifacts(root=document.body){
