@@ -866,7 +866,33 @@ function renderSaved(){const arr=JSON.parse(localStorage.getItem("agusStudioProj
  document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{const x=arr.find(y=>y.id===Number(b.dataset.open));if(!x)return;project=x.project;activeProjectId=x.id;Object.entries(x.form||{}).forEach(([k,v])=>{if($(k))$(k).value=v;});render();switchTab("story");setStatus("Proyek dibuka kembali.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");});
  document.querySelectorAll("[data-delete]").forEach(b=>b.onclick=()=>{const next=arr.filter(x=>x.id!==Number(b.dataset.delete));localStorage.setItem("agusStudioProjects",JSON.stringify(next));renderSaved();});}
 $("savedBtn").onclick=()=>{$("projectList").scrollIntoView({behavior:"smooth",block:"center"});};
-$("resetBtn").onclick=()=>{if(!confirm("Kosongkan semua isian form?"))return;fields.forEach(k=>{if(["idea","title","character","faceLock","wardrobeLock","negativeLock","continuity","audio"].includes(k))$(k).value="";else $(k).selectedIndex=0;});project=null;activeProjectId=null;latestText="";$("resultTag").textContent="BELUM ADA HASIL";$("storyView").innerHTML='<div class="empty">Form direset. Buat proyek baru.</div>';["storyboard","image","video","check"].forEach(k=>$(k+"View").innerHTML="");setStatus("Form berhasil direset.");};
+$("resetBtn").onclick=()=>{
+ if(!confirm("Reset seluruh isian, foto referensi, hasil aktif, dan output fitur studio? Proyek yang sudah tersimpan tetap aman dan tidak dihapus."))return;
+ document.querySelectorAll("main input,main select,main textarea").forEach(el=>{
+  if(el.type==="file"){el.value="";return;}
+  if(el.type==="checkbox"||el.type==="radio"){el.checked=el.defaultChecked;return;}
+  if(el.tagName==="SELECT"){const options=Array.from(el.options);const selected=options.findIndex(option=>option.defaultSelected);el.selectedIndex=selected>=0?selected:0;return;}
+  el.value=el.defaultValue;
+ });
+ referenceUrls.forEach(url=>URL.revokeObjectURL(url));referenceUrls=[];
+ if($("refGallery"))$("refGallery").innerHTML="";
+ if($("refName")){$("refName").textContent="Belum ada foto dipilih";$("refName").classList.remove("quickPhotoCount");}
+ document.querySelectorAll("[data-quicktab]").forEach((button,index)=>button.classList.toggle("active",index===0));
+ document.querySelectorAll(".quickSubpanel").forEach((panel,index)=>panel.classList.toggle("hidden",index!==0));
+ project=null;activeProjectId=null;latestText="";
+ $("resultTag").textContent="BELUM ADA HASIL";
+ $("storyView").innerHTML='<div class="empty">Studio sudah direset. Masukkan ide baru untuk membuat proyek.</div>';
+ ["storyboard","image","video","check"].forEach(key=>$(key+"View").innerHTML="");
+ const resetOutputs={sbOutput:"Pilih Susun Storyboard AI atau ambil dari proyek aktif.",ccOutput:"Laporan pemeriksaan akan muncul di sini.",vdOutput:"Arahan suara akan muncul di sini.",mdOutput:"Music direction akan muncul di sini."};
+ Object.entries(resetOutputs).forEach(([id,value])=>{if($(id))$(id).textContent=value;});
+ if($("suiteStatus"))$("suiteStatus").textContent="Semua alat siap digunakan.";
+ if($("quickStatus"))$("quickStatus").textContent="";
+ if($("musicStatus"))$("musicStatus").textContent="Siap menyusun musik berdasarkan ide video.";
+ if($("audioQualitySummary"))$("audioQualitySummary").textContent="Pemeriksaan audio otomatis aktif saat paket dibuat.";
+ if(typeof switchTab==="function")switchTab("story");
+ renderSaved();
+ setStatus("Semua isian, foto referensi, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
+};
 $("reference").onchange=e=>{
  const selected=Array.from(e.target.files||[]),valid=selected.filter(f=>f.type.startsWith("image/")).slice(0,5);
  referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";
