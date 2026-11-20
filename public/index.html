@@ -857,7 +857,7 @@ $("quickGenerate").onclick=async(event)=>{
   const previousProject=project;
   await $("aiBtn").onclick(photos);
   if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director otomatis...";const suiteOk=await window.ChedarProductionSuite.runAll();if(!suiteOk)$("quickStatus").textContent="Paket utama berhasil dibuat, tetapi fitur pendamping belum selesai. Buka Hasil Video untuk memakai paket utama dan jalankan ulang 5 fitur otomatis.";}
-  else if(project===previousProject){$("quickStatus").textContent="Paket utama belum berhasil dibuat. Periksa pesan error sebelum mencoba lagi.";}
+  else if(project===previousProject){const detail=($("quickStatus").textContent||"").trim();if(!detail||detail==="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini."||detail.includes("foto siap dikirim"))$("quickStatus").textContent="Paket belum berhasil dibuat. "+($("status").textContent||"Periksa koneksi dan konfigurasi mesin AI.");}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
  finally{button.disabled=false;button.textContent="✦ BUAT VIDEO OTOMATIS";}
 };
