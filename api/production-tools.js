@@ -1,3 +1,5 @@
+import { isAdminRequest } from "./_admin-session.js";
+
 function send(res,status,body){
   if(typeof res.status==="function") return res.status(status).json(body);
   res.statusCode=status;res.setHeader("Content-Type","application/json; charset=utf-8");res.end(JSON.stringify(body));
@@ -5,6 +7,8 @@ function send(res,status,body){
 const allowedTools=new Set(["character","storyboard","continuity","voice","music","auto"]);
 function compact(value,max=9000){return String(value??"").slice(0,max);}
 export default async function handler(req,res){
+  res.setHeader("Cache-Control","no-store");
+  if(!isAdminRequest(req)) return send(res,401,{error:"Fitur produksi lanjutan hanya dapat digunakan setelah login admin."});
   if(req.method!=="POST"){if(typeof res.setHeader==="function")res.setHeader("Allow","POST");return send(res,405,{error:"Gunakan metode POST."});}
   const apiKey=process.env.GEMINI_API_KEY;
   if(!apiKey)return send(res,503,{error:"GEMINI_API_KEY belum dipasang di Vercel."});
