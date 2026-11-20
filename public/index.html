@@ -782,13 +782,13 @@ function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
 $("quickGenerate").onclick=async()=>{
- const idea=$("quickIdea").value.trim(),button=$("quickGenerate"),isAd=$("projectType").value==="product_ad";
+ const idea=$("quickIdea").value.trim(),button=$("quickGenerate"),isAd=$("projectType").value==="product_ad";const selectedVideoType=$("videoType").value||"auto";
  if(!idea){$("quickStatus").textContent="Tulis tujuan iklan terlebih dahulu."; $("quickIdea").focus(); return;}
  if(isAd&&!Array.from($("reference").files||[]).some(f=>f.type.startsWith("image/"))){$("quickStatus").textContent="Mode iklan produk memerlukan minimal satu foto produk asli."; $("reference").click(); return;}
  if(isAd&&!$("productName").value.trim()){$("quickStatus").textContent="Isi nama produk atau merek terlebih dahulu."; $("productName").focus(); return;}
  buildSpeakerBrief();$("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
  $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
- $("style").value="Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Otomatis sesuai ide";$("videoType").value=isAd?"product_ad":"auto";$("projectType").value=isAd?"product_ad":"story";updateProjectType();updateVideoTypeFields();
+ $("style").value="Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Otomatis sesuai ide";$("videoType").value=isAd?"product_ad":selectedVideoType;$("projectType").value=isAd?"product_ad":"story";updateProjectType();updateVideoTypeFields();
  $("language").value="Bahasa Indonesia";$("voice").value="Natural dan bersahaja";
  button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
  $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
