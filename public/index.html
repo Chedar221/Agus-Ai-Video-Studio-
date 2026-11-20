@@ -586,6 +586,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="quickRatio">FORMAT VIDEO</label><select id="quickRatio"><option>Vertikal 9:16</option><option>Horizontal 16:9</option><option>Persegi 1:1</option></select></div>
 </div>
 <button class="gold quickGenerate" id="quickGenerate">✦ BUAT VIDEO OTOMATIS</button>
+<div class="actions" style="justify-content:center;margin-top:7px"><button type="button" class="ghost small" id="quickResetStudio">↺ RESET STUDIO</button></div>
 <p class="quickFoot">AI akan membuat konsep, naskah, storyboard, prompt gambar, prompt video Flow, narasi, dan arahan produksi.</p>
 <div id="quickStatus" class="status" role="status"></div>
 </section>
@@ -891,8 +892,12 @@ $("resetBtn").onclick=()=>{
  if($("audioQualitySummary"))$("audioQualitySummary").textContent="Pemeriksaan audio otomatis aktif saat paket dibuat.";
  if(typeof switchTab==="function")switchTab("story");
  renderSaved();
- setStatus("Semua isian, foto referensi, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
+ try{localStorage.removeItem("chedar_ai_engine");}catch{}
+ const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="gemini";
+ const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · GEMINI";
+ setStatus("Semua isian, foto referensi, pilihan mesin AI, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
 };
+if($("quickResetStudio"))$("quickResetStudio").onclick=$("resetBtn").onclick;
 $("reference").onchange=e=>{
  const selected=Array.from(e.target.files||[]),valid=selected.filter(f=>f.type.startsWith("image/")).slice(0,5);
  referenceUrls.forEach(u=>URL.revokeObjectURL(u));referenceUrls=[];$("refGallery").innerHTML="";
