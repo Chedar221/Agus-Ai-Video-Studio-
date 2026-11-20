@@ -5,7 +5,7 @@ html.admin-locked #productionSettings,html.admin-locked #promptLibrary,html.admi
 #adminAccessButton.admin-on{background:#173b30;border-color:#4b9c7c;color:#b8f0d7}
 #adminEngineButton{display:none;border:1px solid #c49a58;background:#17243a;color:#f1d8a4;font-weight:900}
 html:not(.admin-locked) #adminEngineButton{display:inline-flex}
-.adminControlStack{display:flex;flex-direction:column;align-items:stretch;gap:6px;flex:0 0 auto}.adminControlStack button{width:100%;min-width:128px;justify-content:center}
+.adminControlStack{position:static!important;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;width:100%;margin:12px auto 4px;padding:0;background:transparent;border:0;box-shadow:none;min-width:0;z-index:auto}.adminControlStack button{flex:1 1 0;width:auto;max-width:190px;min-width:0;min-height:44px;justify-content:center;white-space:nowrap}
 .aiEngineOverlay{position:fixed;inset:0;z-index:5001;display:none;align-items:center;justify-content:center;padding:16px;background:#050a12df;backdrop-filter:blur(9px)}.aiEngineOverlay.open{display:flex}
 .aiEngineDialog{width:min(440px,100%);background:linear-gradient(145deg,#1a2a40,#0d1726);border:1px solid #c49a58;border-radius:18px;padding:20px;box-shadow:0 24px 90px #000a}
 .aiEngineDialog h2{font-size:19px;color:#f0d9a6;margin:0 0 5px}.aiEngineDialog p{font-size:12px;color:#aebdce;margin:0 0 14px}
@@ -16,7 +16,6 @@ html:not(.admin-locked) #adminEngineButton{display:inline-flex}
 .adminDialog h2{font-size:19px;color:#f0d9a6;margin:0 0 5px}.adminDialog p{font-size:12px;color:#aebdce;margin:0 0 15px}
 .adminDialog label{display:block;font-size:11px;color:#e2d0a8;margin:10px 0 5px}.adminDialog input{width:100%;font-size:16px;background:#091321;border:1px solid #40516a;color:#fff;border-radius:10px;padding:12px}
 .adminDialog .adminActions{display:flex;gap:8px;margin-top:15px}.adminDialog button{flex:1;min-height:43px}#adminLoginStatus{font-size:12px;min-height:18px;margin-top:9px;color:#ffaaaa}#adminLoginStatus.ok{color:#75d5a9}`;
-style.textContent+="\n@media(max-width:600px){\n.adminControlStack{position:fixed!important;top:auto!important;right:12px!important;bottom:4px!important;left:auto!important;transform:none!important;z-index:99999;gap:8px;padding:8px;background:#0b1524ee;border:1px solid #c49a5866;border-radius:14px;box-shadow:0 8px 28px #0009;min-width:148px}\n.adminControlStack button{min-width:132px;min-height:46px;padding:11px 12px;font-size:12px;border-radius:10px;touch-action:manipulation}\n}\n@media(max-width:380px){.adminControlStack{right:9px!important;bottom:2px!important}.adminControlStack button{min-height:48px;font-size:12px}}\n";
 document.head.appendChild(style);document.documentElement.classList.add("admin-locked");
 const overlay=document.createElement("div");overlay.className="adminOverlay";overlay.innerHTML=`
 <section class="adminDialog" role="dialog" aria-modal="true" aria-labelledby="adminLoginTitle"><h2 id="adminLoginTitle">LOGIN ADMIN</h2><p>Masuk untuk membuka fitur studio lanjutan dan pengaturan teknis.</p>
@@ -27,7 +26,7 @@ document.body.appendChild(overlay);const nav=document.querySelector(".topright")
 adminStack.className="adminControlStack";
 const access=document.createElement("button");
 access.type="button";access.id="adminAccessButton";access.className="small";access.textContent="LOGIN ADMIN";adminStack.appendChild(access);
-const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);nav?.appendChild(adminStack);
+const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);const quickGenerate=document.getElementById("quickGenerate");if(quickGenerate){quickGenerate.insertAdjacentElement("afterend",adminStack);}else{nav?.appendChild(adminStack);}
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
