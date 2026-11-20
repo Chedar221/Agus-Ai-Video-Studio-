@@ -783,8 +783,10 @@ function render(){
 function switchTab(tab){document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));["story","storyboard","image","video","check"].forEach(k=>$ (k+"View").classList.toggle("hidden",k!==tab));}
 document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>switchTab(b.dataset.tab));
 async function copy(text){try{await navigator.clipboard.writeText(text);setStatus("Berhasil disalin.","ok");}catch{setStatus("Clipboard tidak tersedia. Salin teks secara manual.","err");}}
-$("quickGenerate").onclick=async()=>{
+$("quickGenerate").type="button";
+$("quickGenerate").onclick=async(event)=>{
  const idea=$("quickIdea").value.trim(),button=$("quickGenerate"),isAd=$("projectType").value==="product_ad";const selectedVideoType=$("videoType").value||"auto";
+ try{
  if(!idea){$("quickStatus").textContent="Tulis ide cerita terlebih dahulu."; $("quickIdea").focus(); return;}
  if(isAd&&!Array.from($("reference").files||[]).some(f=>f.type.startsWith("image/"))){$("quickStatus").textContent="Mode iklan produk memerlukan minimal satu foto produk asli."; $("reference").click(); return;}
  if(isAd&&!$("productName").value.trim())$("productName").value="Produk pada foto referensi";
@@ -821,7 +823,6 @@ $("quickGenerate").onclick=async()=>{
  updateProjectType();updateVideoTypeFields();
  button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
  $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
- try{
   const photos=await getReferenceImages();
   $("quickStatus").textContent=photos.length?photos.length+" foto siap dikirim. AI sedang menyusun paket video...":"Tidak ada foto referensi. AI sedang menyusun paket video...";
   const previousProject=project;
