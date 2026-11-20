@@ -9,10 +9,14 @@ function compact(value,max=9000){return String(value??"").slice(0,max);}
 export default async function handler(req,res){
   res.setHeader("Cache-Control","no-store");
   if(req.method!=="POST"){if(typeof res.setHeader==="function")res.setHeader("Allow","POST");return send(res,405,{error:"Gunakan metode POST."});}
-  const apiKey=process.env.GEMINI_API_KEY;
-  if(!apiKey)return send(res,503,{error:"GEMINI_API_KEY belum dipasang di Vercel."});
   let d=req.body;if(typeof d==="string"){try{d=JSON.parse(d);}catch{d=null;}}
   if(!d||typeof d!=="object"||Array.isArray(d)||!allowedTools.has(d.tool))return send(res,400,{error:"Permintaan fitur produksi tidak valid."});
+  const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
+  if(requestedEngine!=="gemini"&&requestedEngine!=="openai")return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
+  if(requestedEngine==="openai"&&!isAdminRequest(req))return send(res,403,{error:"Hanya admin yang boleh mengganti mesin AI."});
+  const useOpenAI=requestedEngine==="openai";
+  const apiKey=useOpenAI?process.env.OPENAI_API_KEY:process.env.GEMINI_API_KEY;
+  if(!apiKey)return send(res,503,{error:useOpenAI?"OPENAI_API_KEY belum dipasang atau belum aktif di Vercel.":"GEMINI_API_KEY belum dipasang di Vercel."});
   const tool=d.tool;
   // Auto pipeline is available to ordinary users; individual production tools remain admin-only.
   if(tool!=="auto"&&!isAdminRequest(req)) return send(res,401,{error:"Fitur produksi individual hanya tersedia untuk admin."});
@@ -42,27 +46,28 @@ export default async function handler(req,res){
     music:"Bertindak sebagai film composer, music supervisor, dan sound designer. Buat MUSIC BIBLE, Suno Style of Music prompt ringkas berbahasa Inggris, struktur musik dari opening hingga ending, tempo/energi, instrumen, karakter vokal, arahan mixing, serta cue sheet musik dan SFX per adegan. Tandai kapan musik naik/turun dan kapan harus ducking agar narasi/dialog tetap jelas. Jangan meniru artis atau lagu yang sudah ada. Jika instrumental dipilih, pastikan no vocals/no lyrics. Pengaturan musik: "+details+"\nProyek: "+projectText
   };
   if(tool==="auto") prompts.auto="Bertindaklah sebagai AI FILM DIRECTOR yang mengorkestrasi LIMA departemen sekaligus. Pengguna hanya memberi satu ide sederhana. Buat kelima keluaran saling cocok dan merujuk proyek yang sama. Kembalikan HANYA JSON valid tanpa markdown, dengan tepat lima string properti: character, storyboard, continuity, voice, music. Bahasa Indonesia, rinci tetapi praktis.\nCHARACTER: Character Bible, identitas visual berdasar character lock yang disediakan, pakaian/properti, ekspresi, negative lock, prompt master reference Flow, dan aturan foto referensi yang sama harus dilampirkan pada setiap klip. Jangan mengarang ciri foto yang tidak diberikan.\nSTORYBOARD: storyboard lengkap mengikuti semua adegan proyek, dengan timecode, tujuan, shot size/angle, komposisi, blocking, aksi, ekspresi, kamera, lighting, transisi, serta prompt gambar siap pakai per adegan. Jumlah adegan harus sama dengan proyek.\nCONTINUITY: audit semua adegan dan keluarkan PASS/WARNING/FAIL dengan bukti spesifik dari data proyek, daftar masalah, perbaikan prioritas dan prompt koreksi. Jangan mengklaim bisa memeriksa visual render; hanya teks/prompt.\nVOICE: Voice Bible konsisten berdasarkan bahasa, gender/karakter suara, emosi, tempo, artikulasi. Pisahkan narasi off-screen dan dialog on-screen; jangan ubah teks dialog/narasi yang sudah ada. Arahan audio per adegan dan prompt Flow.\nMUSIC: Music Bible, Suno Style of Music prompt singkat dalam bahasa Inggris, genre/mood/instrumen/vokal/tempo, struktur musik, cue musik dan SFX per adegan, mixing/ducking supaya dialog jelas. Jangan meniru artis atau lagu yang ada.\nSemua kelima keluaran harus menggunakan judul, karakter, lokasi, genre, durasi, dan adegan yang sama. Jangan menyatakan render video/gambar/audio telah dibuat."+"\n\nIDE PENGGUNA: "+idea+"\nJUDUL: "+title+"\nPENGATURAN DAN KARAKTER: "+JSON.stringify(d.settings||{}).slice(0,9000)+"\nPROYEK DAN ADEGAN: "+projectText+"\nARAHAN TAMBAHAN: "+JSON.stringify(d.auto||{}).slice(0,5000);
-  const model=(process.env.GEMINI_MODEL||"gemini-3.8-flash").trim();
+  const model=useOpenAI?(process.env.OPENAI_MODEL||"gpt-4.1-mini").trim():(process.env.GEMINI_MODEL||"gemini-3.8-flash").trim();
   try{
-    const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{
-      method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},
-      body:JSON.stringify({contents:[{role:"user",parts:[{text:prompts[tool]+"\n\nATURAN UMUM: "+rules}]}],generationConfig:{temperature:0.45,maxOutputTokens:tool==="auto"?24000:9000,...(tool==="auto"?{responseMimeType:"application/json"}:{})}})
-    });
-    const payload=await response.json().catch(()=>({}));
-    if(!response.ok){
-      const code=response.status;
-      const message=code===401||code===403?"API Key Gemini ditolak. Periksa GEMINI_API_KEY di Vercel.":code===404?"Model Gemini tidak tersedia. Periksa GEMINI_MODEL di Vercel.":code===429?"Batas penggunaan Gemini tercapai. Coba lagi nanti.":(payload?.error?.message||"Gemini API error ("+code+")").slice(0,400);
-      return send(res,code>=500?502:code,{error:message});
+    let payload,result;
+    if(useOpenAI){
+      const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model,messages:[{role:"user",content:prompts[tool]+"\n\nATURAN UMUM: "+rules}],...(tool==="auto"?{response_format:{type:"json_object"}}:{}),temperature:0.45,max_tokens:tool==="auto"?24000:9000})});
+      payload=await response.json().catch(()=>({}));
+      if(!response.ok){const code=response.status;return send(res,code>=500?502:code,{error:code===401?"API Key OpenAI ditolak. Periksa OPENAI_API_KEY di Vercel.":code===429?"Kuota atau rate limit OpenAI tercapai. Periksa saldo API.":(payload?.error?.message||"OpenAI API error ("+code+")").slice(0,400)});}
+      result=String(payload.choices?.[0]?.message?.content||"").trim();
+    }else{
+      const response=await fetch("https://generativelanguage.googleapis.com/v1beta/models/"+encodeURIComponent(model)+":generateContent",{method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:prompts[tool]+"\n\nATURAN UMUM: "+rules}]}],generationConfig:{temperature:0.45,maxOutputTokens:tool==="auto"?24000:9000,...(tool==="auto"?{responseMimeType:"application/json"}:{})}})});
+      payload=await response.json().catch(()=>({}));
+      if(!response.ok){const code=response.status;const message=code===401||code===403?"API Key Gemini ditolak. Periksa GEMINI_API_KEY di Vercel.":code===404?"Model Gemini tidak tersedia. Periksa GEMINI_MODEL di Vercel.":code===429?"Batas penggunaan Gemini tercapai. Coba lagi nanti.":(payload?.error?.message||"Gemini API error ("+code+")").slice(0,400);return send(res,code>=500?502:code,{error:message});}
+      result=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     }
-    const result=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     if(!result)return send(res,502,{error:"AI tidak mengembalikan hasil. Silakan coba lagi."});
     if(tool==="auto"){
       let results;
       try{results=JSON.parse(result);}catch{const match=result.match(/\{[\s\S]*\}/);if(match){try{results=JSON.parse(match[0]);}catch{}}}
       const keys=["character","storyboard","continuity","voice","music"];
       if(!results||keys.some(key=>typeof results[key]!=="string"||!results[key].trim()))return send(res,502,{error:"AI belum berhasil mengembalikan kelima hasil dalam format lengkap. Coba jalankan lagi."});
-      return send(res,200,{tool,results});
+      return send(res,200,{tool,results,engine:useOpenAI?"openai":"gemini",model});
     }
-    return send(res,200,{result:result.slice(0,22000),tool});
+    return send(res,200,{result:result.slice(0,22000),tool,engine:useOpenAI?"openai":"gemini",model});
   }catch{return send(res,502,{error:"Server tidak dapat menghubungi Gemini. Coba lagi beberapa saat."});}
 }
