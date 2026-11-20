@@ -794,8 +794,35 @@ $("quickGenerate").onclick=async()=>{
  if(isAd&&!$("productName").value.trim()){$("quickStatus").textContent="Isi nama produk atau merek terlebih dahulu."; $("productName").focus(); return;}
  buildSpeakerBrief();$("idea").value=idea;$("title").value=isAd?("Iklan "+$("productName").value.trim()):"Video dari Ide Baru";$("duration").value="10";
  $("scenes").value=String(Number($("quickDuration").value)/10);$("ratio").value=$("quickRatio").value;
- $("style").value="Cinematic realistis";$("genre").value=isAd?"Promosi bisnis":"Otomatis sesuai ide";$("videoType").value=isAd?"product_ad":selectedVideoType;$("projectType").value=isAd?"product_ad":"story";updateProjectType();updateVideoTypeFields();
- $("language").value="Bahasa Indonesia";$("voice").value="Natural dan bersahaja";
+ $("videoType").value=isAd?"product_ad":selectedVideoType;$("projectType").value=isAd?"product_ad":"story";
+ const typeProfiles={
+  auto:{genre:"Otomatis sesuai ide",style:"Cinematic realistis",camera:"Pilih shot dan gerakan kamera paling sesuai dengan cerita.",lighting:"Pencahayaan bermotivasi sesuai suasana cerita."},
+  product_ad:{genre:"Promosi bisnis",style:"Cinematic realistis",camera:"Commercial product cinematography; macro detail, hero shot, smooth slider/orbit terkontrol.",lighting:"Pencahayaan studio komersial yang bersih; bentuk, warna, logo dan label produk terbaca."},
+  cinema_ad:{genre:"Promosi bisnis",style:"Cinematic realistis",camera:"Premium commercial camera language; macro detail, hero shot, controlled dolly and tracking.",lighting:"Premium studio lighting, polished highlights, controlled reflections."},
+  superhero:{genre:"Aksi",style:"Film epik",camera:"Dynamic tracking, low-angle hero reveal, readable action coverage.",lighting:"Dramatic rim light, volumetric atmosphere, motivated energy effects."},
+  kingdom:{genre:"Petualangan",style:"Film epik",camera:"Monumental wide establishing shots, measured dolly, royal character close-ups.",lighting:"Atmospheric natural light, torchlight and cinematic golden-hour interiors."},
+  mythology:{genre:"Fantasi",style:"Film epik",camera:"Majestic wide shots, symbolic inserts, slow cinematic push-ins.",lighting:"Sacred atmospheric light, restrained supernatural glow."},
+  scifi:{genre:"Futuristik",style:"Futuristik",camera:"Precise tracking shots, architectural wides, controlled interface close-ups.",lighting:"Motivated futuristic practical lights, restrained neon and volumetric glow."},
+  horror:{genre:"Horor sinematik",style:"Dark cinematic",camera:"Slow controlled push-in, suspenseful wide frames, deliberate reveal shots.",lighting:"Low-key motivated lighting, deep shadows, limited practical light."},
+  timetravel:{genre:"Fantasi",style:"Cinematic realistis",camera:"Match cuts, transition tracking and clear period establishing shots.",lighting:"Lighting shifts clearly mark each era while keeping character identity stable."},
+  action:{genre:"Aksi",style:"Cinematic realistis",camera:"Readable tracking, controlled handheld, clear geography and impact inserts.",lighting:"Motivated cinematic contrast with clear subject separation."},
+  family_drama:{genre:"Drama realistis",style:"Hangat dan natural",camera:"Intimate medium shots, expressive close-ups, gentle dolly movement.",lighting:"Warm practical lighting and natural window light."},
+  chibi_3d:{genre:"Komedi",style:"Cinematic realistis",camera:"Smooth animated tracking, expressive medium close-ups, readable full-body framing.",lighting:"Soft colorful 3D lighting, gentle highlights and polished materials."},
+  ugc:{genre:"Promosi bisnis",style:"Hangat dan natural",camera:"Smartphone selfie or stable medium close-up, subtle handheld movement.",lighting:"Natural daylight, soft practical light, authentic everyday setting."},
+  silent_popup:{genre:"Drama realistis",style:"Cinematic realistis",camera:"Expressive medium shots and reaction close-ups with safe text space.",lighting:"Clear subject lighting and readable contrast for on-screen text."},
+  documentary:{genre:"Dokumenter",style:"Dokumenter natural",camera:"Observational handheld, authentic wide establishing shots and detail inserts.",lighting:"Available natural light; preserve realistic locations and activity."},
+  movie_universe:{genre:"Fantasi",style:"Film epik",camera:"World-building establishing wides, character reveals, symbolic inserts and coherent recurring compositions.",lighting:"Distinctive motivated lighting palette consistent with the fictional world."},
+  lipsync:{genre:"Musik",style:"Cinematic realistis",camera:"Stable close-up or medium close-up facing camera; keep mouth clearly visible.",lighting:"Even flattering face light, avoid shadows across mouth."},
+  motion_control:{genre:"Aksi",style:"Cinematic realistis",camera:"Full-body readable framing; stable tracking that preserves reference movement.",lighting:"Consistent directional light with clear body silhouette."}
+ };
+ const profile=typeProfiles[$("videoType").value]||typeProfiles.auto;
+ $("genre").value=profile.genre;$("style").value=profile.style;$("camera").value=profile.camera;$("lighting").value=profile.lighting;
+ if($("videoType").value==="chibi_3d"){
+  if($("narratorVoice").selectedIndex===0)$("narratorVoice").value="Suara anak kecil lucu, imut, ceria dan ekspresif";
+  if($("speaker1Voice").selectedIndex===0)$("speaker1Voice").value="Anak kecil lucu, imut, ceria dan ekspresif";
+ }
+ if($("videoType").value==="silent_popup")$("audioMode").value="none";
+ updateProjectType();updateVideoTypeFields();
  button.disabled=true;button.textContent="AI SEDANG MEMBUAT PAKET...";
  $("quickStatus").textContent="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini.";
  try{
