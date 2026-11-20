@@ -745,7 +745,7 @@ $("projectType").addEventListener("change",updateProjectType);updateProjectType(
 function updateDialogueCount(){const count=Number($("dialogueCount").value||1);[1,2,3,4].forEach(n=>{$("speakerCard"+n).hidden=n>count;});}
 $("dialogueCount").addEventListener("change",updateDialogueCount);updateDialogueCount();
 document.querySelectorAll("[data-quicktab]").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll("[data-quicktab]").forEach(x=>x.classList.toggle("active",x===tab));["quickIdeaPanel","quickReferencePanel","quickDialoguePanel"].forEach(id=>$(id).classList.toggle("hidden",id!==tab.dataset.quicktab));}));
-function buildSpeakerBrief(){const extra=$("quickExtraDialogue")?.value.trim()||"";$("dialogueCount").value="1";$("speaker1Name").value="Tokoh utama";$("speaker1Dialogue").value=extra;$("audioMode").value="both";$("dialogue").value=extra?'DIALOG TAMBAHAN WAJIB DIMASUKKAN PERSIS: "'+extra+'". Dialog ini bukan pengganti dialog lain; AI tetap menyusun dialog tambahan yang natural dan sesuai cerita. Gunakan satu suara tokoh utama yang konsisten.':"Tidak ada dialog wajib dari pengguna. AI susun seluruh dialog yang natural sesuai cerita dan gunakan tokoh yang konsisten.";}
+function buildSpeakerBrief(){const extra=$("quickExtraDialogue")?.value.trim()||"";$("dialogueCount").value="1";$("speaker1Name").value="Tokoh utama";$("speaker1Dialogue").value=extra;$("audioMode").value="both";$("dialogue").value=extra?'DIALOG TAMBAHAN WAJIB DIMASUKKAN PERSIS: "'+extra+'". Dialog ini bukan pengganti dialog lain; AI tetap menyusun dialog tambahan yang natural dan sesuai cerita. Gunakan satu suara tokoh utama yang konsisten.':"";}
 
 
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
