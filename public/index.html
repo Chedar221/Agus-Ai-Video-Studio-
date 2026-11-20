@@ -961,4 +961,43 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   link.addEventListener("click",()=>{toggle.setAttribute("aria-expanded","false");menu.hidden=true;});
  });
 })();
-</script><script src="/admin-access.js?v=20261120-1"></script></body></html>
+</script><script src="/admin-access.js?v=20261120-1"></script><!-- TOUCH FALLBACK: Android WebView -->
+<script>
+(()=> {
+  let lastPointerAt=0;
+  const getButton=target=>target instanceof Element?target.closest("#quickGenerate"):null;
+  const status=message=>{
+    const el=document.getElementById("quickStatus");
+    if(el){el.style.display="block";el.textContent=message;}
+  };
+  document.addEventListener("pointerdown",event=>{
+    const button=getButton(event.target);
+    if(!button)return;
+    lastPointerAt=Date.now();
+    status("Sentuhan tombol terdeteksi. Menyiapkan proses...");
+  },true);
+  document.addEventListener("pointerup",event=>{
+    const button=getButton(event.target);
+    if(!button)return;
+    const pointerTime=lastPointerAt;
+    let nativeClickSeen=false;
+    const markClick=clickEvent=>{
+      if(getButton(clickEvent.target)===button)nativeClickSeen=true;
+    };
+    document.addEventListener("click",markClick,true);
+    setTimeout(()=>{
+      document.removeEventListener("click",markClick,true);
+      if(nativeClickSeen)return;
+      if(Date.now()-pointerTime<0)return;
+      status("Mode sentuhan alternatif aktif. Menjalankan generator...");
+      if(typeof button.onclick==="function"){
+        try{button.onclick.call(button,event);}
+        catch(error){status("Generator gagal dijalankan: "+(error?.message||String(error)));}
+      }else{
+        status("Tombol terdeteksi, tetapi skrip generator belum siap. Muat ulang aplikasi.");
+      }
+    },350);
+  },true);
+})();
+</script>
+</body></html>
