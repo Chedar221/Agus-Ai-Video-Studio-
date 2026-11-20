@@ -5,6 +5,7 @@ html.admin-locked #productionSettings,html.admin-locked #promptLibrary,html.admi
 #adminAccessButton.admin-on{background:#173b30;border-color:#4b9c7c;color:#b8f0d7}
 #adminEngineButton{display:none;border:1px solid #c49a58;background:#17243a;color:#f1d8a4;font-weight:900}
 html:not(.admin-locked) #adminEngineButton{display:inline-flex}
+.adminControlStack{display:flex;flex-direction:column;align-items:stretch;gap:6px;flex:0 0 auto}.adminControlStack button{width:100%;min-width:128px;justify-content:center}
 .aiEngineOverlay{position:fixed;inset:0;z-index:5001;display:none;align-items:center;justify-content:center;padding:16px;background:#050a12df;backdrop-filter:blur(9px)}.aiEngineOverlay.open{display:flex}
 .aiEngineDialog{width:min(440px,100%);background:linear-gradient(145deg,#1a2a40,#0d1726);border:1px solid #c49a58;border-radius:18px;padding:20px;box-shadow:0 24px 90px #000a}
 .aiEngineDialog h2{font-size:19px;color:#f0d9a6;margin:0 0 5px}.aiEngineDialog p{font-size:12px;color:#aebdce;margin:0 0 14px}
@@ -21,9 +22,11 @@ const overlay=document.createElement("div");overlay.className="adminOverlay";ove
 <form id="adminLoginForm"><label for="adminEmail">EMAIL ADMIN</label><input id="adminEmail" type="email" autocomplete="username" required placeholder="Email admin">
 <label for="adminPassword">PASSWORD</label><input id="adminPassword" type="password" autocomplete="current-password" required placeholder="Password admin">
 <div class="adminActions"><button type="button" class="secondary" id="adminCancel">BATAL</button><button type="submit" class="gold" id="adminSubmit">MASUK</button></div><div id="adminLoginStatus" role="status"></div></form></section>`;
-document.body.appendChild(overlay);const nav=document.querySelector(".topright")||document.querySelector(".top"),access=document.createElement("button");
-access.type="button";access.id="adminAccessButton";access.className="small";access.textContent="LOGIN ADMIN";nav?.appendChild(access);
-const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";nav?.appendChild(engineButton);
+document.body.appendChild(overlay);const nav=document.querySelector(".topright")||document.querySelector(".top"),adminStack=document.createElement("div");
+adminStack.className="adminControlStack";
+const access=document.createElement("button");
+access.type="button";access.id="adminAccessButton";access.className="small";access.textContent="LOGIN ADMIN";adminStack.appendChild(access);
+const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);nav?.appendChild(adminStack);
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
