@@ -324,12 +324,33 @@
       const result=await response.json();
       if(!response.ok)throw new Error(result.error||"Lima fitur otomatis gagal dijalankan.");
       const outputs=result.results||{};
+      const required=["character","storyboard","continuity","voice","music"];
+      if(required.some(key=>typeof outputs[key]!=="string"||!outputs[key].trim()))throw new Error("Hasil otomatis belum lengkap. Silakan coba sekali lagi.");
       $("csOutput").textContent=normalizeOutput(outputs.character);
       $("sbOutput").textContent=normalizeOutput(outputs.storyboard);
       $("ccOutput").textContent=normalizeOutput(outputs.continuity);
       $("vdOutput").textContent=normalizeOutput(outputs.voice);
       $("mdOutput").textContent=normalizeOutput(outputs.music);
-      setStatus("Selesai! Kelima fitur sudah bekerja otomatis dan hasilnya masuk ke masing-masing tab.","ok");
+      p.productionSuite=Object.fromEntries(required.map(key=>[key,normalizeOutput(outputs[key])]));
+      const clip=(value,max)=>String(value||"").trim().slice(0,max);
+      const addOnce=(base,label,value)=>base.includes(label)?base:[base,label+"\n"+value].filter(Boolean).join("\n\n");
+      const characterLock=clip(outputs.character,1100),voiceLock=clip(outputs.voice,650),musicLock=clip(outputs.music,650);
+      p.globalCharacterLock=addOnce(p.globalCharacterLock,"AUTO CHARACTER BIBLE:",characterLock);
+      p.scenes.forEach(scene=>{
+        scene.imagePrompt=addOnce(scene.imagePrompt,"AUTO CHARACTER BIBLE:",characterLock);
+        scene.videoPrompt=addOnce(scene.videoPrompt,"AUTO VOICE DIRECTION:",voiceLock);
+        scene.videoPrompt=addOnce(scene.videoPrompt,"AUTO MUSIC & SOUND DIRECTION:",musicLock);
+      });
+      if(typeof render==="function")render();
+      try{
+        const saved=JSON.parse(localStorage.getItem("agusStudioProjects")||"[]");
+        const item=saved.find(entry=>Number(entry.id)===Number(activeProjectId));
+        const formData=typeof getData==="function"?getData():{};
+        if(item){item.project=p;item.form=formData;item.savedAt=new Date().toLocaleString("id-ID");localStorage.setItem("agusStudioProjects",JSON.stringify(saved));}
+        localStorage.setItem("agusStudioLastProject",JSON.stringify({id:activeProjectId,title:p.title,project:p,form:formData,savedAt:new Date().toLocaleString("id-ID")}));
+        if(typeof renderSaved==="function")renderSaved();
+      }catch(error){console.warn("Gagal menyimpan hasil lima fitur otomatis",error);}
+      setStatus("Selesai! Kelima departemen AI sudah diterapkan ke paket produksi dan prompt tiap adegan.","ok");
       return true;
     }catch(error){
       setStatus(error.message||"Gagal menjalankan lima fitur otomatis.","err");
