@@ -64,7 +64,7 @@ export default async function handler(req, res) {
     "Timing: " + (clean.audioTiming === "layered" ? "tumpang tindih hanya jika diperlukan dan disebutkan eksplisit" : "bergantian tanpa tumpang tindih; beri jeda sekitar 0,3 detik dan tulis rentang waktu mulai-selesai yang masuk akal per scene"),
     "Suara narator: " + (clean.narratorVoice || (isChibi3D ? "Suara anak kecil lucu, imut, ceria dan ekspresif" : clean.voice || "Pria dewasa, berat, tenang dan berwibawa")) + ". Jika dipilih suara anak kecil lucu, gunakan suara anak yang ceria, imut, artikulasi jelas, pitch alami anak, tidak terlalu melengking; pertahankan karakter suara yang sama. Jangan samakan suara narator dengan karakter kecuali diminta.",
     "Mix audio: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") + ". Musik dan SFX tidak boleh menutupi ucapan.",
-    "Setiap videoPrompt wajib memuat blok AUDIO TRACKS berlabel NARASI/VOICE-OVER, DIALOG KARAKTER, MUSIK, SFX/AMBIENCE, TIMING & MIX. Isi narasi/dialog verbatim; tulis TIDAK ADA jika track kosong.",
+    "Isi narration dan dialogue pada kolom JSON masing-masing. Jangan menyalin blok audio ke videoPrompt; server akan menyusun satu blok audio final agar tidak berulang.",
     "Jangan membuat narator tambahan, suara manusia latar, dialog spontan, atau lip-sync pada track yang salah."
   ].join("\n");
   const dialogueInstructions = [
@@ -77,7 +77,7 @@ export default async function handler(req, res) {
     "Jika satu scene hanya menampilkan satu tokoh berbicara, hanya tokoh itu yang mengucapkan dialog; tokoh lain diam dan tidak melakukan lip-sync.",
     "Jika dialog wajib diberikan, pertahankan kalimatnya persis; bagikan ke scene yang sesuai dan jangan mengubah siapa yang mengucapkannya.",
     "Pisahkan narasi/voice-over dari dialog karakter.",
-    "Dalam setiap videoPrompt, sertakan blok DIALOG dengan nama pembicara, kalimat verbatim, karakter suara, bahasa, dan instruksi lip-sync hanya untuk pembicara yang sedang berbicara.",
+    "Isi kolom dialogue dengan nama pembicara dan dialog verbatim. Jangan membuat blok audio atau dialog terpisah di dalam videoPrompt; server akan menambahkannya satu kali.",
     "Jika pembicara dipilih bersuara anak kecil lucu, gunakan suara anak yang imut, ceria, polos, ekspresif dan artikulasi mudah dipahami; jangan membuatnya terdengar seperti orang dewasa atau terlalu melengking. Jaga suara tokoh anak tetap konsisten."
   ].join("\n");
 
@@ -161,13 +161,13 @@ WAJIB:
 - Tepat ${sceneCount} adegan. SETIAP ADEGAN WAJIB tepat ${duration} detik. Total keseluruhan ${totalDuration} detik.
 - Jangan membagi durasi total ke adegan. Isi durationSeconds setiap adegan dengan angka ${duration} dan buat timecode berurutan masing-masing ${duration} detik.
 - Format ${clean.ratio || "Vertikal 9:16"}, gaya ${clean.style || "Cinematic realistis"}, genre ${clean.genre || "Drama realistis"}.
-- Setiap imagePrompt dan videoPrompt berdiri sendiri dan ringkas. imagePrompt maksimal sekitar 1.200 karakter; videoPrompt maksimal sekitar 2.400 karakter. Jangan menyalin ulang seluruh character bible atau aturan audio. Ulangi hanya ciri karakter, pakaian, lokasi, aksi, kamera, pencahayaan, dan track suara yang relevan. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan; jika laki-laki, tulis laki-laki.
+- Setiap imagePrompt dan videoPrompt berdiri sendiri dan ringkas. imagePrompt maksimal sekitar 1.000 karakter; videoPrompt maksimal sekitar 1.800 karakter. videoPrompt hanya berisi visual, aksi, kamera, dan pencahayaan. Jangan memasukkan blok audio, dialog, atau penguncian identitas berulang ke videoPrompt; server menambahkan arahan audio dan identitas satu kali. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan; jika laki-laki, tulis laki-laki.
 - Karakter utama: ${clean.character || "ikuti gender visual, wajah, dan penampilan tokoh pada foto referensi; bila foto menunjukkan perempuan, tokoh utama adalah perempuan; bila foto menunjukkan laki-laki, tokoh utama adalah laki-laki"}. Pakaian: ${clean.wardrobe || "sesuai cerita"}. Lokasi: ${clean.location || "sesuai cerita"}. Konsistensi: ${clean.continuity || "jaga kontinuitas visual"}.
 - Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Simpan detail lengkap di globalCharacterLock; gunakan versi ringkas di prompt tiap scene.
 - Bahasa: ${clean.language || "Bahasa Indonesia"}; karakter suara narator: ${clean.voice || "Natural dan bersahaja"}. ${isSilentPopup ? "MODE SILENT POP-UP: jangan buat ucapan atau dialog; semua pesan hanya berupa tulisan di layar." : ("Dialog khusus: " + (clean.dialogue || "buat dialog alami sesuai cerita") + ". Jumlah pembicara tepat " + speakerCount + "; ikuti daftar speakerBrief dan aturan dialogueInstructions.")}
 - DETEKSI PERMINTAAN NARASI: jika ide/brief pengguna meminta narasi, narator, voice over, VO, atau saya sebagai narator, WAJIB buat NARASI yang benar-benar tertulis dan bisa langsung diucapkan. Jangan hanya menulis instruksi "narator berbicara".
 - Tambahkan properti "narration" pada SETIAP objek scene berisi kalimat narasi lengkap dalam Bahasa yang diminta. Untuk video bernarasi, setiap scene wajib memiliki teks narasi yang relevan dengan adegan, berkesinambungan antar-scene, tidak kosong, bukan placeholder, dan cukup untuk durasi scene. Isi juga "dialogue" bila ada dialog karakter; jangan mengganti narasi dengan dialog.
-- Setiap videoPrompt WAJIB memuat bagian AUDIO/NARASI dengan teks narration secara verbatim, jenis suara ${clean.voice || "Natural dan bersahaja"}, bahasa ${clean.language || "Bahasa Indonesia"}, tempo, intonasi, dan instruksi voice-over yang jelas. Narasi terdengar jelas, tidak tertukar dengan dialog karakter, tanpa suara narator lain. Jika pengguna meminta saya sebagai narator, narator adalah karakter utama yang sama.
+- Isi narration dan dialogue secara terpisah dan verbatim pada properti JSON scene. Jangan menggandakan teks narration/dialogue di dalam videoPrompt. Jika pengguna meminta saya sebagai narator, narator adalah karakter utama yang sama.
 - Jika jenis video = auto, tentukan otomatis format terbaik dari ide (iklan, dokumenter, komedi, drama, aksi, horor, fantasi, petualangan, atau motivasi) dan terapkan gaya paling cocok tanpa meminta pengaturan tambahan.\n- Cerita harus berkembang dan berakhir; scene terakhir wajib memberi resolusi/penutup yang kuat, bukan mengulang adegan sebelumnya. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
     let payload,output;
@@ -192,12 +192,12 @@ WAJIB:
     project.duration = `${totalDuration} detik`;
     const proLock = [
       isProductAd && productLock,
-      clean.character && "CHARACTER IDENTITY LOCK: " + clean.character,
-      clean.faceLock && "FACE IDENTITY LOCK: " + clean.faceLock,
-      clean.wardrobeLock && "WARDROBE AND PROP LOCK: " + clean.wardrobeLock,
-      clean.negativeLock && "NEGATIVE CHARACTER CONSTRAINTS: " + clean.negativeLock,
-      clean.continuity && "CONTINUITY RULES: " + clean.continuity
-    ].filter(Boolean).join("\n").slice(0, 1400);
+      clean.character && "IDENTITAS KARAKTER: " + clean.character,
+      clean.faceLock && "WAJAH: " + clean.faceLock,
+      clean.wardrobeLock && "PAKAIAN/PROPERTI: " + clean.wardrobeLock,
+      clean.negativeLock && "HINDARI: " + clean.negativeLock,
+      clean.continuity && "KONTINUITAS: " + clean.continuity
+    ].filter(Boolean).join(" | ").slice(0, 900);
     project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\n");
     project.scenes = project.scenes.map((scene, index) => {
       const start = index * duration;
@@ -210,17 +210,28 @@ WAJIB:
       scene.dialogue = String(scene.dialogue || "");
       if (audioMode === "narration_only" || audioMode === "none") scene.dialogue = "";
       if (audioMode === "dialogue_only" || audioMode === "none") scene.narration = "";
-      const narrationTrack = scene.narration.trim()
-        ? 'NARASI/VOICE-OVER OFF-SCREEN: "' + scene.narration + '". Narator: ' + (clean.narratorVoice || clean.voice || "Pria dewasa, berat, tenang dan berwibawa") + '; bahasa ' + (clean.language || "Bahasa Indonesia") + '; karakter di layar tidak lip-sync.'
-        : "NARASI/VOICE-OVER: TIDAK ADA.";
-      const dialogueTrack = scene.dialogue.trim()
-        ? 'DIALOG KARAKTER: "' + scene.dialogue + '". Hanya pembicara yang disebut melakukan lip-sync; suara dan nama tidak boleh tertukar.'
-        : "DIALOG KARAKTER: TIDAK ADA.";
+      const hasNarration = Boolean(scene.narration.trim());
+      const hasDialogue = Boolean(scene.dialogue.trim());
+      const narrationTrack = hasNarration
+        ? 'NARASI/VOICE-OVER: "' + scene.narration + '". Suara ' + (clean.narratorVoice || clean.voice || "natural dan bersahaja") + ', bahasa ' + (clean.language || "Bahasa Indonesia") + '; karakter di layar tidak lip-sync.'
+        : "";
+      const dialogueTrack = hasDialogue
+        ? 'DIALOG KARAKTER: "' + scene.dialogue + '". Hanya pembicara yang disebut berbicara dan melakukan lip-sync.'
+        : "";
+      const timingMix = hasNarration && hasDialogue
+        ? (clean.audioTiming === "layered" ? "Narasi dan dialog boleh berlapis hanya bila diperlukan; keduanya tetap jelas." : "Narasi dan dialog bergantian, tidak tumpang tindih; beri jeda singkat. Musik diturunkan saat ucapan.")
+        : hasNarration ? "Hanya narasi; tidak ada dialog karakter. Musik diturunkan saat narasi."
+        : hasDialogue ? "Hanya dialog karakter; tidak ada voice-over/narasi. Musik diturunkan saat dialog."
+        : "Tidak ada ucapan manusia.";
       const audioBlock = isSilentPopup || audioMode === "none"
-        ? "AUDIO: Tanpa ucapan manusia, narator, dialog, atau lip-sync. Gunakan musik instrumental dan ambience saja."
-        : [narrationTrack, dialogueTrack, "MUSIK: " + (clean.audioMix || "Musik pelan di belakang ucapan."), "SFX/AMBIENCE: " + (scene.sound || "Ambience lokasi natural."), "TIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya jika dibutuhkan." : "Narasi dan dialog bergantian; musik diturunkan saat ucapan.")].join("\n");
-      const speakerBlock = isSilentPopup || audioMode === "none" ? "" : "PEMBICARA: Maksimal " + speakerCount + " pembicara sesuai nama dan suara di brief. Jangan menambah atau menukar suara. Hanya pembicara yang sedang berbicara melakukan lip-sync."; 
-      scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", String(scene.videoPrompt || ""), speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Lampirkan foto produk master yang sama pada klip Flow ini. Pertahankan bentuk, warna, logo, label, teks, dan detail produk." : ""].filter(Boolean).join("\n\n"), 3800);
+        ? "AUDIO: Tanpa narasi, dialog, suara manusia, atau lip-sync. Musik instrumental dan ambience saja."
+        : [narrationTrack, dialogueTrack, "MUSIK: " + (clean.audioMix || "Musik pelan di belakang ucapan."), "SFX/AMBIENCE: " + (scene.sound || "Ambience natural yang relevan."), "TIMING & MIX: " + timingMix].filter(Boolean).join("\n");
+      const speakerBlock = hasDialogue && !isSilentPopup && audioMode !== "none"
+        ? "PEMBICARA: Tepat " + speakerCount + " pembicara sesuai nama dan karakter suara pada brief. Jangan menambah atau menukar suara."
+        : "";
+      const visualPrompt = String(scene.videoPrompt || "").split(/\n\s*\n/).filter(block => !/(AUDIO\/DIALOG|DIALOG MULTI-PEMBICARA|SMART AUDIO|CHARACTER IDENTITY LOCK|FACE IDENTITY LOCK|WARDROBE AND PROP LOCK|NEGATIVE CHARACTER CONSTRAINTS|CONTINUITY RULES|NARASI\/VOICE-OVER|DIALOG KARAKTER|TIMING & MIX|SFX\/AMBIENCE|PEMBICARA:)/i.test(block)).join("\n\n").trim()
+        || [scene.visual, scene.action, scene.camera, scene.lighting].filter(Boolean).join(". ");
+      scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", visualPrompt, speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Gunakan foto produk master yang sama; jangan mengubah bentuk, warna, logo, label, atau detailnya." : ""].filter(Boolean).join("\n\n"), 2800);
       return scene;
     });
     return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model });
