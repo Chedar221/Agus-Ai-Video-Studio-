@@ -1,3 +1,4 @@
+import { isAdminRequest } from "./_admin-session.js";
 // Vercel serverless endpoint for AGUS AI VIDEO STUDIO — Google Gemini
 function compactPrompt(value, maxLength = 3800) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
@@ -14,11 +15,15 @@ export default async function handler(req, res) {
     if (typeof res.setHeader === "function") res.setHeader("Allow", "POST");
     return send(res, 405, { error: "Gunakan metode POST." });
   }
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) return send(res, 503, { error: "GEMINI_API_KEY belum dipasang di Vercel. Tambahkan di Project Settings → Environment Variables, lalu deploy ulang." });
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
+  const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
+  if(requestedEngine!=="gemini"&&requestedEngine!=="openai")return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
+  if(requestedEngine==="openai"&&!isAdminRequest(req))return send(res,403,{error:"Hanya admin yang boleh mengganti mesin AI."});
+  const useOpenAI=requestedEngine==="openai";
+  const apiKey=useOpenAI?process.env.OPENAI_API_KEY:process.env.GEMINI_API_KEY;
+  if(!apiKey)return send(res,503,{error:useOpenAI?"OPENAI_API_KEY belum dipasang atau belum aktif di Vercel.":"GEMINI_API_KEY belum dipasang di Vercel."});
   // Lipsync and Motion Control here only generate text prompts and workflow guidance.
   // Actual audio/video processing remains inside the external tool selected by the user.
   const allowed = ["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
@@ -36,7 +41,7 @@ export default async function handler(req, res) {
   const duration = Math.max(5, Math.min(15, Number.parseInt(clean.duration || "10", 10) || 10));
   const totalDuration = sceneCount * duration;
   const formatTime = (seconds) => String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
-  const model = (process.env.GEMINI_MODEL || "gemini-3.8-flash").trim();
+  const model = useOpenAI?(process.env.OPENAI_MODEL||"gpt-4.1-mini").trim():(process.env.GEMINI_MODEL||"gemini-3.8-flash").trim();
   const speakerCount = Math.max(1, Math.min(4, Number.parseInt(clean.dialogueCount || "1", 10) || 1));
   const isChibi3D = clean.videoType === "chibi_3d";
   const isSilentPopup = clean.videoType === "silent_popup";
@@ -165,26 +170,20 @@ WAJIB:
 - Setiap videoPrompt WAJIB memuat bagian AUDIO/NARASI dengan teks narration secara verbatim, jenis suara ${clean.voice || "Natural dan bersahaja"}, bahasa ${clean.language || "Bahasa Indonesia"}, tempo, intonasi, dan instruksi voice-over yang jelas. Narasi terdengar jelas, tidak tertukar dengan dialog karakter, tanpa suara narator lain. Jika pengguna meminta saya sebagai narator, narator adalah karakter utama yang sama.
 - Jika jenis video = auto, tentukan otomatis format terbaik dari ide (iklan, dokumenter, komedi, drama, aksi, horor, fantasi, petualangan, atau motivasi) dan terapkan gaya paling cocok tanpa meminta pengaturan tambahan.\n- Cerita harus berkembang dan berakhir; scene terakhir wajib memberi resolusi/penutup yang kuat, bukan mengulang adegan sebelumnya. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
-    const response = await fetch(url, {
-      method: "POST",
-      headers: { "x-goog-api-key": apiKey, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: brief }, ...imageParts] }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.55, maxOutputTokens: 24000 }
-      })
-    });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) {
-      const code = response.status;
-      const message = code === 400 ? "Permintaan Gemini tidak valid. Periksa model dan format permintaan."
-        : code === 401 || code === 403 ? "API Key Gemini ditolak atau belum memiliki akses. Periksa GEMINI_API_KEY di Vercel."
-        : code === 404 ? `Model Gemini "${model}" tidak tersedia untuk API Key ini. Hapus GEMINI_MODEL yang keliru di Vercel atau gunakan gemini-3.8-flash.`
-        : code === 429 ? "Batas gratis atau rate limit Gemini tercapai. Tunggu batas penggunaan diperbarui atau coba lagi nanti."
-        : (payload?.error?.message || `Gemini API error (${code})`).slice(0, 500);
-      return send(res, code >= 500 ? 502 : code, { error: message });
+    let payload,output;
+    if(useOpenAI){
+      const content=[{type:"text",text:brief},...referenceImages.flatMap(image=>{const m=String(image.dataUrl||"").match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);return m&&m[2].length<=5000000?[{type:"image_url",image_url:{url:image.dataUrl,detail:"high"}}]:[];})];
+      const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model,messages:[{role:"user",content}],response_format:{type:"json_object"},temperature:0.55,max_tokens:24000})});
+      payload=await response.json().catch(()=>({}));
+      if(!response.ok){const code=response.status;return send(res,code>=500?502:code,{error:code===401?"API Key OpenAI ditolak. Periksa OPENAI_API_KEY di Vercel.":code===429?"Kuota atau rate limit OpenAI tercapai. Periksa saldo dan batas API.":(payload?.error?.message||"OpenAI API error ("+code+")").slice(0,450)});}
+      output=String(payload.choices?.[0]?.message?.content||"").trim();
+    }else{
+      const url=`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
+      const response=await fetch(url,{method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:24000}})});
+      payload=await response.json().catch(()=>({}));
+      if(!response.ok){const code=response.status;const message=code===400?"Permintaan Gemini tidak valid. Periksa model dan format permintaan.":code===401||code===403?"API Key Gemini ditolak atau belum memiliki akses.":code===404?`Model Gemini "${model}" tidak tersedia.`:code===429?"Batas penggunaan Gemini tercapai. Coba lagi nanti.":(payload?.error?.message||`Gemini API error (${code})`).slice(0,500);return send(res,code>=500?502:code,{error:message});}
+      output=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     }
-    const output = (payload.candidates?.[0]?.content?.parts || []).map(x => x.text || "").join("\n").trim();
     if (!output) return send(res, 502, { error: "Gemini tidak mengembalikan hasil teks. Coba lagi." });
     let project;
     try { project = JSON.parse(output.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "")); } catch { const first = output.indexOf("{"); const last = output.lastIndexOf("}"); if (first >= 0 && last > first) { try { project = JSON.parse(output.slice(first, last + 1)); } catch { return send(res, 502, { error: "Hasil AI terpotong atau format JSON tidak lengkap. Coba ulangi; sistem sudah menyiapkan format yang lebih ringkas." }); } } else return send(res, 502, { error: "AI tidak mengembalikan paket JSON yang valid. Coba ulangi." }); }
@@ -224,7 +223,7 @@ WAJIB:
       scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", String(scene.videoPrompt || ""), speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Lampirkan foto produk master yang sama pada klip Flow ini. Pertahankan bentuk, warna, logo, label, teks, dan detail produk." : ""].filter(Boolean).join("\n\n"), 3800);
       return scene;
     });
-    return send(res, 200, { project });
+    return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model });
   } catch {
     return send(res, 500, { error: "Server tidak dapat menghubungi Gemini. Periksa koneksi dan konfigurasi Vercel." });
   }
