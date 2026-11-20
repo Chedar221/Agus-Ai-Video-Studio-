@@ -1,4 +1,8 @@
 // Vercel serverless endpoint for AGUS AI VIDEO STUDIO — Google Gemini
+function compactPrompt(value, maxLength = 3800) {
+  const text = String(value || "").replace(/\s+/g, " ").trim();
+  return text.length <= maxLength ? text : text.slice(0, maxLength - 28).trim() + " [PROMPT DIRINGKAS OTOMATIS]";
+}
 function send(res, status, body) {
   if (typeof res.status === "function") return res.status(status).json(body);
   res.statusCode = status;
@@ -30,7 +34,7 @@ export default async function handler(req, res) {
   const duration = Math.max(5, Math.min(15, Number.parseInt(clean.duration || "10", 10) || 10));
   const totalDuration = sceneCount * duration;
   const formatTime = (seconds) => String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
-  const model = (process.env.GEMINI_MODEL || "gemini-3.5-flash-lite").trim();
+  const model = (process.env.GEMINI_MODEL || "gemini-3.8-flash").trim();
   const speakerCount = Math.max(1, Math.min(4, Number.parseInt(clean.dialogueCount || "1", 10) || 1));
   const isChibi3D = clean.videoType === "chibi_3d";
   const isSilentPopup = clean.videoType === "silent_popup";
@@ -128,6 +132,8 @@ ${JSON.stringify(clean, null, 2)}
 
 ${dialogueInstructions}
 
+${audioInstructions}
+
 ${productInstructions}
 
 ${videoTypeInstructions.join("\n")}
@@ -141,14 +147,14 @@ WAJIB:
 - Tepat ${sceneCount} adegan. SETIAP ADEGAN WAJIB tepat ${duration} detik. Total keseluruhan ${totalDuration} detik.
 - Jangan membagi durasi total ke adegan. Isi durationSeconds setiap adegan dengan angka ${duration} dan buat timecode berurutan masing-masing ${duration} detik.
 - Format ${clean.ratio || "Vertikal 9:16"}, gaya ${clean.style || "Cinematic realistis"}, genre ${clean.genre || "Drama realistis"}.
-- Setiap imagePrompt dan videoPrompt berdiri sendiri, tidak boleh menulis same as above. Ulangi detail wajah/karakter, gender visual sesuai foto referensi, pakaian, kendaraan/properti dan lokasi relevan di setiap adegan. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan pada setiap prompt gambar dan video; jangan gunakan kata pria/laki-laki untuk tokoh tersebut.
+- Setiap imagePrompt dan videoPrompt berdiri sendiri dan ringkas. imagePrompt maksimal sekitar 1.200 karakter; videoPrompt maksimal sekitar 2.400 karakter. Jangan menyalin ulang seluruh character bible atau aturan audio. Ulangi hanya ciri karakter, pakaian, lokasi, aksi, kamera, pencahayaan, dan track suara yang relevan. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan; jika laki-laki, tulis laki-laki.
 - Karakter utama: ${clean.character || "ikuti gender visual, wajah, dan penampilan tokoh pada foto referensi; bila foto menunjukkan perempuan, tokoh utama adalah perempuan; bila foto menunjukkan laki-laki, tokoh utama adalah laki-laki"}. Pakaian: ${clean.wardrobe || "sesuai cerita"}. Lokasi: ${clean.location || "sesuai cerita"}. Konsistensi: ${clean.continuity || "jaga kontinuitas visual"}.
-- Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, kunci pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Gabungkan ke globalCharacterLock dan ulangi instruksi ini di setiap imagePrompt dan videoPrompt.
+- Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Simpan detail lengkap di globalCharacterLock; gunakan versi ringkas di prompt tiap scene.
 - Bahasa: ${clean.language || "Bahasa Indonesia"}; karakter suara narator: ${clean.voice || "Natural dan bersahaja"}. ${isSilentPopup ? "MODE SILENT POP-UP: jangan buat ucapan atau dialog; semua pesan hanya berupa tulisan di layar." : ("Dialog khusus: " + (clean.dialogue || "buat dialog alami sesuai cerita") + ". Jumlah pembicara tepat " + speakerCount + "; ikuti daftar speakerBrief dan aturan dialogueInstructions.")}
 - DETEKSI PERMINTAAN NARASI: jika ide/brief pengguna meminta narasi, narator, voice over, VO, atau saya sebagai narator, WAJIB buat NARASI yang benar-benar tertulis dan bisa langsung diucapkan. Jangan hanya menulis instruksi "narator berbicara".
 - Tambahkan properti "narration" pada SETIAP objek scene berisi kalimat narasi lengkap dalam Bahasa yang diminta. Untuk video bernarasi, setiap scene wajib memiliki teks narasi yang relevan dengan adegan, berkesinambungan antar-scene, tidak kosong, bukan placeholder, dan cukup untuk durasi scene. Isi juga "dialogue" bila ada dialog karakter; jangan mengganti narasi dengan dialog.
 - Setiap videoPrompt WAJIB memuat bagian AUDIO/NARASI dengan teks narration secara verbatim, jenis suara ${clean.voice || "Natural dan bersahaja"}, bahasa ${clean.language || "Bahasa Indonesia"}, tempo, intonasi, dan instruksi voice-over yang jelas. Narasi terdengar jelas, tidak tertukar dengan dialog karakter, tanpa suara narator lain. Jika pengguna meminta saya sebagai narator, narator adalah karakter utama yang sama.
-- Cerita harus berkembang dan berakhir. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
+- Jika jenis video = auto, tentukan otomatis format terbaik dari ide (iklan, dokumenter, komedi, drama, aksi, horor, fantasi, petualangan, atau motivasi) dan terapkan gaya paling cocok tanpa meminta pengaturan tambahan.\n- Cerita harus berkembang dan berakhir; scene terakhir wajib memberi resolusi/penutup yang kuat, bukan mengulang adegan sebelumnya. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
     const response = await fetch(url, {
@@ -156,7 +162,7 @@ WAJIB:
       headers: { "x-goog-api-key": apiKey, "Content-Type": "application/json" },
       body: JSON.stringify({
         contents: [{ role: "user", parts: [{ text: brief }, ...imageParts] }],
-        generationConfig: { responseMimeType: "application/json", temperature: 0.7, maxOutputTokens: 12000 }
+        generationConfig: { responseMimeType: "application/json", temperature: 0.55, maxOutputTokens: 24000 }
       })
     });
     const payload = await response.json().catch(() => ({}));
@@ -172,7 +178,7 @@ WAJIB:
     const output = (payload.candidates?.[0]?.content?.parts || []).map(x => x.text || "").join("\n").trim();
     if (!output) return send(res, 502, { error: "Gemini tidak mengembalikan hasil teks. Coba lagi." });
     let project;
-    try { project = JSON.parse(output); } catch { return send(res, 502, { error: "Format hasil AI tidak terbaca. Silakan generate ulang." }); }
+    try { project = JSON.parse(output.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "")); } catch { const first = output.indexOf("{"); const last = output.lastIndexOf("}"); if (first >= 0 && last > first) { try { project = JSON.parse(output.slice(first, last + 1)); } catch { return send(res, 502, { error: "Hasil AI terpotong atau format JSON tidak lengkap. Coba ulangi; sistem sudah menyiapkan format yang lebih ringkas." }); } } else return send(res, 502, { error: "AI tidak mengembalikan paket JSON yang valid. Coba ulangi." }); }
     if (!Array.isArray(project.scenes) || project.scenes.length !== sceneCount) return send(res, 502, { error: "Jumlah adegan hasil AI tidak sesuai. Silakan generate ulang." });
     project.sceneCount = sceneCount;
     project.duration = `${totalDuration} detik`;
@@ -183,7 +189,7 @@ WAJIB:
       clean.wardrobeLock && "WARDROBE AND PROP LOCK: " + clean.wardrobeLock,
       clean.negativeLock && "NEGATIVE CHARACTER CONSTRAINTS: " + clean.negativeLock,
       clean.continuity && "CONTINUITY RULES: " + clean.continuity
-    ].filter(Boolean).join("\n");
+    ].filter(Boolean).join("\n").slice(0, 1400);
     project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\n");
     project.scenes = project.scenes.map((scene, index) => {
       const start = index * duration;
@@ -191,7 +197,7 @@ WAJIB:
       scene.number = index + 1;
       scene.durationSeconds = duration;
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
-      scene.imagePrompt = String(scene.imagePrompt || "") + "\n\n" + proLock;
+      scene.imagePrompt = compactPrompt([String(scene.imagePrompt || ""), proLock].filter(Boolean).join("\n\n"), 2400);
       scene.narration = String(scene.narration || "");
       scene.dialogue = String(scene.dialogue || "");
       if (audioMode === "narration_only" || audioMode === "none") scene.dialogue = "";
@@ -202,13 +208,11 @@ WAJIB:
       const dialogueTrack = scene.dialogue.trim()
         ? 'DIALOG KARAKTER: "' + scene.dialogue + '". Hanya pembicara yang disebut melakukan lip-sync; suara dan nama tidak boleh tertukar.'
         : "DIALOG KARAKTER: TIDAK ADA.";
-      scene.videoPrompt = `KLIP WAJIB TEPAT ${duration} DETIK. ` + String(scene.videoPrompt || "") +
-        "\n\nDIALOG MULTI-PEMBICARA: Jumlah pembicara tepat " + speakerCount + ". Ikuti nama dan karakter suara sesuai brief; jangan menukar pembicara. Setiap baris dialog diawali nama pembicara dan hanya pembicara itu yang melakukan lip-sync. Jangan menambahkan tokoh bersuara lain.\n\n" +
-        "SMART AUDIO — TRACK TERPISAH:\n" + narrationTrack + "\n" + dialogueTrack +
-        "\nMUSIK: " + (clean.audioMix || "Dialog/narasi paling jelas, musik pelan di belakang") +
-        "\nSFX/AMBIENCE: " + (scene.sound || "Ambience lokasi halus; tanpa suara manusia tambahan") +
-        "\nTIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya bila disebut eksplisit." : "Narasi dan dialog bergantian, tidak tumpang tindih; beri jeda sekitar 0,3 detik; musik diturunkan saat ada ucapan.") +
-        "\n\n" + proLock + (isProductAd ? "\n\nPRODUCT REFERENCE DI GOOGLE FLOW: Lampirkan foto produk master yang sama pada klip ini. Jangan mengubah bentuk, warna, logo, label, teks, atau detail produk. Prioritaskan kestabilan identitas produk daripada gerakan kamera kompleks." : "");
+      const audioBlock = isSilentPopup || audioMode === "none"
+        ? "AUDIO: Tanpa ucapan manusia, narator, dialog, atau lip-sync. Gunakan musik instrumental dan ambience saja."
+        : [narrationTrack, dialogueTrack, "MUSIK: " + (clean.audioMix || "Musik pelan di belakang ucapan."), "SFX/AMBIENCE: " + (scene.sound || "Ambience lokasi natural."), "TIMING & MIX: " + (clean.audioTiming === "layered" ? "Tumpang tindih hanya jika dibutuhkan." : "Narasi dan dialog bergantian; musik diturunkan saat ucapan.")].join("\n");
+      const speakerBlock = isSilentPopup || audioMode === "none" ? "" : "PEMBICARA: Maksimal " + speakerCount + " pembicara sesuai nama dan suara di brief. Jangan menambah atau menukar suara. Hanya pembicara yang sedang berbicara melakukan lip-sync."; 
+      scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", String(scene.videoPrompt || ""), speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Lampirkan foto produk master yang sama pada klip Flow ini. Pertahankan bentuk, warna, logo, label, teks, dan detail produk." : ""].filter(Boolean).join("\n\n"), 3800);
       return scene;
     });
     return send(res, 200, { project });
