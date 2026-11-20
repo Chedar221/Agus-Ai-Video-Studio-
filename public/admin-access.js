@@ -30,12 +30,12 @@ const engineButton=document.createElement("button");engineButton.type="button";e
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
-<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="gemini">Google Gemini — mesin utama</option><option value="openai">OpenAI — mesin alternatif</option></select>
+<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="openai">OpenAI — mesin utama</option><option value="gemini">Google Gemini — alternatif</option></select>
 <div class="hint" id="aiEngineHint">Gemini menggunakan GEMINI_API_KEY di Vercel.</div>
 <div class="engineActions"><button type="button" class="secondary" id="aiEngineCancel">BATAL</button><button type="button" class="gold" id="aiEngineSave">SIMPAN PILIHAN</button></div><div id="aiEngineStatus" role="status"></div>
 </section>`;document.body.appendChild(engineOverlay);
 const engineSelect=document.getElementById("aiEngineSelect"),engineHint=document.getElementById("aiEngineHint"),engineStatus=document.getElementById("aiEngineStatus");
-const currentEngine=()=>localStorage.getItem("chedar_ai_engine")==="openai"?"openai":"gemini";
+const currentEngine=()=>localStorage.getItem("chedar_ai_engine")==="gemini"?"gemini":"openai";
 const syncEngineButton=()=>{engineButton.textContent="⚙ MESIN AI · "+(currentEngine()==="openai"?"OPENAI":"GEMINI");};
 engineSelect.value=currentEngine();syncEngineButton();
 engineSelect.addEventListener("change",()=>{engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";});
@@ -46,7 +46,7 @@ engineOverlay.addEventListener("click",e=>{if(e.target===engineOverlay)closeEngi
 document.getElementById("aiEngineSave").addEventListener("click",()=>{localStorage.setItem("chedar_ai_engine",engineSelect.value);syncEngineButton();engineStatus.textContent="Pilihan mesin AI disimpan untuk perangkat admin ini.";window.dispatchEvent(new CustomEvent("chedar:ai-engine-changed",{detail:{engine:engineSelect.value}}));setTimeout(closeEngine,700);});
 
 const status=document.getElementById("adminLoginStatus"),setStatus=(m,ok=false)=>{status.textContent=m;status.classList.toggle("ok",ok);};
-const setAdmin=(enabled,email="")=>{document.documentElement.classList.toggle("admin-locked",!enabled);access.classList.toggle("admin-on",enabled);access.textContent=enabled?"ADMIN · KELUAR":"LOGIN ADMIN";engineButton.style.display=enabled?"inline-flex":"none";if(!enabled){localStorage.removeItem("chedar_ai_engine");syncEngineButton();}access.title=enabled?"Keluar dari akun admin "+email:"Masuk sebagai admin";
+const setAdmin=(enabled,email="")=>{document.documentElement.classList.toggle("admin-locked",!enabled);access.classList.toggle("admin-on",enabled);access.textContent=enabled?"ADMIN · KELUAR":"LOGIN ADMIN";engineButton.style.display=enabled?"inline-flex":"none";if(!enabled){syncEngineButton();}access.title=enabled?"Keluar dari akun admin "+email:"Masuk sebagai admin";
 document.querySelectorAll("#videoType option").forEach(o=>{if(["lipsync","motion_control"].includes(o.value))o.disabled=!enabled;});
 if(!enabled&&["lipsync","motion_control"].includes(document.getElementById("videoType")?.value)){const s=document.getElementById("videoType");s.value="auto";s.dispatchEvent(new Event("change"));}};
 const check=async()=>{try{const r=await fetch("/api/admin-auth",{credentials:"same-origin",cache:"no-store"}),d=await r.json();setAdmin(Boolean(d.authenticated),d.email||"");if(!d.configured)access.title="Login admin belum dikonfigurasi di Vercel";}catch{setAdmin(false);}};
