@@ -234,7 +234,9 @@ WAJIB:
       return scene;
     });
     return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model });
-  } catch {
-    return send(res, 500, { error: "Server tidak dapat menghubungi Gemini. Periksa koneksi dan konfigurasi Vercel." });
+  } catch (error) {
+    console.error("[CHEDAR_GENERATE_ERROR]", { engine: useOpenAI ? "openai" : "gemini", model, message: error?.message || String(error) });
+    const detail = String(error?.message || "Kesalahan server tidak diketahui").slice(0, 350);
+    return send(res, 500, { error: (useOpenAI ? "OpenAI" : "Gemini") + " gagal diproses: " + detail });
   }
 }
