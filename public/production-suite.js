@@ -6,7 +6,7 @@
 
   const style = document.createElement("style");
   style.textContent = `
-    #chedarProductionSuite{margin-top:18px;border:1px solid #c7a35b66;border-radius:17px;background:linear-gradient(145deg,#1a293d,#0e1725);overflow:hidden}
+    #chedarProductionSuite{display:none!important;margin-top:18px;border:1px solid #c7a35b66;border-radius:17px;background:linear-gradient(145deg,#1a293d,#0e1725);overflow:hidden}
     #chedarProductionSuite .suiteHead{padding:15px 14px;border-bottom:1px solid #c5a15a35}
     #chedarProductionSuite .suiteHead strong{display:block;color:#f0d8a5;font-size:14px;letter-spacing:.04em}
     #chedarProductionSuite .suiteHead p{margin:5px 0 0;color:#aebdce;font-size:11px;line-height:1.5}
