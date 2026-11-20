@@ -800,7 +800,7 @@ $("quickGenerate").onclick=async()=>{
   if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director otomatis...";const suiteOk=await window.ChedarProductionSuite.runAll();if(!suiteOk)$("quickStatus").textContent="Paket utama berhasil dibuat, tetapi fitur pendamping belum selesai. Buka Hasil Video untuk memakai paket utama dan jalankan ulang 5 fitur otomatis.";}
   else if(project===previousProject){$("quickStatus").textContent="Paket utama belum berhasil dibuat. Periksa pesan error sebelum mencoba lagi.";}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
- finally{button.disabled=false;button.textContent="✦ BUAT VIDEO + 5 FITUR OTOMATIS";}
+ finally{button.disabled=false;button.textContent="✦ BUAT VIDEO OTOMATIS";}
 };
 $("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
