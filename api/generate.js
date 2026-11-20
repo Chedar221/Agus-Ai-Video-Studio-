@@ -1,5 +1,3 @@
-import { isAdminRequest } from "./_admin-session.js";
-
 // Vercel serverless endpoint for AGUS AI VIDEO STUDIO — Google Gemini
 function compactPrompt(value, maxLength = 3800) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
@@ -21,9 +19,8 @@ export default async function handler(req, res) {
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  if (["lipsync", "motion_control"].includes(String(d.videoType || "")) && !isAdminRequest(req)) {
-    return send(res, 403, { error: "Mode Lipsync dan Motion Control hanya tersedia untuk admin." });
-  }
+  // Lipsync and Motion Control here only generate text prompts and workflow guidance.
+  // Actual audio/video processing remains inside the external tool selected by the user.
   const allowed = ["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
   const clean = {};
   for (const key of allowed) if (d[key] !== undefined) clean[key] = String(d[key]).slice(0, ["idea","character","continuity"].includes(key) ? 5000 : 2000);
