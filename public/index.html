@@ -512,7 +512,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 #quickStudio .quickSubpanel .field{margin-bottom:12px}
 #quickStudio .quickGenerate{margin-top:10px}
 #quickStudio .quickLead{margin-bottom:14px}
-#quickStudio .quickUpload{min-height:78px}
+#quickStudio .quickUpload{min-height:78px;position:relative;display:flex;cursor:pointer;isolation:isolate}#quickStudio .quickUpload input{z-index:2;opacity:.001;inset:0;width:100%;height:100%;cursor:pointer}#quickStudio .quickUpload>div{pointer-events:none}#quickStudio .quickGallery{display:flex!important;min-height:8px;gap:9px;flex-wrap:wrap;margin-top:10px}#quickStudio .quickPhotoItem{display:inline-flex;flex-direction:column;gap:4px;width:76px}#quickStudio .quickPhotoItem img{display:block;width:68px;height:68px;object-fit:cover;border:1px solid #d9b878;border-radius:9px}
 #quickStudio #quickExtraDialogue{min-height:86px}
 #promptLibraryBtn{display:none!important}
 </style></head>
@@ -575,7 +575,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="productLock">KUNCI IDENTITAS PRODUK</label><textarea id="productLock" rows="4">Produk harus sama persis dengan foto referensi: pertahankan bentuk, proporsi, warna, material, tekstur, tutup, label, logo, tulisan, tipografi, susunan elemen, dan detail kemasan. Jangan mendesain ulang, mengganti merek, mengarang tulisan, menambah/mengurangi komponen, atau mengubah isi/ukuran produk. Tampilkan produk sebagai objek yang sama di setiap adegan.</textarea><div class="hint">Unggah foto produk asli yang jelas, terutama tampak depan. Foto tambahan bisa menunjukkan sisi dan detail produk.</div></div>
 </div>
 <div class="quickSubpanel" id="quickIdeaPanel"><div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Ceritakan ide video secara sederhana. AI akan mengembangkan cerita, adegan, dan dialog..." rows="4"></textarea></div></div>
-<div class="quickSubpanel" id="quickReferencePanel"><div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label><div class="quickUpload" id="quickUpload"><div class="quickUploadIcon">＋</div><div><b>Tambahkan foto karakter, produk, atau lokasi</b><div class="hint" id="refName">Pilih hingga 5 foto. AI akan menggunakannya sebagai acuan visual.</div></div><input id="reference" type="file" accept="image/*" multiple></div><div id="refGallery" class="quickGallery"></div></div></div>
+<div class="quickSubpanel" id="quickReferencePanel"><div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label><label class="quickUpload" id="quickUpload" for="reference"><div class="quickUploadIcon">＋</div><div><b>TEKAN UNTUK TAMBAHKAN FOTO</b><div class="hint" id="refName" aria-live="polite">Pilih hingga 5 foto karakter, produk, atau lokasi.</div></div><input id="reference" type="file" accept="image/*" multiple></label><div id="refGallery" class="quickGallery"></div></div></div>
 <div class="quickSubpanel" id="quickDialoguePanel"><div class="field"><label for="quickExtraDialogue">DIALOG TAMBAHAN (OPSIONAL)</label><textarea id="quickExtraDialogue" rows="3" placeholder="Tulis kalimat khusus yang wajib dimasukkan. AI tetap membuat dialog lain yang sesuai cerita."></textarea><div class="hint">Kosongkan jika ingin AI menyusun semua dialog sendiri. Jika diisi, AI akan mempertahankan kalimat ini dan melengkapi dialog cerita.</div></div></div>
 <input type="hidden" id="quickDuration" value="60"><input type="hidden" id="quickRatio" value="Vertikal 9:16">
 <button class="gold quickGenerate" id="quickGenerate">✦ BUAT VIDEO OTOMATIS</button>
@@ -831,7 +831,7 @@ $("quickGenerate").onclick=async()=>{
 };
 $("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:(document.documentElement.classList.contains("admin-locked")?"gemini":(localStorage.getItem("chedar_ai_engine")||"gemini")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:((localStorage.getItem("chedar_ai_engine")||"openai")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
  catch(e){setStatus(e.message,"err");if($("quickStatus"))$("quickStatus").textContent=e.message;}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
@@ -885,9 +885,9 @@ $("resetBtn").onclick=()=>{
  if($("audioQualitySummary"))$("audioQualitySummary").textContent="Pemeriksaan audio otomatis aktif saat paket dibuat.";
  if(typeof switchTab==="function")switchTab("story");
  renderSaved();
- try{localStorage.removeItem("chedar_ai_engine");}catch{}
- const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="gemini";
- const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · GEMINI";
+ try{localStorage.setItem("chedar_ai_engine","openai");}catch{}
+ const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="openai";
+ const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · OPENAI";
  setStatus("Semua isian, foto referensi, pilihan mesin AI, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
 };
 if($("quickResetStudio"))$("quickResetStudio").onclick=$("resetBtn").onclick;
