@@ -4,6 +4,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import generateHandler from "./api/generate.js";
 import productionToolsHandler from "./api/production-tools.js";
+import adminAuthHandler from "./api/admin-auth.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname, "public"), {
 }));
 app.post("/api/generate", generateHandler);
 app.post("/api/production-tools", productionToolsHandler);
+app.all("/api/admin-auth", adminAuthHandler);
 app.get("/api/health", (_req, res) => res.json({ ok: true, service: "CHEDAR AI KREATOR" }));
 app.get("*", (_req, res) => res.sendFile(path.join(__dirname, "public", "index.html")));
 
