@@ -177,10 +177,24 @@ WAJIB:
       if(!response.ok){const code=response.status;return send(res,code>=500?502:code,{error:code===401?"API Key OpenAI ditolak. Periksa OPENAI_API_KEY di Vercel.":code===429?"Kuota atau rate limit OpenAI tercapai. Periksa saldo dan batas API.":(payload?.error?.message||"OpenAI API error ("+code+")").slice(0,450)});}
       output=String(payload.choices?.[0]?.message?.content||"").trim();
     }else{
-      const url=`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`;
-      const response=await fetch(url,{method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:24000}})});
-      payload=await response.json().catch(()=>({}));
-      if(!response.ok){const code=response.status;const message=code===400?"Permintaan Gemini tidak valid. Periksa model dan format permintaan.":code===401||code===403?"API Key Gemini ditolak atau belum memiliki akses.":code===404?`Model Gemini "${model}" tidak tersedia.`:code===429?"Batas penggunaan Gemini tercapai. Coba lagi nanti.":(payload?.error?.message||`Gemini API error (${code})`).slice(0,500);return send(res,code>=500?502:code,{error:message});}
+      const requestBody={contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:24000}};
+      const fallbackModels=[model,...(model==="gemini-3.5-flash-lite"?[]:["gemini-3.5-flash-lite"])];
+      let response=null;
+      let activeModel=model;
+      for(let i=0;i<fallbackModels.length;i++){
+        activeModel=fallbackModels[i];
+        const url=`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(activeModel)}:generateContent`;
+        response=await fetch(url,{method:"POST",headers:{"x-goog-api-key":apiKey,"Content-Type":"application/json"},body:JSON.stringify(requestBody)});
+        payload=await response.json().catch(()=>({}));
+        if(response.ok)break;
+        const code=response.status;
+        const detail=String(payload?.error?.message||"");
+        const temporarilyUnavailable=code===503||/high demand|overloaded|temporarily unavailable|try again later/i.test(detail);
+        if(temporarilyUnavailable&&i<fallbackModels.length-1)continue;
+        const message=code===400?"Permintaan Gemini tidak valid. Periksa model dan format permintaan.":code===401||code===403?"API Key Gemini ditolak atau belum memiliki akses.":code===404?`Model Gemini "${activeModel}" tidak tersedia.`:code===429?"Batas penggunaan Gemini tercapai. Periksa kuota Gemini atau coba lagi nanti.":temporarilyUnavailable?"Gemini sedang padat. Sistem sudah mencoba model cadangan, tetapi layanan masih belum tersedia. Coba lagi beberapa saat.":(detail||`Gemini API error (${code})`).slice(0,500);
+        return send(res,code>=500?503:code,{error:message});
+      }
+      if(!response?.ok)return send(res,503,{error:"Gemini sedang padat dan model cadangan belum tersedia. Coba lagi beberapa saat."});
       output=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     }
     if (!output) return send(res, 502, { error: "Gemini tidak mengembalikan hasil teks. Coba lagi." });
@@ -233,7 +247,7 @@ WAJIB:
       scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", visualPrompt, speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Gunakan foto produk master yang sama; jangan mengubah bentuk, warna, logo, label, atau detailnya." : ""].filter(Boolean).join("\n\n"), 2800);
       return scene;
     });
-    return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model });
+    return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model: useOpenAI?model:(typeof activeModel!=="undefined"?activeModel:model) });
   } catch (error) {
     console.error("[CHEDAR_GENERATE_ERROR]", { engine: useOpenAI ? "openai" : "gemini", model, message: error?.message || String(error) });
     const detail = String(error?.message || "Kesalahan server tidak diketahui").slice(0, 350);
