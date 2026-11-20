@@ -8,13 +8,26 @@ const allowedTools=new Set(["character","storyboard","continuity","voice","music
 function compact(value,max=9000){return String(value??"").slice(0,max);}
 export default async function handler(req,res){
   res.setHeader("Cache-Control","no-store");
-  if(!isAdminRequest(req)) return send(res,401,{error:"Fitur produksi lanjutan hanya dapat digunakan setelah login admin."});
   if(req.method!=="POST"){if(typeof res.setHeader==="function")res.setHeader("Allow","POST");return send(res,405,{error:"Gunakan metode POST."});}
   const apiKey=process.env.GEMINI_API_KEY;
   if(!apiKey)return send(res,503,{error:"GEMINI_API_KEY belum dipasang di Vercel."});
   let d=req.body;if(typeof d==="string"){try{d=JSON.parse(d);}catch{d=null;}}
   if(!d||typeof d!=="object"||Array.isArray(d)||!allowedTools.has(d.tool))return send(res,400,{error:"Permintaan fitur produksi tidak valid."});
   const tool=d.tool;
+  // Auto pipeline is available to ordinary users; individual production tools remain admin-only.
+  if(tool!=="auto"&&!isAdminRequest(req)) return send(res,401,{error:"Fitur produksi individual hanya tersedia untuk admin."});
+  if(tool==="auto"&&!isAdminRequest(req)){
+    const forwarded=String(req.headers?.["x-forwarded-for"]||"").split(",")[0].trim();
+    const key=forwarded||String(req.headers?.["x-real-ip"]||"anonymous");
+    const now=Date.now(),windowMs=10*60*1000,maxRequests=2;
+    globalThis.__chedarAutoUsage ||= new Map();
+    const usage=globalThis.__chedarAutoUsage;
+    let entry=usage.get(key);
+    if(!entry||now-entry.startedAt>=windowMs) entry={startedAt:now,count:0};
+    if(entry.count>=maxRequests) return send(res,429,{error:"Batas pembuatan otomatis sementara tercapai. Tunggu 10 menit sebelum mencoba lagi."});
+    entry.count++;usage.set(key,entry);
+    if(usage.size>1000){for(const [ip,item] of usage)if(now-item.startedAt>=windowMs)usage.delete(ip);}
+  }
   const title=compact(d.title,180)||"Proyek video";
   const idea=compact(d.idea,5000);
   const project=d.project&&typeof d.project==="object"?d.project:null;
