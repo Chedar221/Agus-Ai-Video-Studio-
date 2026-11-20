@@ -248,7 +248,7 @@
     const btn=document.querySelector('[data-suite-run="'+tool+'"]');if(btn){btn.disabled=true;btn.textContent="AI sedang bekerja...";}
     setStatus("AI sedang menyusun "+tool+"...");
     try{
-      const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...brief,aiEngine:(document.documentElement.classList.contains("admin-locked")?"gemini":(localStorage.getItem("chedar_ai_engine")||"gemini"))})});
+      const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...brief,aiEngine:((localStorage.getItem("chedar_ai_engine")||"openai"))})});
       const result=await response.json();if(!response.ok)throw new Error(result.error||"AI gagal menyusun arahan.");
       output.textContent=normalizeOutput(result.result||"AI tidak mengembalikan hasil.");
       setStatus("Selesai. Periksa hasil sebelum dipakai di Flow.","ok");
@@ -320,7 +320,7 @@
       }
     };
     try{
-      const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,aiEngine:(document.documentElement.classList.contains("admin-locked")?"gemini":(localStorage.getItem("chedar_ai_engine")||"gemini"))})});
+      const response=await fetch("/api/production-tools",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...payload,aiEngine:((localStorage.getItem("chedar_ai_engine")||"openai"))})});
       const result=await response.json();
       if(!response.ok)throw new Error(result.error||"Lima fitur otomatis gagal dijalankan.");
       const outputs=result.results||{};
