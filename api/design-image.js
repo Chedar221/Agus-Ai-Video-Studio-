@@ -29,5 +29,5 @@ export default async function handler(req,res){
   else{const out=await response.json().catch(()=>({}));const result=out.result||out;imageData=String(result.image||result.data||"");if(!imageData&&typeof result==="string")imageData=result;if(!imageData)return send(res,502,{error:"Cloudflare merespons, tetapi data gambar tidak ditemukan. Coba lagi."});}
   imageData=imageData.replace(/^data:image\/[^;]+;base64,/,"");
   return send(res,200,{image:"data:"+mime+";base64,"+imageData,model:"FLUX.2 Klein 4B",width,height,referenceCount:refs.length});
- }catch(e){return send(res,502,{error:"Tidak dapat menghubungi layanan gambar Cloudflare. Coba lagi beberapa saat."});}
+ }catch(e){const cause=e?.cause?.code||e?.cause?.name||"";const detail=String(e?.message||"Unknown fetch error").slice(0,180);console.error("[CHEDAR_IMAGE_CLOUDFLARE_FETCH]",{message:detail,cause});return send(res,502,{error:"Koneksi ke Cloudflare gagal: "+detail+(cause?" ("+cause+")":"")+". Periksa log Preview jika masalah berlanjut."});}
 }
