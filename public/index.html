@@ -706,7 +706,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <section class="panel" id="savedProjects"><h3><span class="num">09</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel" id="flowGuide"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
 </div></div>
-<footer>CHEDAR AI STUDIO · Studio produksi prompt AI · Powered by OpenAI</footer>
+<footer>CHEDAR AI STUDIO · Studio produksi prompt AI · Powered by Google Gemini</footer>
 </main>
 <div id="legacyCompatibilityFields" hidden aria-hidden="true">
 <select id="dialogueCount"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
@@ -1005,7 +1005,7 @@ $("quickGenerate").onclick=async(event)=>{
 };
 $("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:((localStorage.getItem("chedar_ai_engine")||"openai")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:((localStorage.getItem("chedar_ai_engine")||"gemini")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
  catch(e){setStatus(e.message,"err");if($("quickStatus"))$("quickStatus").textContent=e.message;}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
@@ -1061,9 +1061,9 @@ $("resetBtn").onclick=()=>{
  if($("audioQualitySummary"))$("audioQualitySummary").textContent="Pemeriksaan audio otomatis aktif saat paket dibuat.";
  if(typeof switchTab==="function")switchTab("story");
  renderSaved();
- try{localStorage.setItem("chedar_ai_engine","openai");}catch{}
- const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="openai";
- const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · OPENAI";
+ try{localStorage.setItem("chedar_ai_engine","gemini");}catch{}
+ const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="gemini";
+ const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · GEMINI";
  setStatus("Semua isian, foto referensi, pilihan mesin AI, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
 };
 if($("quickResetStudio"))$("quickResetStudio").onclick=$("resetBtn").onclick;
