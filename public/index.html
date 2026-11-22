@@ -508,7 +508,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 #videoSubTypePanel.hidden{display:none!important}
 #videoSubTypePanel:not(.hidden){display:block!important}
 /* SIMPLE USER WORKFLOW: expose only the four creative inputs and results */
-#ideaConcept,#productionSettings,#storyboardStudio,#characterStudio,#promptLibrary,#directorStudio,#musicStudio,#productionGenerate,#ugcFields,#silentPopupFields,#lipsyncFields,#motionFields,#productAdFields,.notice,.generatorChooser,.quickSubnav,.quickOptions{display:none!important}
+#ideaConcept,#productionSettings,#storyboardStudio,#characterStudio,#promptLibrary,#directorStudio,#musicStudio,#productionGenerate,#ugcFields,#silentPopupFields,#motionFields,#productAdFields,.notice,.generatorChooser,.quickSubnav,.quickOptions{display:none!important}
 #quickStudio .quickSubpanel{display:block!important;padding:4px 0}
 #quickStudio .quickSubpanel.hidden{display:block!important}
 #quickStudio .quickSubpanel .field{margin-bottom:12px}
@@ -594,10 +594,13 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="popupPlacement">POSISI TULISAN</label><select id="popupPlacement"><option value="Area aman tengah layar, tidak menutupi wajah">Area aman tengah layar</option><option value="Atas karakter seperti bubble">Di atas karakter seperti bubble</option><option value="Bawah layar seperti subtitle">Bawah layar seperti subtitle</option><option value="Berpindah sesuai komposisi adegan">Dinamis sesuai adegan</option></select></div>
 <div class="hint">Karakter hanya berekspresi dan berakting. Tidak berbicara, tidak menggerakkan bibir. Semua pesan muncul sebagai teks pop-up yang terbaca jelas.</div></div>
 <div id="lipsyncFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
-<h3>🎙️ Pengaturan Lipsync</h3>
-<div class="field"><label for="lipsyncAudio">SUMBER AUDIO</label><select id="lipsyncAudio"><option value="Lagu / MP3">Lagu / MP3</option><option value="Rekaman suara / dialog">Rekaman suara / dialog</option><option value="Audio dibuat kemudian">Audio dibuat kemudian</option></select></div>
-<div class="field"><label for="lipsyncNotes">ARAHAN LIPSYNC</label><textarea id="lipsyncNotes" rows="2" placeholder="Contoh: Ikuti lirik, ekspresi natural, gerak bibir presisi."></textarea></div>
-<div class="hint">Audio perlu dilampirkan secara terpisah pada fitur lipsync di Google Flow atau alat yang mendukungnya.</div></div>
+<h3>🎙️ CHEDAR LIPSYNC SONG REFERENCE</h3>
+<div class="field"><label for="lipsyncAudio">SUMBER AUDIO</label><select id="lipsyncAudio"><option value="Lagu / MP3 milik pengguna">Lagu / MP3 milik pengguna</option><option value="Rekaman suara sendiri">Rekaman suara sendiri</option><option value="Audio dari video referensi">Audio dari video referensi</option><option value="Audio dibuat kemudian">Audio dibuat kemudian</option></select></div>
+<div class="field"><label for="lipsyncSongFile">UPLOAD REFERENSI LAGU / AUDIO (MP3, WAV, M4A, OGG)</label><input id="lipsyncSongFile" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg"><div class="hint" id="lipsyncSongFileInfo">Pilih file lagu atau rekaman suara dari perangkat. File dipakai sebagai referensi lokal untuk menyiapkan prompt.</div></div>
+<div class="field" id="lipsyncAudioPreviewWrap" hidden><label>PREVIEW AUDIO</label><audio id="lipsyncSongPreview" controls preload="metadata" style="width:100%"></audio></div>
+<div class="grid"><div class="field"><label for="lipsyncSongTitle">JUDUL LAGU</label><input id="lipsyncSongTitle" placeholder="Contoh: Satu Rasa Cinta"></div><div class="field"><label for="lipsyncArtist">PENYANYI</label><input id="lipsyncArtist" placeholder="Nama penyanyi"></div><div class="field"><label for="lipsyncGenre">GENRE MUSIK</label><select id="lipsyncGenre"><option value="">Pilih genre musik</option><option>Pop</option><option>Pop Bali</option><option>Dangdut</option><option>Funkot</option><option>DJ Remix</option><option>Rock</option><option>R&B</option><option>Hip-hop</option><option>Jazz</option><option>Akustik</option><option>Elektronik / EDM</option><option>Instrumental</option><option>Lainnya</option></select></div></div>
+<div class="field"><label for="lipsyncNotes">ARAHAN LIPSYNC & LIRIK</label><textarea id="lipsyncNotes" rows="3" placeholder="Contoh: Ikuti audio dan lirik asli secara presisi, artikulasi bibir natural, ekspresi mengikuti emosi lagu, jangan mengubah lirik."></textarea></div>
+<div class="hint">CHEDAR AI STUDIO menyiapkan prompt dan membaca metadata file di perangkat. Untuk proses lipsync sebenarnya, unggah juga file audio yang sama ke Google Flow atau alat lipsync yang mendukung audio.</div></div>
 <div id="motionFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
 <h3>🕺 Pengaturan Motion Control</h3>
 <div class="field"><label for="motionReference">DESKRIPSI GERAKAN REFERENSI</label><textarea id="motionReference" rows="3" placeholder="Jelaskan gerakan tarian, berjalan, gestur, aksi atau koreografi yang ingin ditiru."></textarea></div>
@@ -724,7 +727,7 @@ function removeLiteralNewlineArtifacts(root=document.body){
 removeLiteralNewlineArtifacts();
 new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,{childList:true,subtree:true,characterData:true});
 let project=null,latestText="",referenceUrls=[],activeProjectId=null;
-const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncSongTitle","lipsyncArtist","lipsyncGenre","lipsyncNotes","motionReference","motionNotes","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(f.name)).slice(0,5),out=[];
  for(const file of files){
@@ -763,6 +766,8 @@ async function getReferenceImages(){
 }
 function getData(){
  const data=Object.fromEntries(fields.map(k=>[k,$(k).type==="checkbox"?String($(k).checked):$(k).value.trim()]));
+ const songFile=$("lipsyncSongFile")?.files?.[0];
+ if(songFile){data.lipsyncAudioFileName=songFile.name.slice(0,180);data.lipsyncAudioFileType=songFile.type||"audio/unknown";data.lipsyncAudioDuration=$("lipsyncSongPreview")?.dataset?.duration||"";}
  if(data.videoType==="asmr"){
   const audioGuide="ASMR AUDIO: "+data.asmrSubtype+". Sound focus: "+data.asmrSoundFocus+". Ambience: "+data.asmrAmbience+". "+(data.asmrNoMusic==="true"?"No background music; isolate natural ASMR sounds.":"Only subtle ambience; ASMR remains dominant.")+" Clean close stereo recording, detailed realistic texture, no clipping or sudden loud sounds.";
   const cameraGuide="ASMR CAMERA: "+data.asmrCameraStyle+". Use stable framing, tactile macro details, deliberate slow movements, shallow depth of field and uninterrupted readable action.";
@@ -805,6 +810,16 @@ function updateVideoSubType(){
  hint.textContent=type==="ugc"?"Contoh: Unboxing, review, tutorial, daily vlog, atau affiliate. AI akan menyesuaikan hook, dialog, demonstrasi, dan CTA.":"Pilihan ini akan mengarahkan struktur cerita, adegan, dialog, visual, kamera, audio, dan prompt Google Flow.";
 }
 
+let lipsyncPreviewUrl=null;
+$("lipsyncSongFile")?.addEventListener("change",()=>{
+ const file=$("lipsyncSongFile").files?.[0],info=$("lipsyncSongFileInfo"),audio=$("lipsyncSongPreview"),wrap=$("lipsyncAudioPreviewWrap");
+ if(lipsyncPreviewUrl){URL.revokeObjectURL(lipsyncPreviewUrl);lipsyncPreviewUrl=null;}
+ if(!file){wrap.hidden=true;info.textContent="Pilih file lagu atau rekaman suara dari perangkat.";return;}
+ const valid=/\.(mp3|wav|m4a|ogg)$/i.test(file.name)||/^audio\//i.test(file.type);
+ if(!valid){$("lipsyncSongFile").value="";wrap.hidden=true;info.textContent="Format tidak didukung. Gunakan MP3, WAV, M4A, atau OGG.";return;}
+ lipsyncPreviewUrl=URL.createObjectURL(file);audio.src=lipsyncPreviewUrl;audio.dataset.duration="";wrap.hidden=false;info.textContent=file.name+" · "+(file.size/1048576).toFixed(2)+" MB";
+ audio.onloadedmetadata=()=>{audio.dataset.duration=Number.isFinite(audio.duration)?String(Math.round(audio.duration)):"";};
+});
 function updateVideoTypeFields(){const t=$("videoType").value;$("lipsyncFields").classList.toggle("hidden",t!=="lipsync");$("motionFields").classList.toggle("hidden",t!=="motion_control");$("ugcFields").classList.toggle("hidden",t!=="ugc");$("silentPopupFields").classList.toggle("hidden",t!=="silent_popup");$("asmrFields").classList.toggle("hidden",t!=="asmr");}
 
 const videoTypeIcons={
