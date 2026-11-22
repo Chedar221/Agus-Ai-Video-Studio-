@@ -25,7 +25,7 @@ export default async function handler(req, res) {
   if(!apiKey)return send(res,503,{error:useOpenAI?"OPENAI_API_KEY belum dipasang atau belum aktif di Vercel.":"GEMINI_API_KEY belum dipasang di Vercel."});
   // Lipsync and Motion Control here only generate text prompts and workflow guidance.
   // Actual audio/video processing remains inside the external tool selected by the user.
-  const allowed = ["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+  const allowed = ["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
   const clean = {};
   for (const key of allowed) if (d[key] !== undefined) clean[key] = String(d[key]).slice(0, ["idea","character","continuity"].includes(key) ? 5000 : 2000);
   if (!clean.idea?.trim()) return send(res, 400, { error: "Ide cerita belum diisi." });
@@ -117,6 +117,10 @@ export default async function handler(req, res) {
     ],
   };
   const videoTypeGuide = videoTypeGuides[clean.videoType] || [];
+  const selectedSubTypeInstruction = clean.videoSubType
+    ? ["FORMAT / SUBJENIS VIDEO YANG DIPILIH — WAJIB DIIKUTI: " + clean.videoSubType + ".", "Bangun hook, urutan adegan, dialog/narasi, visual, gerak kamera, audio, dan penutup yang khas untuk format tersebut. Jangan mengganti format pilihan pengguna. Jika format berupa unboxing/review/tutorial, tampilkan proses atau demonstrasi produk secara runtut dan faktual; jangan mengarang fitur, harga, hasil, atau testimoni."]
+    : [];
+
   const chibiAudioInstruction = isChibi3D ? "GAYA SUARA CHIBI 3D: Utamakan suara anak kecil lucu, imut, ceria dan ekspresif untuk tokoh anak; suara tetap jelas, natural, tidak terlalu melengking. Jika tokoh bukan anak, jangan otomatis mengubahnya menjadi suara anak. Pertahankan suara tiap tokoh secara konsisten." : "";
   const autoTypeInstruction = clean.videoType === "auto" ? [
     "AUTO DIRECTOR — KLASIFIKASI JENIS VIDEO WAJIB:",
@@ -124,7 +128,7 @@ export default async function handler(req, res) {
     "Jangan mencampur semua genre. Tetapkan genre dominan, gaya visual, tempo editing, komposisi kamera, desain suara, struktur cerita, dan CTA (hanya jika relevan) berdasarkan ide.",
     "Tulis jenis pendekatan yang dipilih secara eksplisit di synopsis/story dan terapkan konsisten pada SEMUA scene, imagePrompt, videoPrompt, lighting, camera, audio, transisi dan workflow."
   ] : [];
-  const videoTypeInstructions = clean.videoType === "auto" ? autoTypeInstruction : (videoTypeGuide.length ? ["JENIS VIDEO TERPILIH — PRIORITAS TERTINGGI: " + clean.videoType, ...videoTypeGuide, chibiAudioInstruction, "Jangan mengubah pilihan jenis video menjadi genre lain. Terapkan arahan ini pada sinopsis, seluruh adegan, imagePrompt, videoPrompt, kamera, pencahayaan, audio, transisi, checklist kontinuitas dan workflow. Jika ada konflik, pilihan jenis video pengguna menang atas gaya default."] : []);
+  const videoTypeInstructions = clean.videoType === "auto" ? autoTypeInstruction : (videoTypeGuide.length ? ["JENIS VIDEO TERPILIH — PRIORITAS TERTINGGI: " + clean.videoType, ...videoTypeGuide, ...selectedSubTypeInstruction, chibiAudioInstruction, "Jangan mengubah pilihan jenis video menjadi genre lain. Terapkan arahan ini pada sinopsis, seluruh adegan, imagePrompt, videoPrompt, kamera, pencahayaan, audio, transisi, checklist kontinuitas dan workflow. Jika ada konflik, pilihan jenis video pengguna menang atas gaya default."] : []);
   const productInstructions = isProductAd ? [
     "MODE IKLAN PRODUK PROFESIONAL — WAJIB:",
     "Foto produk yang dilampirkan adalah MASTER REFERENCE. Semua adegan harus menampilkan benda fisik yang sama, bukan desain ulang.",
