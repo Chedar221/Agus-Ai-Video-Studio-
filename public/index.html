@@ -770,7 +770,7 @@ async function getReferenceImages(){
  return out;
 }
 function getData(){
- const data=Object.fromEntries(fields.map(k=>[k,$(k).type==="checkbox"?String($(k).checked):$(k).value.trim()]));
+ const data=Object.fromEntries(fields.flatMap(k=>{const el=$(k);if(!el)return [];return [[k,el.type==="checkbox"?String(el.checked):String(el.value??"").trim()]];}));
  const motionFile=$("motionVideoFile")?.files?.[0];
  if(motionFile){data.motionVideoFileName=motionFile.name.slice(0,180);data.motionVideoFileType=motionFile.type||"video/unknown";data.motionVideoDuration=$("motionVideoPreview")?.dataset?.duration||"";}
  const songFile=$("lipsyncSongFile")?.files?.[0];
