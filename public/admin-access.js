@@ -30,17 +30,19 @@ const engineButton=document.createElement("button");engineButton.type="button";e
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
-<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="gemini">Google Gemini — mesin utama</option><option value="openai">OpenAI — alternatif</option></select>
-<div class="hint" id="aiEngineHint">Gemini menggunakan GEMINI_API_KEY di Vercel.</div>
+<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="gemini">Google Gemini — mesin utama</option><option value="groq">Groq — gratis / cepat</option><option value="openrouter">OpenRouter — model gratis</option><option value="openai">OpenAI — alternatif</option></select>
+<div class="hint" id="aiEngineHint">Gemini menggunakan GEMINI_API_KEY di Vercel. Groq: GROQ_API_KEY. OpenRouter: OPENROUTER_API_KEY.</div>
 <div class="engineActions"><button type="button" class="secondary" id="aiEngineCancel">BATAL</button><button type="button" class="gold" id="aiEngineSave">SIMPAN PILIHAN</button></div><div id="aiEngineStatus" role="status"></div>
 </section>`;document.body.appendChild(engineOverlay);
 const engineSelect=document.getElementById("aiEngineSelect"),engineHint=document.getElementById("aiEngineHint"),engineStatus=document.getElementById("aiEngineStatus");
-const currentEngine=()=>localStorage.getItem("chedar_ai_engine_v2")==="openai"?"openai":"gemini";
-const syncEngineButton=()=>{engineButton.textContent="⚙ MESIN AI · "+(currentEngine()==="openai"?"OPENAI":"GEMINI");};
+const currentEngine=()=>["gemini","groq","openrouter","openai"].includes(localStorage.getItem("chedar_ai_engine_v2"))?localStorage.getItem("chedar_ai_engine_v2"):"gemini";
+const engineLabels={gemini:"GEMINI",groq:"GROQ",openrouter:"OPENROUTER",openai:"OPENAI"};
+const engineHints={gemini:"Google Gemini menggunakan GEMINI_API_KEY di Vercel.",groq:"Groq menggunakan GROQ_API_KEY. Model vision default: qwen/qwen3.8-27b.",openrouter:"OpenRouter menggunakan OPENROUTER_API_KEY. Model default openrouter/free memilih model gratis yang sesuai, termasuk dukungan gambar bila tersedia.",openai:"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API."};
+const syncEngineButton=()=>{engineButton.textContent="⚙ MESIN AI · "+engineLabels[currentEngine()];};
 engineSelect.value=currentEngine();syncEngineButton();
-engineSelect.addEventListener("change",()=>{engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";});
+engineSelect.addEventListener("change",()=>{engineHint.textContent=engineHints[engineSelect.value]||"";});
 const closeEngine=()=>engineOverlay.classList.remove("open");
-engineButton.addEventListener("click",()=>{engineSelect.value=currentEngine();engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";engineStatus.textContent="";engineOverlay.classList.add("open");});
+engineButton.addEventListener("click",()=>{engineSelect.value=currentEngine();engineHint.textContent=engineHints[engineSelect.value]||"";engineStatus.textContent="";engineOverlay.classList.add("open");});
 document.getElementById("aiEngineCancel").addEventListener("click",closeEngine);
 engineOverlay.addEventListener("click",e=>{if(e.target===engineOverlay)closeEngine();});
 document.getElementById("aiEngineSave").addEventListener("click",()=>{localStorage.setItem("chedar_ai_engine_v2",engineSelect.value);syncEngineButton();engineStatus.textContent="Pilihan mesin AI disimpan untuk perangkat admin ini.";window.dispatchEvent(new CustomEvent("chedar:ai-engine-changed",{detail:{engine:engineSelect.value}}));setTimeout(closeEngine,700);});
