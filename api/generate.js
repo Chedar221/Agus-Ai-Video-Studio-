@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  const requestedEngine=String(d.aiEngine||"openai").toLowerCase();
+  const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
   if(requestedEngine!=="gemini"&&requestedEngine!=="openai")return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
   const useOpenAI=requestedEngine==="openai";
   const apiKey=useOpenAI?process.env.OPENAI_API_KEY:process.env.GEMINI_API_KEY;
@@ -173,7 +173,7 @@ WAJIB:
 - Tepat ${sceneCount} adegan. SETIAP ADEGAN WAJIB tepat ${duration} detik. Total keseluruhan ${totalDuration} detik.
 - Jangan membagi durasi total ke adegan. Isi durationSeconds setiap adegan dengan angka ${duration} dan buat timecode berurutan masing-masing ${duration} detik.
 - Format ${clean.ratio || "Vertikal 9:16"}, gaya ${clean.style || "Cinematic realistis"}, genre ${clean.genre || "Drama realistis"}.
-- Setiap imagePrompt dan videoPrompt berdiri sendiri dan ringkas. imagePrompt maksimal sekitar 1.000 karakter; videoPrompt maksimal sekitar 1.800 karakter. videoPrompt hanya berisi visual, aksi, kamera, dan pencahayaan. Jangan memasukkan blok audio, dialog, atau penguncian identitas berulang ke videoPrompt; server menambahkan arahan audio dan identitas satu kali. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan; jika laki-laki, tulis laki-laki.
+- Setiap imagePrompt dan videoPrompt berdiri sendiri dan ringkas. imagePrompt maksimal sekitar 1.800 karakter; videoPrompt maksimal sekitar 3.800 karakter. videoPrompt hanya berisi visual, aksi, kamera, dan pencahayaan. Jangan memasukkan blok audio, dialog, atau penguncian identitas berulang ke videoPrompt; server menambahkan arahan audio dan identitas satu kali. Jika foto referensi menunjukkan perempuan, tulis jelas tokoh utama perempuan; jika laki-laki, tulis laki-laki.
 - Karakter utama: ${clean.character || "ikuti gender visual, wajah, dan penampilan tokoh pada foto referensi; bila foto menunjukkan perempuan, tokoh utama adalah perempuan; bila foto menunjukkan laki-laki, tokoh utama adalah laki-laki"}. Pakaian: ${clean.wardrobe || "sesuai cerita"}. Lokasi: ${clean.location || "sesuai cerita"}. Konsistensi: ${clean.continuity || "jaga kontinuitas visual"}.
 - Character Consistency PRO: identitas wajah ${clean.faceLock || "tetap sama"}, pakaian/properti ${clean.wardrobeLock || clean.wardrobe || "tetap sama"}, larangan ${clean.negativeLock || "hindari identity drift"}. Simpan detail lengkap di globalCharacterLock; gunakan versi ringkas di prompt tiap scene.
 - Bahasa: ${clean.language || "Bahasa Indonesia"}; karakter suara narator: ${clean.voice || "Natural dan bersahaja"}. ${isSilentPopup ? "MODE SILENT POP-UP: jangan buat ucapan atau dialog; semua pesan hanya berupa tulisan di layar." : ("Dialog tambahan dari pengguna: " + (clean.dialogue || "tidak ada") + ". Jika ada, pertahankan kalimat wajib secara verbatim dan tetap buat dialog lain yang natural sesuai cerita. Jika kosong, AI membuat dialog sendiri. Jaga konsistensi tokoh dan suara sesuai speakerBrief.")}
@@ -231,7 +231,7 @@ WAJIB:
       scene.number = index + 1;
       scene.durationSeconds = duration;
       scene.timecode = `${formatTime(start)}-${formatTime(end)}`;
-      scene.imagePrompt = compactPrompt([String(scene.imagePrompt || ""), proLock].filter(Boolean).join("\n\n"), 2400);
+      scene.imagePrompt = compactPrompt([String(scene.imagePrompt || ""), proLock].filter(Boolean).join("\n\n"), 3600);
       scene.narration = String(scene.narration || "");
       scene.dialogue = String(scene.dialogue || "");
       if (audioMode === "narration_only" || audioMode === "none") scene.dialogue = "";
@@ -257,7 +257,7 @@ WAJIB:
         : "";
       const visualPrompt = String(scene.videoPrompt || "").split(/\n\s*\n/).filter(block => !/(AUDIO\/DIALOG|DIALOG MULTI-PEMBICARA|SMART AUDIO|CHARACTER IDENTITY LOCK|FACE IDENTITY LOCK|WARDROBE AND PROP LOCK|NEGATIVE CHARACTER CONSTRAINTS|CONTINUITY RULES|NARASI\/VOICE-OVER|DIALOG KARAKTER|TIMING & MIX|SFX\/AMBIENCE|PEMBICARA:)/i.test(block)).join("\n\n").trim()
         || [scene.visual, scene.action, scene.camera, scene.lighting].filter(Boolean).join(". ");
-      scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", visualPrompt, speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Gunakan foto produk master yang sama; jangan mengubah bentuk, warna, logo, label, atau detailnya." : ""].filter(Boolean).join("\n\n"), 2800);
+      scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", visualPrompt, speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Gunakan foto produk master yang sama; jangan mengubah bentuk, warna, logo, label, atau detailnya." : ""].filter(Boolean).join("\n\n"), 5200);
       return scene;
     });
     return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model: useOpenAI?model:(typeof activeModel!=="undefined"?activeModel:model) });
