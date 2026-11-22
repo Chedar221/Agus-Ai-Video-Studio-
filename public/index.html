@@ -726,24 +726,38 @@ new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,
 let project=null,latestText="",referenceUrls=[],activeProjectId=null;
 const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
- const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
+ const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(f.name)).slice(0,5),out=[];
  for(const file of files){
-  let source,width,height,bitmap=null;
+  let source=null,width=0,height=0,bitmap=null,objectUrl=null;
   try{
-   if("createImageBitmap" in window){bitmap=await createImageBitmap(file);source=bitmap;width=bitmap.width;height=bitmap.height;}
-   else{
-    source=await new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Foto tidak bisa dibaca: "+file.name));};img.src=url;});
+   if("createImageBitmap" in window){
+    try{bitmap=await createImageBitmap(file);source=bitmap;width=bitmap.width;height=bitmap.height;}catch(bitmapError){bitmap=null;}
+   }
+   if(!source){
+    objectUrl=URL.createObjectURL(file);
+    source=await new Promise((resolve,reject)=>{
+     const img=new Image();
+     img.onload=()=>{if(img.naturalWidth&&img.naturalHeight)resolve(img);else reject(new Error("Ukuran foto tidak terbaca."));};
+     img.onerror=()=>reject(new Error("Format foto tidak didukung browser."));
+     img.src=objectUrl;
+    });
     width=source.naturalWidth;height=source.naturalHeight;
    }
+   if(!width||!height)throw new Error("Ukuran foto tidak valid.");
    const scale=Math.min(1,1024/Math.max(width,height));
    const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));
    const ctx=canvas.getContext("2d");if(!ctx)throw new Error("Browser tidak bisa memproses foto.");
-   ctx.drawImage(source,0,0,canvas.width,canvas.height);bitmap?.close?.();
-   const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.65));
-   if(!blob)throw new Error("Foto gagal dikompres: "+file.name);
-   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Foto gagal dibaca: "+file.name));reader.readAsDataURL(blob);});
+   ctx.drawImage(source,0,0,canvas.width,canvas.height);
+   const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.82));
+   if(!blob)throw new Error("Foto gagal dikompres.");
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Foto gagal dibaca."));reader.readAsDataURL(blob);});
    out.push({name:file.name,dataUrl:data});
-  }catch(error){bitmap?.close?.();throw error;}
+  }catch(error){
+   throw new Error("Foto '"+file.name+"' tidak dapat dibaca. Coba unggah ulang dalam format JPG, PNG, atau WebP. "+(error?.message||""));
+  }finally{
+   bitmap?.close?.();
+   if(objectUrl)URL.revokeObjectURL(objectUrl);
+  }
  }
  return out;
 }
