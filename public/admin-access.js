@@ -35,7 +35,7 @@ const engineOverlay=document.createElement("div");engineOverlay.className="aiEng
 <div class="engineActions"><button type="button" class="secondary" id="aiEngineCancel">BATAL</button><button type="button" class="gold" id="aiEngineSave">SIMPAN PILIHAN</button></div><div id="aiEngineStatus" role="status"></div>
 </section>`;document.body.appendChild(engineOverlay);
 const engineSelect=document.getElementById("aiEngineSelect"),engineHint=document.getElementById("aiEngineHint"),engineStatus=document.getElementById("aiEngineStatus");
-const currentEngine=()=>localStorage.getItem("chedar_ai_engine")==="openai"?"openai":"gemini";
+const currentEngine=()=>localStorage.getItem("chedar_ai_engine_v2")==="openai"?"openai":"gemini";
 const syncEngineButton=()=>{engineButton.textContent="⚙ MESIN AI · "+(currentEngine()==="openai"?"OPENAI":"GEMINI");};
 engineSelect.value=currentEngine();syncEngineButton();
 engineSelect.addEventListener("change",()=>{engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";});
@@ -43,7 +43,7 @@ const closeEngine=()=>engineOverlay.classList.remove("open");
 engineButton.addEventListener("click",()=>{engineSelect.value=currentEngine();engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";engineStatus.textContent="";engineOverlay.classList.add("open");});
 document.getElementById("aiEngineCancel").addEventListener("click",closeEngine);
 engineOverlay.addEventListener("click",e=>{if(e.target===engineOverlay)closeEngine();});
-document.getElementById("aiEngineSave").addEventListener("click",()=>{localStorage.setItem("chedar_ai_engine",engineSelect.value);syncEngineButton();engineStatus.textContent="Pilihan mesin AI disimpan untuk perangkat admin ini.";window.dispatchEvent(new CustomEvent("chedar:ai-engine-changed",{detail:{engine:engineSelect.value}}));setTimeout(closeEngine,700);});
+document.getElementById("aiEngineSave").addEventListener("click",()=>{localStorage.setItem("chedar_ai_engine_v2",engineSelect.value);syncEngineButton();engineStatus.textContent="Pilihan mesin AI disimpan untuk perangkat admin ini.";window.dispatchEvent(new CustomEvent("chedar:ai-engine-changed",{detail:{engine:engineSelect.value}}));setTimeout(closeEngine,700);});
 
 const status=document.getElementById("adminLoginStatus"),setStatus=(m,ok=false)=>{status.textContent=m;status.classList.toggle("ok",ok);};
 const setAdmin=(enabled,email="")=>{document.documentElement.classList.toggle("admin-locked",!enabled);access.classList.toggle("admin-on",enabled);access.textContent=enabled?"ADMIN · KELUAR":"LOGIN ADMIN";engineButton.style.display=enabled?"inline-flex":"none";if(!enabled){syncEngineButton();}access.title=enabled?"Keluar dari akun admin "+email:"Masuk sebagai admin";
