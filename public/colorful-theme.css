@@ -23,3 +23,15 @@ a:hover{color:#f0d9a2}
 button:hover{filter:brightness(1.1)}
 footer{color:#9b8a68!important}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Gold consistency: replace remaining red action/active button accents */
+.danger,
+button.danger,
+.featureNavLinks>.featureLink.active{
+ background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;
+ border:1px solid #e2c27e!important;
+ color:#19150e!important;
+ box-shadow:0 6px 20px #d6b36b20!important;
+}
+.featureNavLinks>.featureLink.active:hover,
+.danger:hover,button.danger:hover{filter:brightness(1.1)!important}
