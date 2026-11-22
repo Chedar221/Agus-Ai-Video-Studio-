@@ -1,43 +1,25 @@
-/* CHEDAR AI STUDIO — colorful visual theme only */
-:root{
- --bg:#0b1020;--panel:#151d35;--panel2:#202747;--line:#39466c;
- --gold:#ffd166;--gold2:#ffe29a;--blue:#62d5ff;--purple:#a78bfa;
- --pink:#ff79b0;--green:#63e6be;--ink:#f7f7ff;--muted:#b8c2dc;
-}
-body{
- background:
- radial-gradient(ellipse at 8% 0%,#34246b88,transparent 38%),
- radial-gradient(ellipse at 95% 18%,#075b7780,transparent 34%),
- radial-gradient(ellipse at 50% 100%,#64275a55,transparent 42%),var(--bg)!important;
- color:var(--ink)!important;
-}
-header,.topbar{
- background:linear-gradient(100deg,#10172beF,#17132bef,#101b2bef)!important;
- border-color:#6a5bb455!important;
-}
-.hero-card,.panel,.workflow,.feature,.step,.workflow-item{
- background:linear-gradient(145deg,#202d50ed,#171d38ed 58%,#282044ed)!important;
- border-color:#6475a866!important;
- box-shadow:0 12px 34px #0004, inset 0 1px #ffffff0b!important;
-}
-.eyebrow,.hero h1 span,.workflow-item span{color:var(--gold2)!important}
-.mark,.logo,.step-num,.num,.feature-icon{
- background:linear-gradient(145deg,#ffe08a,#ff9f68 48%,#bd83ff)!important;
- color:#17152b!important;border-color:#ffe08a!important;
-}
-button,.primary,.top-action,.gold{
- background:linear-gradient(110deg,#ffd166,#ff9f68 48%,#c084fc)!important;
- color:#20152c!important;border:1px solid #ffe29a!important;
- box-shadow:0 7px 22px #d58aff25!important;
-}
-.secondary,.ghost,.tab,.top-action.secondary{
- background:linear-gradient(110deg,#26365c,#392957)!important;
- color:#f4efff!important;border-color:#7888c5!important;
-}
-.tab.active{background:linear-gradient(110deg,#62d5ff,#a78bfa)!important;color:#11152b!important}
-input,select,textarea,.prompt,.summary{
- background:#0d1428!important;color:#f7f7ff!important;border-color:#59688f!important;
-}
-input:focus,select:focus,textarea:focus{border-color:#62d5ff!important;box-shadow:0 0 0 3px #62d5ff30!important}
-.feature-icon,.live,.pill{border-color:#63e6be88!important}
-a:hover,button:hover{filter:brightness(1.12)}
+/* CHEDAR AI STUDIO — premium black & gold theme; visual overrides only */
+:root{color-scheme:dark;--bg:#080a0e;--panel:#11151c;--panel2:#191f29;--line:#403722;--ink:#f4f0e7;--muted:#b0aa9d;--gold:#d6b36b;--gold2:#f0d9a2;--blue:#d6b36b;--blue2:#a77c37;--green:#8cc6a7;--red:#e78d83}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 82% -12%,#70532635 0,transparent 34%),radial-gradient(ellipse at 7% 12%,#30343c55 0,transparent 38%),#080a0e!important;color:var(--ink)!important}
+header,.topbar,.featureNav{background:rgba(8,10,14,.96)!important;border-color:#9b793d55!important;box-shadow:0 9px 28px #0007!important}
+.logo,.mark,.num,.step-num,.feature-icon{background:linear-gradient(145deg,#f2dda9,#b68a43)!important;color:#19150e!important;border-color:#d6b36b!important;box-shadow:0 5px 20px #d6b36b20!important}
+.brand h1,.brand strong{letter-spacing:.12em}
+.eyebrow,.hero h1 span,.workflow-item span,.navCaption{color:var(--gold2)!important}
+.hero h2,.hero h1{color:#f5f0e6}
+.panel,.hero-card,.workflow,.feature,.step,.workflow-item,.promptLibraryCard{background:linear-gradient(145deg,#1b2029f5,#10141bfa 70%,#171a20f5)!important;border:1px solid #9b793d45!important;box-shadow:0 15px 42px #0006,inset 0 1px #ffffff08!important}
+.panel:hover,.feature:hover{border-color:#d6b36b88!important}
+input,select,textarea,.prompt,.summary{background:#090c11!important;color:#f4f0e7!important;border-color:#51452e!important}
+input:focus,select:focus,textarea:focus{border-color:#d6b36b!important;box-shadow:0 0 0 3px #d6b36b25!important}
+button,.primary,.top-action,.gold,.featureLink.active{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border:1px solid #e2c27e!important;box-shadow:0 6px 20px #d6b36b20!important}
+.secondary,.ghost,.tab,.featureLink,.sectionNav button{background:linear-gradient(145deg,#202630,#151a22)!important;color:#e7dfd0!important;border:1px solid #625237!important}
+.tab.active{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important}
+.notice{background:linear-gradient(120deg,#292217,#17150f)!important;border-color:#a8894b88!important;color:#ead8b5!important}
+#outputPanel{border-color:#c5a15c88!important}
+.musicBox{background:linear-gradient(145deg,#211e1a,#12161d)!important;border-color:#8a7045!important}
+.musicBox .musicTitle strong{color:#f0d9a2!important}
+.pill,.live{border-color:#8b754a!important;color:#e8d5aa!important}
+a:hover{color:#f0d9a2}
+button:hover{filter:brightness(1.1)}
+footer{color:#9b8a68!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
