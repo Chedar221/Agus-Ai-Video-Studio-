@@ -1,13 +1,13 @@
 {
-  "name": "CHEDAR AI KREATOR",
+  "name": "CHEDAR AI STUDIO",
   "short_name": "CHEDAR AI",
-  "description": "CHEDAR AI KREATOR — AI Story Director dan Google Flow prompt workspace",
+  "description": "AI Story Creator dan Video Prompt Studio",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0b1220",
-  "theme_color": "#101827",
+  "background_color": "#090e16",
+  "theme_color": "#0b1018",
   "icons": [
     {
       "src": "/icon.svg",
