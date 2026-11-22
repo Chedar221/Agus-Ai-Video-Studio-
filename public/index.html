@@ -729,8 +729,10 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label>TEKS FINAL DESAIN</label><textarea id="designCopy" rows="7" readonly></textarea></div>
 <div class="field"><label>PANDUAN LAYOUT DAN KOMPOSISI</label><textarea id="designLayout" rows="6" readonly></textarea></div>
 <div class="field"><label>PROMPT VISUAL SIAP PAKAI</label><textarea id="designPrompt" rows="10" readonly></textarea></div>
+<div class="actions"><button type="button" class="gold" id="designGenerateImage">✦ Buat Gambar Final dengan AI</button></div>
+<div id="designImageResult" class="hidden" style="margin-top:14px"><div class="summary"><h4>Hasil Gambar AI</h4><p id="designImageMeta">FLUX.2 Klein 4B</p></div><img id="designGeneratedImage" alt="Hasil desain AI" style="display:block;width:100%;height:auto;max-height:760px;object-fit:contain;border:1px solid #b99a5a55;border-radius:14px;background:#090f1a"><div class="actions"><button type="button" class="gold" id="designDownloadImage">Unduh Gambar</button></div></div>
 <div class="actions"><button type="button" class="gold" id="designCopyAll">Salin semua hasil</button><button type="button" class="secondary" id="designCopyPrompt">Salin prompt visual</button><button type="button" class="secondary" id="designDownload">Unduh TXT</button></div></div>
-<p class="quickFoot">Catatan: fitur ini menyusun konsep, teks, layout, dan prompt visual dengan Groq AI. Render gambar final belum dilakukan di website; tempel prompt ke generator gambar pilihan Anda. Foto/logo dapat ditambahkan saat proses render.</p>
+<p class="quickFoot">Catatan: konsep disusun Groq AI, sedangkan gambar final dibuat langsung dengan Cloudflare FLUX.2. Foto referensi dan logo yang diunggah akan dikirim sebagai acuan visual (maksimal 4 file). Kuota gratis Cloudflare memiliki batas harian.</p>
 </section>
 
 </div></div>
