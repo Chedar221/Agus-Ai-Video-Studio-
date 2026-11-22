@@ -10,35 +10,58 @@ function wrapCanvasText(ctx,text,maxWidth,maxLines,fontSize){ctx.font="600 "+fon
 async function composeFinalArtwork(source){
  const bg=await loadImage(source),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
  canvas.width=bg.naturalWidth||bg.width;canvas.height=bg.naturalHeight||bg.height;
- const w=canvas.width,h=canvas.height,p=Math.round(Math.min(w,h)*.065),gold="#e8c27d",white="#fff";
+ const w=canvas.width,h=canvas.height,p=Math.round(Math.min(w,h)*.055),gold="#f2c85b",white="#fff",ink="#101116";
  ctx.drawImage(bg,0,0,w,h);
- const shade=ctx.createLinearGradient(0,0,0,h);shade.addColorStop(0,"rgba(5,8,13,.62)");shade.addColorStop(.35,"rgba(5,8,13,.08)");shade.addColorStop(.58,"rgba(5,8,13,.20)");shade.addColorStop(1,"rgba(5,8,13,.94)");ctx.fillStyle=shade;ctx.fillRect(0,0,w,h);
- const rr=(x,y,ww,hh,r,fill)=>{ctx.fillStyle=fill;ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);ctx.fill()};
- const typeName=names[$("designType").value]||"DESAIN";
- let logoImage=null;if(logo){try{logoImage=await loadImage(logo.url)}catch(e){console.warn("Logo tidak dapat dimuat",e)}}
- const logoSize=Math.round(w*.15),logoH=logoImage?logoSize*logoImage.height/logoImage.width:0;
- if(logoImage){rr(p,p*.72,logoSize+24,logoH+24,Math.min(18,w*.018),"rgba(255,255,255,.96)");ctx.drawImage(logoImage,p+12,p*.72+12,logoSize,logoH)}
- const brandX=logoImage?p+logoSize+42:p;
- ctx.fillStyle=gold;ctx.font="800 "+Math.round(w*.027)+"px system-ui,Arial";ctx.fillText(typeName.toUpperCase(),brandX,p+Math.round(w*.045));
- ctx.fillStyle="rgba(255,255,255,.72)";ctx.font="600 "+Math.round(w*.018)+"px system-ui,Arial";ctx.fillText("DESIGNED WITH CHEDAR AI STUDIO",brandX,p+Math.round(w*.075));
+ const top=ctx.createLinearGradient(0,0,0,h*.55);top.addColorStop(0,"rgba(4,7,12,.82)");top.addColorStop(.52,"rgba(4,7,12,.12)");top.addColorStop(1,"rgba(4,7,12,.72)");ctx.fillStyle=top;ctx.fillRect(0,0,w,h);
+ const bottom=ctx.createLinearGradient(0,h*.58,0,h);bottom.addColorStop(0,"rgba(4,7,12,0)");bottom.addColorStop(.24,"rgba(4,7,12,.58)");bottom.addColorStop(1,"rgba(4,7,12,.94)");ctx.fillStyle=bottom;ctx.fillRect(0,h*.58,w,h*.42);
+ const round=(x,y,ww,hh,r,fill,stroke)=>{ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(2,w*.002);ctx.stroke()}};
+ const fit=(text,max,font,weight="800")=>{let size=font;do{ctx.font=weight+" "+size+"px system-ui,Arial";if(ctx.measureText(text).width<=max||size<=14)break;size-=2}while(size>14);return size};
+ const wrap=(text,max,font,maxLines=4,weight="600")=>{ctx.font=weight+" "+font+"px system-ui,Arial";const words=String(text||"").replace(/\s+/g," ").trim().split(" ").filter(Boolean),lines=[];let line="";for(const word of words){const t=line?line+" "+word:word;if(ctx.measureText(t).width>max&&line){lines.push(line);line=word;if(lines.length===maxLines)break}else line=t}if(line&&lines.length<maxLines)lines.push(line);return lines};
  const title=($("designTitle").value||$("designResultTitle").textContent||"").trim();
- const copyText=($("designCopy").value||$("designDetails").value||"").trim();
- const detail=($("designDetails").value||"").trim();
- const allText=(copyText+" "+detail).replace(/\s+/g," ");
- const priceMatch=allText.match(/(?:Rp\.?\s*)[0-9][0-9.,]*(?:\s*\/\s*[a-zA-Z]+)?/i);
- const price=priceMatch?priceMatch[0].replace(/\s+/g," "):"";
- const contactMatch=allText.match(/(?:WhatsApp|WA|Hubungi)\s*:?\s*[+0-9][+0-9\s-]{7,}/i);
- const contact=contactMatch?contactMatch[0].replace(/\s+/g," ").trim():"";
- const cleaned=copyText.replace(priceMatch?priceMatch[0]:"","").replace(contactMatch?contactMatch[0]:"","").replace(/\s+/g," ").replace(/^[\s·|,-]+|[\s·|,-]+$/g,"");
- const titleSize=Math.round(w*.064),maxW=w-p*2;let y=Math.round(h*.61);
- ctx.fillStyle=gold;ctx.fillRect(p,y-Math.round(titleSize*.9),Math.round(w*.09),Math.max(5,Math.round(h*.005)));
- y+=Math.round(titleSize*.35);
- ctx.fillStyle=white;const titleLines=wrapCanvasText(ctx,title,maxW,2,titleSize);ctx.font="850 "+titleSize+"px system-ui,Arial";
- titleLines.forEach(line=>{ctx.fillText(line,p,y);y+=Math.round(titleSize*1.13)});
- if(price){const priceSize=Math.round(w*.105),boxH=Math.round(priceSize*1.55),boxY=y+Math.round(h*.018);rr(p,boxY,maxW,boxH,Math.round(w*.025),"rgba(255,255,255,.12)");ctx.strokeStyle="rgba(232,194,125,.75)";ctx.lineWidth=Math.max(2,w*.002);ctx.stroke();ctx.fillStyle=gold;ctx.font="900 "+priceSize+"px system-ui,Arial";ctx.fillText(price,p+Math.round(w*.035),boxY+boxH*.69);y=boxY+boxH+Math.round(h*.035)}else y+=Math.round(h*.025);
- if(cleaned){ctx.fillStyle="rgba(255,255,255,.92)";const bodySize=Math.round(w*.027),lines=wrapCanvasText(ctx,cleaned,maxW,4,bodySize);ctx.font="550 "+bodySize+"px system-ui,Arial";lines.forEach(line=>{ctx.fillText(line,p,y);y+=Math.round(bodySize*1.48)})}
- if(contact){const fy=h-p-Math.round(h*.065);rr(p,fy,maxW,Math.round(h*.065),Math.round(w*.018),"rgba(232,194,125,.16)");ctx.strokeStyle="rgba(232,194,125,.7)";ctx.stroke();ctx.fillStyle=white;ctx.font="750 "+Math.round(w*.026)+"px system-ui,Arial";ctx.fillText(contact.slice(0,64),p+Math.round(w*.025),fy+Math.round(h*.041))}
- const audience=$("designAudience").value.trim();if(audience){ctx.fillStyle=gold;ctx.font="650 "+Math.round(w*.021)+"px system-ui,Arial";ctx.fillText(audience.slice(0,75),p,h-p)}
+ const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\n"+copy).trim();
+ const priceMatch=combined.match(/(?:Rp\.?\s*)[0-9][0-9.,]*(?:\s*\/\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\s+/g," "):"";
+ const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\s*:?\s*[+0-9][+0-9\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\s+/g," ").trim():"";
+ const urlMatch=combined.match(/(?:https?:\/\/)?(?:www\.)?[a-z0-9-]+\.(?:com|id|app|net|org)(?:\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
+ let body=details||copy;
+ [priceMatch?.[0],contactMatch?.[0],urlMatch?.[0]].filter(Boolean).forEach(v=>body=body.replace(v,""));
+ body=body.replace(/\s*[,;|]\s*/g," · ").replace(/\s+/g," ").trim();
+ const typeName=names[$("designType").value]||"DESAIN IKLAN";
+ let logoImage=null;if(logo){try{logoImage=await loadImage(logo.url)}catch(e){console.warn("Logo overlay skipped",e)}}
+ // Header: original logo asset + category marker.
+ let cursor=p;
+ if(logoImage){const maxLogo=Math.round(w*.145),lh=maxLogo*logoImage.height/logoImage.width;round(p,p*.55,maxLogo+18,lh+18,Math.min(18,w*.02),"#fff");ctx.drawImage(logoImage,p+9,p*.55+9,maxLogo,lh);cursor=p+maxLogo+34}
+ ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.026)+"px system-ui,Arial";ctx.fillText(typeName.toUpperCase(),cursor,p+Math.round(w*.045));
+ ctx.fillStyle="rgba(255,255,255,.78)";ctx.font="600 "+Math.round(w*.017)+"px system-ui,Arial";ctx.fillText("KAMPANYE · PROMOSI · BRAND VISUAL",cursor,p+Math.round(w*.076));
+ // Hero headline block.
+ const headY=Math.round(h*.235),headW=Math.round(w*.82);
+ round(p,headY,headW,Math.round(h*.19),Math.round(w*.025),"rgba(5,8,14,.67)","rgba(255,255,255,.18)");
+ ctx.fillStyle=gold;ctx.fillRect(p+Math.round(w*.035),headY+Math.round(h*.027),Math.round(w*.09),Math.max(5,Math.round(h*.006)));
+ const titleFont=fit(title,headW-Math.round(w*.07),Math.round(w*.075),"900");
+ const titleLines=wrap(title,headW-Math.round(w*.07),titleFont,3,"900");ctx.fillStyle=white;ctx.font="900 "+titleFont+"px system-ui,Arial";
+ let ty=headY+Math.round(h*.09);titleLines.forEach(line=>{ctx.fillText(line,p+Math.round(w*.035),ty);ty+=Math.round(titleFont*1.12)});
+ // Price spotlight panel.
+ let sectionY=Math.round(h*.49);
+ if(price){
+  const ph=Math.round(h*.125);round(p,sectionY,Math.round(w*.82),ph,Math.round(w*.025),gold);
+  ctx.fillStyle=ink;ctx.font="850 "+Math.round(w*.023)+"px system-ui,Arial";ctx.fillText("PENAWARAN SPESIAL",p+Math.round(w*.035),sectionY+Math.round(ph*.28));
+  const ps=fit(price,Math.round(w*.74),Math.round(w*.105),"950");ctx.fillStyle=ink;ctx.font="950 "+ps+"px system-ui,Arial";ctx.fillText(price,p+Math.round(w*.035),sectionY+Math.round(ph*.79));
+  sectionY+=ph+Math.round(h*.025);
+ }
+ // Body card with clean hierarchy.
+ const cardY=sectionY,cardH=Math.round(h*.19),cardW=Math.round(w*.82);
+ if(body){
+  round(p,cardY,cardW,cardH,Math.round(w*.025),"rgba(8,12,19,.82)","rgba(255,255,255,.2)");
+  ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.023)+"px system-ui,Arial";ctx.fillText("KENALI LAYANAN KAMI",p+Math.round(w*.03),cardY+Math.round(h*.035));
+  const bodyFont=Math.round(w*.024),lines=wrap(body,cardW-Math.round(w*.06),bodyFont,5,"650");ctx.fillStyle="rgba(255,255,255,.94)";ctx.font="650 "+bodyFont+"px system-ui,Arial";
+  let by=cardY+Math.round(h*.072);lines.forEach(line=>{ctx.fillText(line,p+Math.round(w*.03),by);by+=Math.round(bodyFont*1.5)});
+ }
+ // Footer CTA, contact and audience.
+ const footerH=Math.round(h*.105),fy=h-p-footerH;
+ round(p,fy,Math.round(w*.88),footerH,Math.round(w*.025),"rgba(242,200,91,.97)");
+ ctx.fillStyle=ink;ctx.font="900 "+Math.round(w*.03)+"px system-ui,Arial";ctx.fillText(contact?contact.slice(0,54):"HUBUNGI KAMI SEKARANG",p+Math.round(w*.03),fy+Math.round(footerH*.43));
+ ctx.font="750 "+Math.round(w*.022)+"px system-ui,Arial";ctx.fillText(website?website.slice(0,58):( $("designAudience").value.trim()||"PROMOSI TERBATAS" ).slice(0,58),p+Math.round(w*.03),fy+Math.round(footerH*.76));
+ // Fine print brand signature.
+ ctx.fillStyle="rgba(255,255,255,.68)";ctx.font="600 "+Math.round(w*.014)+"px system-ui,Arial";ctx.fillText("CHEDAR AI STUDIO",p,h-Math.round(p*.18));
  return canvas.toDataURL("image/png");
 }
 function fileData(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error("Foto tidak bisa dibaca."));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error("Format foto tidak bisa diproses."));img.onload=()=>{const scale=Math.min(1,512/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);resolve({data:canvas.toDataURL("image/jpeg",.78).split(",")[1],mime:"image/jpeg"})};img.src=reader.result};reader.readAsDataURL(file)})}
