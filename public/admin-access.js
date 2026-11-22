@@ -30,12 +30,12 @@ const engineButton=document.createElement("button");engineButton.type="button";e
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
-<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="openai">OpenAI — mesin utama</option><option value="gemini">Google Gemini — alternatif</option></select>
+<label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="gemini">Google Gemini — mesin utama</option><option value="openai">OpenAI — alternatif</option></select>
 <div class="hint" id="aiEngineHint">Gemini menggunakan GEMINI_API_KEY di Vercel.</div>
 <div class="engineActions"><button type="button" class="secondary" id="aiEngineCancel">BATAL</button><button type="button" class="gold" id="aiEngineSave">SIMPAN PILIHAN</button></div><div id="aiEngineStatus" role="status"></div>
 </section>`;document.body.appendChild(engineOverlay);
 const engineSelect=document.getElementById("aiEngineSelect"),engineHint=document.getElementById("aiEngineHint"),engineStatus=document.getElementById("aiEngineStatus");
-const currentEngine=()=>localStorage.getItem("chedar_ai_engine")==="gemini"?"gemini":"openai";
+const currentEngine=()=>localStorage.getItem("chedar_ai_engine")==="openai"?"openai":"gemini";
 const syncEngineButton=()=>{engineButton.textContent="⚙ MESIN AI · "+(currentEngine()==="openai"?"OPENAI":"GEMINI");};
 engineSelect.value=currentEngine();syncEngineButton();
 engineSelect.addEventListener("change",()=>{engineHint.textContent=engineSelect.value==="openai"?"OpenAI menggunakan OPENAI_API_KEY di Vercel. Pastikan key aktif dan memiliki saldo/kredit API.":"Gemini menggunakan GEMINI_API_KEY di Vercel.";});
