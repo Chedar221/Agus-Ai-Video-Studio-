@@ -11,7 +11,7 @@ export default async function handler(req,res){
   if(req.method!=="POST"){if(typeof res.setHeader==="function")res.setHeader("Allow","POST");return send(res,405,{error:"Gunakan metode POST."});}
   let d=req.body;if(typeof d==="string"){try{d=JSON.parse(d);}catch{d=null;}}
   if(!d||typeof d!=="object"||Array.isArray(d)||!allowedTools.has(d.tool))return send(res,400,{error:"Permintaan fitur produksi tidak valid."});
-  const requestedEngine=String(d.aiEngine||"openai").toLowerCase();
+  const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
   if(requestedEngine!=="gemini"&&requestedEngine!=="openai")return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
   const useOpenAI=requestedEngine==="openai";
   const apiKey=useOpenAI?process.env.OPENAI_API_KEY:process.env.GEMINI_API_KEY;
