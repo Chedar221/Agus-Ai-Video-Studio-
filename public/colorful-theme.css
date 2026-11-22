@@ -1,0 +1,43 @@
+/* CHEDAR AI STUDIO — colorful visual theme only */
+:root{
+ --bg:#0b1020;--panel:#151d35;--panel2:#202747;--line:#39466c;
+ --gold:#ffd166;--gold2:#ffe29a;--blue:#62d5ff;--purple:#a78bfa;
+ --pink:#ff79b0;--green:#63e6be;--ink:#f7f7ff;--muted:#b8c2dc;
+}
+body{
+ background:
+ radial-gradient(ellipse at 8% 0%,#34246b88,transparent 38%),
+ radial-gradient(ellipse at 95% 18%,#075b7780,transparent 34%),
+ radial-gradient(ellipse at 50% 100%,#64275a55,transparent 42%),var(--bg)!important;
+ color:var(--ink)!important;
+}
+header,.topbar{
+ background:linear-gradient(100deg,#10172beF,#17132bef,#101b2bef)!important;
+ border-color:#6a5bb455!important;
+}
+.hero-card,.panel,.workflow,.feature,.step,.workflow-item{
+ background:linear-gradient(145deg,#202d50ed,#171d38ed 58%,#282044ed)!important;
+ border-color:#6475a866!important;
+ box-shadow:0 12px 34px #0004, inset 0 1px #ffffff0b!important;
+}
+.eyebrow,.hero h1 span,.workflow-item span{color:var(--gold2)!important}
+.mark,.logo,.step-num,.num,.feature-icon{
+ background:linear-gradient(145deg,#ffe08a,#ff9f68 48%,#bd83ff)!important;
+ color:#17152b!important;border-color:#ffe08a!important;
+}
+button,.primary,.top-action,.gold{
+ background:linear-gradient(110deg,#ffd166,#ff9f68 48%,#c084fc)!important;
+ color:#20152c!important;border:1px solid #ffe29a!important;
+ box-shadow:0 7px 22px #d58aff25!important;
+}
+.secondary,.ghost,.tab,.top-action.secondary{
+ background:linear-gradient(110deg,#26365c,#392957)!important;
+ color:#f4efff!important;border-color:#7888c5!important;
+}
+.tab.active{background:linear-gradient(110deg,#62d5ff,#a78bfa)!important;color:#11152b!important}
+input,select,textarea,.prompt,.summary{
+ background:#0d1428!important;color:#f7f7ff!important;border-color:#59688f!important;
+}
+input:focus,select:focus,textarea:focus{border-color:#62d5ff!important;box-shadow:0 0 0 3px #62d5ff30!important}
+.feature-icon,.live,.pill{border-color:#63e6be88!important}
+a:hover,button:hover{filter:brightness(1.12)}
