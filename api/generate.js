@@ -19,10 +19,13 @@ export default async function handler(req, res) {
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
   const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
-  if(requestedEngine!=="gemini"&&requestedEngine!=="openai")return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
+  const supportedEngines=["gemini","openai","groq","openrouter"];
+  if(!supportedEngines.includes(requestedEngine))return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
   const useOpenAI=requestedEngine==="openai";
-  const apiKey=useOpenAI?process.env.OPENAI_API_KEY:process.env.GEMINI_API_KEY;
-  if(!apiKey)return send(res,503,{error:useOpenAI?"OPENAI_API_KEY belum dipasang atau belum aktif di Vercel.":"GEMINI_API_KEY belum dipasang di Vercel."});
+  const useCompatibleAPI=["openai","groq","openrouter"].includes(requestedEngine);
+  const keyName={gemini:"GEMINI_API_KEY",openai:"OPENAI_API_KEY",groq:"GROQ_API_KEY",openrouter:"OPENROUTER_API_KEY"}[requestedEngine];
+  const apiKey=process.env[keyName];
+  if(!apiKey)return send(res,503,{error:keyName+" belum dipasang atau belum aktif di Vercel."});
   // Lipsync and Motion Control here only generate text prompts and workflow guidance.
   // Actual audio/video processing remains inside the external tool selected by the user.
   const allowed = ["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncSongTitle","lipsyncArtist","lipsyncGenre","lipsyncAudioFileName","lipsyncAudioFileType","lipsyncAudioDuration","lipsyncNotes","motionReference","motionNotes","motionVideoFileName","motionVideoFileType","motionVideoDuration","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
@@ -40,7 +43,7 @@ export default async function handler(req, res) {
   const duration = Math.max(5, Math.min(15, Number.parseInt(clean.duration || "10", 10) || 10));
   const totalDuration = sceneCount * duration;
   const formatTime = (seconds) => String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
-  const model = useOpenAI?(process.env.OPENAI_MODEL||"gpt-4.1-mini").trim():(process.env.GEMINI_MODEL||"gemini-3.8-flash").trim();
+  const model = ({openai:process.env.OPENAI_MODEL||"gpt-4.1-mini",gemini:process.env.GEMINI_MODEL||"gemini-3.8-flash",groq:process.env.GROQ_MODEL||"qwen/qwen3.8-27b",openrouter:process.env.OPENROUTER_MODEL||"openrouter/free"})[requestedEngine].trim();
   const speakerCount = Math.max(1, Math.min(4, Number.parseInt(clean.dialogueCount || "1", 10) || 1));
   const isChibi3D = clean.videoType === "chibi_3d";
   const isSilentPopup = clean.videoType === "silent_popup";
@@ -183,11 +186,14 @@ WAJIB:
 - Jika jenis video = auto, tentukan otomatis format terbaik dari ide (iklan, dokumenter, komedi, drama, aksi, horor, fantasi, petualangan, atau motivasi) dan terapkan gaya paling cocok tanpa meminta pengaturan tambahan.\n- Cerita harus berkembang dan berakhir; scene terakhir wajib memberi resolusi/penutup yang kuat, bukan mengulang adegan sebelumnya. Dialog/narator konsisten. Jangan klaim video atau gambar telah dirender. Jangan menjanjikan wajah identik sempurna.`;
   try {
     let payload,output;
-    if(useOpenAI){
+    if(useCompatibleAPI){
       const content=[{type:"text",text:brief},...referenceImages.flatMap(image=>{const m=String(image.dataUrl||"").match(/^data:(image\/(?:jpeg|png|webp));base64,([A-Za-z0-9+/=]+)$/);return m&&m[2].length<=5000000?[{type:"image_url",image_url:{url:image.dataUrl,detail:"high"}}]:[];})];
-      const response=await fetch("https://api.openai.com/v1/chat/completions",{method:"POST",headers:{Authorization:"Bearer "+apiKey,"Content-Type":"application/json"},body:JSON.stringify({model,messages:[{role:"user",content}],response_format:{type:"json_object"},temperature:0.55,max_tokens:24000})});
+      const endpoint=requestedEngine==="openai"?"https://api.openai.com/v1/chat/completions":requestedEngine==="groq"?"https://api.groq.com/openai/v1/chat/completions":"https://openrouter.ai/api/v1/chat/completions";
+      const headers={Authorization:"Bearer "+apiKey,"Content-Type":"application/json"};
+      if(requestedEngine==="openrouter"){headers["HTTP-Referer"]="https://agus-ai-video-studio.vercel.app";headers["X-Title"]="CHEDAR AI STUDIO";}
+      const response=await fetch(endpoint,{method:"POST",headers,body:JSON.stringify({model,messages:[{role:"user",content}],response_format:{type:"json_object"},temperature:0.55,max_tokens:24000})});
       payload=await response.json().catch(()=>({}));
-      if(!response.ok){const code=response.status;return send(res,code>=500?502:code,{error:code===401?"API Key OpenAI ditolak. Periksa OPENAI_API_KEY di Vercel.":code===429?"Kuota atau rate limit OpenAI tercapai. Periksa saldo dan batas API.":(payload?.error?.message||"OpenAI API error ("+code+")").slice(0,450)});}
+      if(!response.ok){const code=response.status;const provider={openai:"OpenAI",groq:"Groq",openrouter:"OpenRouter"}[requestedEngine];const message=code===401||code===403?"API Key "+provider+" ditolak. Periksa "+keyName+" di Vercel.":code===429?"Kuota atau rate limit "+provider+" tercapai. Coba lagi nanti atau pilih mesin lain.":(payload?.error?.message||provider+" API error ("+code+")").slice(0,450);return send(res,code>=500?502:code,{error:message});}
       output=String(payload.choices?.[0]?.message?.content||"").trim();
     }else{
       const requestBody={contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:24000}};
@@ -210,7 +216,7 @@ WAJIB:
       if(!response?.ok)return send(res,503,{error:"Gemini sedang padat dan model cadangan belum tersedia. Coba lagi beberapa saat."});
       output=(payload.candidates?.[0]?.content?.parts||[]).map(x=>x.text||"").join("\n").trim();
     }
-    if (!output) return send(res, 502, { error: "Gemini tidak mengembalikan hasil teks. Coba lagi." });
+    if (!output) return send(res, 502, { error: requestedEngine==="gemini"?"Gemini tidak mengembalikan hasil teks. Coba lagi.":"Mesin AI tidak mengembalikan hasil teks. Coba lagi atau pilih mesin lain." });
     let project;
     try { project = JSON.parse(output.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "")); } catch { const first = output.indexOf("{"); const last = output.lastIndexOf("}"); if (first >= 0 && last > first) { try { project = JSON.parse(output.slice(first, last + 1)); } catch { return send(res, 502, { error: "Hasil AI terpotong atau format JSON tidak lengkap. Coba ulangi; sistem sudah menyiapkan format yang lebih ringkas." }); } } else return send(res, 502, { error: "AI tidak mengembalikan paket JSON yang valid. Coba ulangi." }); }
     if (!Array.isArray(project.scenes) || project.scenes.length !== sceneCount) return send(res, 502, { error: "Jumlah adegan hasil AI tidak sesuai. Silakan generate ulang." });
@@ -260,10 +266,11 @@ WAJIB:
       scene.videoPrompt = compactPrompt(["KLIP WAJIB TEPAT " + duration + " DETIK.", visualPrompt, speakerBlock, audioBlock, proLock, isProductAd ? "PRODUK: Gunakan foto produk master yang sama; jangan mengubah bentuk, warna, logo, label, atau detailnya." : ""].filter(Boolean).join("\n\n"), 5200);
       return scene;
     });
-    return send(res, 200, { project, engine: useOpenAI?"openai":"gemini", model: useOpenAI?model:(typeof activeModel!=="undefined"?activeModel:model) });
+    return send(res, 200, { project, engine: requestedEngine, model: useCompatibleAPI?model:(typeof activeModel!=="undefined"?activeModel:model) });
   } catch (error) {
-    console.error("[CHEDAR_GENERATE_ERROR]", { engine: useOpenAI ? "openai" : "gemini", model, message: error?.message || String(error) });
+    console.error("[CHEDAR_GENERATE_ERROR]", { engine: requestedEngine, model, message: error?.message || String(error) });
     const detail = String(error?.message || "Kesalahan server tidak diketahui").slice(0, 350);
-    return send(res, 500, { error: (useOpenAI ? "OpenAI" : "Gemini") + " gagal diproses: " + detail });
+    const providerName={gemini:"Gemini",openai:"OpenAI",groq:"Groq",openrouter:"OpenRouter"}[requestedEngine];
+    return send(res, 500, { error: providerName + " gagal diproses: " + detail });
   }
 }
