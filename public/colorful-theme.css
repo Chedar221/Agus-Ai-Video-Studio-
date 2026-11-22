@@ -35,3 +35,53 @@ button.danger,
 }
 .featureNavLinks>.featureLink.active:hover,
 .danger:hover,button.danger:hover{filter:brightness(1.1)!important}
+
+/* FULL SITE THEME PASS — force the black & gold palette across every workspace section */
+:root{
+ color-scheme:dark!important;
+ --bg:#080a0e!important;--panel:#11151c!important;--panel2:#191f29!important;
+ --line:#403722!important;--ink:#f4f0e7!important;--muted:#b0aa9d!important;
+ --gold:#d6b36b!important;--gold2:#f0d9a2!important;--blue:#d6b36b!important;
+ --blue2:#a77c37!important;--green:#8cc6a7!important;--red:#e2c27e!important;
+}
+html,body{background-color:#080a0e!important;color:#f4f0e7!important}
+body{background-image:radial-gradient(ellipse at 82% -12%,#70532635 0,transparent 34%),radial-gradient(ellipse at 7% 12%,#30343c55 0,transparent 38%),linear-gradient(135deg,#080a0e,#10141b 55%,#080a0e)!important}
+header,.top,.topbar,.featureNav,.topbar,nav,.nav{
+ background:rgba(8,10,14,.97)!important;color:#f4f0e7!important;
+ border-color:#9b793d66!important;
+}
+main,.layout,.stack,.hero,.section,.workspace,.content,.container{color:#f4f0e7!important}
+.panel,.hero-card,.workflow,.feature,.step,.workflow-item,.promptLibraryCard,
+.scene,.summary,.preview,.musicBox,.notice,.empty,.resultHead,
+#outputPanel,.storyboardGrid,.promptLibraryGrid{
+ background:linear-gradient(145deg,#1b2029f5,#10141bfa 70%,#171a20f5)!important;
+ color:#f4f0e7!important;border-color:#9b793d66!important;
+ box-shadow:0 12px 34px #0006,inset 0 1px #ffffff08!important;
+}
+.panel h1,.panel h2,.panel h3,.panel h4,.hero h1,.hero h2,.feature h3,
+.workflow h2,.workflow-item b,.scene b,.resultHead h3,.brand h1,.brand strong,
+label,.field label{color:#f4f0e7!important}
+p,.hint,.muted,.brand small,.feature p,.workflow-item p,.scene p,
+.summary p,.musicNote,footer,.footer{color:#bdb5a6!important}
+.eyebrow,.hero h1 span,.musicBox .musicTitle strong,.promptLibraryCard b,
+.scene label,.workflow-item span,.navCaption{color:#f0d9a2!important}
+input,select,textarea,.prompt,pre,code{
+ background:#090c11!important;color:#f4f0e7!important;
+ border-color:#625237!important;
+}
+input::placeholder,textarea::placeholder{color:#8f887b!important}
+button,.primary,.top-action,.gold,.featureLink.active,.tab.active,
+.actions button:not(.secondary):not(.ghost):not(.tab):not(.danger){
+ background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;
+ color:#19150e!important;border:1px solid #e2c27e!important;
+}
+.secondary,.ghost,.tab,.featureLink,.sectionNav button,.musicBox .musicActions button.secondary{
+ background:linear-gradient(145deg,#202630,#151a22)!important;
+ color:#eee5d5!important;border:1px solid #76613b!important;
+}
+.danger,button.danger{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border-color:#e2c27e!important}
+.pill,.live,.time{background:#17150f!important;color:#f0d9a2!important;border-color:#8b754a!important}
+a{color:#e9d5a8!important}
+a:hover,button:hover{filter:brightness(1.12)!important}
+hr{border-color:#665332!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
