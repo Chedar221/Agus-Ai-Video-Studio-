@@ -55,7 +55,7 @@ export default async function handler(req,res){
       const endpoint=requestedEngine==="openai"?"https://api.openai.com/v1/chat/completions":requestedEngine==="groq"?"https://api.groq.com/openai/v1/chat/completions":"https://openrouter.ai/api/v1/chat/completions";
       const headers={Authorization:"Bearer "+apiKey,"Content-Type":"application/json"};
       if(requestedEngine==="openrouter"){headers["HTTP-Referer"]="https://agus-ai-video-studio.vercel.app";headers["X-Title"]="CHEDAR AI STUDIO";}
-      const response=await fetch(endpoint,{method:"POST",headers,body:JSON.stringify({model,messages:[{role:"user",content:prompts[tool]+"\n\nATURAN UMUM: "+rules}],...(tool==="auto"?{response_format:{type:"json_object"}}:{}),temperature:0.45,max_tokens:tool==="auto"?24000:9000})});
+      const response=await fetch(endpoint,{method:"POST",headers,body:JSON.stringify({model,messages:[{role:"user",content:prompts[tool]+"\n\nATURAN UMUM: "+rules}],...(tool==="auto"?{response_format:{type:"json_object"}}:{}),temperature:0.45,max_tokens:tool==="auto"?(requestedEngine==="groq"?16000:24000):9000})});
       payload=await response.json().catch(()=>({}));
       if(!response.ok){const code=response.status;const provider={openai:"OpenAI",groq:"Groq",openrouter:"OpenRouter"}[requestedEngine];const message=code===401||code===403?"API Key "+provider+" ditolak. Periksa "+keyName+" di Vercel.":code===429?"Kuota atau rate limit "+provider+" tercapai. Coba lagi nanti atau pilih mesin lain.":(payload?.error?.message||provider+" API error ("+code+")").slice(0,400);return send(res,code>=500?502:code,{error:message});}
       result=String(payload.choices?.[0]?.message?.content||"").trim();
