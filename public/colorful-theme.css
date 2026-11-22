@@ -1,0 +1,110 @@
+/* CHEDAR AI STUDIO — Colorful Premium Theme
+   Visual-only overrides. No layout, interaction, state, or feature logic changed. */
+:root{
+  color-scheme:dark;
+  --bg:#090d1b;--panel:#14172b;--panel2:#1b2140;--line:#3b4770;
+  --ink:#f7f4ff;--muted:#b5bad2;--blue:#69c9ff;--blue2:#596cff;
+  --gold:#ffd36e;--gold2:#ffe7a8;--green:#63e6be;--red:#ff7d9c;
+  --color-cyan:#39d7e8;--color-violet:#9c7bff;--color-pink:#ff75b8;--color-orange:#ffad69;
+}
+html{background:var(--bg)}
+body{
+ background:
+  radial-gradient(ellipse at 8% 0%,#1c9bb52b 0,transparent 32%),
+  radial-gradient(ellipse at 92% 5%,#9b59ff2c 0,transparent 34%),
+  radial-gradient(ellipse at 55% 95%,#ff5fa51a 0,transparent 38%),var(--bg)!important;
+ color:var(--ink)
+}
+header,.featureNav{
+ background:linear-gradient(100deg,rgba(14,23,48,.97),rgba(31,18,54,.96),rgba(12,35,55,.97))!important;
+ border-bottom:1px solid #7f7bca66!important;
+ box-shadow:0 9px 30px #07091688!important
+}
+.logo,.mark{
+ background:linear-gradient(135deg,#5ce1e6,#8d7aff 48%,#ff80bd)!important;
+ border:2px solid #f4dcff!important;color:#15132b!important;
+ box-shadow:0 0 0 3px #8b79ff30,0 7px 24px #8c70ff55!important
+}
+.brand h1{background:linear-gradient(90deg,#fff1b8,#a6f5ff,#e2b5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.brand small{color:#b9c9e9!important}
+.eyebrow,.navCaption{color:#7ce6ef!important}
+.hero h2,.hero h1{background:linear-gradient(100deg,#fff4cf 0%,#a9f0ff 42%,#d7b8ff 75%,#ffb9d8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.panel,.hero-card,.feature,.workflow,.musicBox,.speakerCard{
+ background:linear-gradient(145deg,rgba(28,36,70,.96),rgba(17,27,53,.98) 55%,rgba(37,24,58,.94))!important;
+ border:1px solid #7185c466!important;
+ box-shadow:0 15px 38px #05081766,inset 0 1px #ffffff12!important
+}
+.panel:nth-child(4n+1){border-top-color:#46dce2!important}
+.panel:nth-child(4n+2){border-top-color:#9b83ff!important}
+.panel:nth-child(4n+3){border-top-color:#ff82bd!important}
+.panel:nth-child(4n){border-top-color:#ffc36e!important}
+.panel h3,.feature h3{color:#f5edff}
+.num,.feature-icon,.step-num,.quickUploadIcon,.videoTypeCard .typeIcon{
+ background:linear-gradient(135deg,#43d9e8,#8d7bff 55%,#ff80b9)!important;
+ color:#17152c!important;border:1px solid #ffffff55!important;
+ box-shadow:0 4px 15px #8d7bff33
+}
+label{color:#d7dafa!important}
+input,select,textarea,.summary,.scene,.prompt,.promptLibraryCard,.empty,.quickUpload{
+ background:linear-gradient(145deg,#0d1730,#17152e)!important;
+ border-color:#53628e!important;color:#f5f3ff!important
+}
+input:focus,select:focus,textarea:focus{
+ border-color:#61e1ec!important;box-shadow:0 0 0 3px #54d8eb30!important
+}
+select option{background:#171a34;color:#fff}
+button,.featureLink,.quickSubtab,.generatorChoice{
+ border-color:#6373a5!important
+}
+.primary,.gold,#copyFlowAll,.quickGenerate{
+ background:linear-gradient(110deg,#45dbe2,#7e86ff 48%,#d27dff 76%,#ff8bbd)!important;
+ border:1px solid #d9d2ff!important;color:#11152d!important;
+ box-shadow:0 6px 20px #826cff3b!important;font-weight:900
+}
+.secondary,.ghost,.sectionNav button,.quickSubtab,.featureLink{
+ background:linear-gradient(120deg,#25345d,#332653 55%,#174154)!important;
+ color:#f0edff!important;border-color:#6577ad!important
+}
+.featureLink.active,.quickSubtab.active,.videoTypeCard.active{
+ background:linear-gradient(110deg,#43dce4,#8a83ff 55%,#fa8fc4)!important;
+ color:#14152c!important;border-color:#e2d7ff!important;
+ box-shadow:0 5px 18px #897aff55!important
+}
+.featureNavLinks>.featureLink,.featureNavLinks>.generatorChooser .makeVideoToggle{
+ background:linear-gradient(110deg,#1aa9bb,#6556d9 52%,#b94c91)!important;
+ border:1px solid #a7c5ff!important;color:#fff!important;
+ box-shadow:0 4px 14px #6659db55!important
+}
+.featureNavLinks>.featureLink.active{
+ background:linear-gradient(110deg,#50e1df,#a08aff 55%,#ff9bc9)!important;color:#16142e!important
+}
+.videoTypeCard{background:linear-gradient(145deg,#162b4a,#30224b)!important;border-color:#586b9c!important;color:#f6f1ff!important}
+.videoTypeCard:nth-child(4n+1) .typeIcon{background:linear-gradient(135deg,#44dce5,#397de5)!important}
+.videoTypeCard:nth-child(4n+2) .typeIcon{background:linear-gradient(135deg,#9b82ff,#e17bda)!important}
+.videoTypeCard:nth-child(4n+3) .typeIcon{background:linear-gradient(135deg,#ff8db9,#ffb36b)!important}
+.videoTypeCard:nth-child(4n) .typeIcon{background:linear-gradient(135deg,#63e6be,#35a9bb)!important}
+.videoTypeToggle{background:linear-gradient(110deg,#183c54,#3b285c,#512b53)!important;border-color:#8c85d5!important;color:#f6eaff!important}
+.quickStudio{background:linear-gradient(145deg,#182c51,#30204d 55%,#173b4c)!important;border-color:#7d91d9!important}
+.quickLead,.quickFoot,.hint,.musicNote{color:#c0c9e5!important}
+.quickUpload{border-color:#7f8ad0!important}
+.quickUpload b,.summary h4,.promptLibraryCard b{color:#ffe2a0!important}
+.scene{border-color:#6374a5!important;border-left:3px solid #49d9e2!important}
+#storyboardView .scene:nth-child(4n+2){border-top-color:#9a83ff!important}
+#storyboardView .scene:nth-child(4n+3){border-top-color:#ff82bd!important}
+#storyboardView .scene:nth-child(4n){border-top-color:#ffc36e!important}
+.time{color:#7ce8ed!important}
+.musicBox{border-color:#a47bd8!important;background:linear-gradient(145deg,#252052,#17304d,#40234c)!important}
+.musicBox .musicTitle strong{color:#ffd1f0!important}
+.musicBox .musicTitle span{color:#b9f5ff!important;border-color:#6a9ac8!important}
+.notice{background:linear-gradient(110deg,#263d55,#3b2853,#4c2b50)!important;border-color:#8b81c9!important;color:#f4eaff!important}
+.status.ok{color:#71efc1!important}.status.err{color:#ff91a9!important}
+.pill,.live{background:#25375a;color:#aef4f2!important;border-color:#5b9cb2!important}
+.generatorChoice{background:linear-gradient(135deg,#172d4b,#35254f)!important}
+.generatorChoiceIcon{background:linear-gradient(135deg,#38cbd8,#826eff)!important;color:#10142c}
+.ideaExample{background:linear-gradient(130deg,#193b50,#342653)!important;border-color:#7389c7!important;color:#f8edff!important}
+.quickPhotoItem img,.preview img{border-color:#69dce7!important}
+footer{color:#9eaad0!important}
+a{transition:filter .18s ease}
+a:hover{filter:brightness(1.14)}
+button:focus-visible,a:focus-visible{outline:2px solid #7debf0!important;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
