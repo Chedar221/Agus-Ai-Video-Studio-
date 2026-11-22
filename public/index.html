@@ -811,6 +811,19 @@ const videoSubTypeOptions={
  fashion_model:["Fashion Show / Runway","Outfit of the Day (OOTD)","Lookbook / Katalog Busana","Model Photoshoot Video","Fashion Product Showcase","Beauty / Makeup Showcase"],
  real_estate:["House Tour","Villa / Hotel Tour","Property Showcase","Interior Design Showcase","Arsitektur Eksterior","Promosi Properti","Virtual Walkthrough"],
 };
+function getVideoSubTypeIcon(value,type){
+ const v=String(value||"").toLowerCase();
+ const rules=[
+  [/unboxing|buka kemasan/,"🎁"],[/review|perbandingan|showcase/,"⭐"],[/first impression|kesan pertama/,"👀"],[/testimoni|pengalaman nyata/,"💬"],[/tutorial|cara pakai|langkah demi langkah|how it works/,"🛠️"],[/grwm|makeup|beauty/,"💄"],[/daily vlog|travel vlog|vlog/,"📹"],[/storytelling|cerita personal|kisah/,"📖"],[/before.*after|transformasi|makeover/,"🔄"],[/soft selling|hard selling|promo|affiliate|rekomendasi/,"🛍️"],[/drama|konflik|romansa|persahabatan/,"🎭"],[/komedi|meme|sketsa|reaksi/,"😂"],[/motivasi|inspiratif|pengembangan diri/,"💡"],[/destinasi|travel|perjalanan|petualangan|tour/,"🌍"],[/hotel|vila|properti|house|interior|arsitektur/,"🏡"],[/kuliner|food/,"🍜"],[/budaya|tradisi|sejarah|legenda|mitologi/,"🏛️"],[/podcast|wawancara|talking head|monolog|opini/,"🎙️"],[/musik|music|lagu|karaoke|lyric|acoustic|dj|remix/,"🎵"],[/runway|fashion|outfit|lookbook|model|photoshoot/,"👗"],[/edukasi|explainer|fakta|infografis|teknologi/,"📚"],[/berita|news|kritik|analisis|commentary/,"📰"],[/horor|misteri|supranatural|found footage|kutukan/,"👻"],[/aksi|pertarungan|kejar|penyelamatan|operasi/,"💥"],[/kerajaan|istana|takhta|kesatria/,"👑"],[/superhero|pahlawan|kekuatan/,"🦸"],[/robot|ai|luar angkasa|masa depan|sci.fi/,"🚀"],[/asmr|satisfying|relaxing|sleep|whisper|tapping/,"🎧"],[/alam|nature|hujan|air/,"🌿"],[/craft|handmade|restorasi|proses pembuatan/,"🧵"],[/karakter|chibi|animasi/,"🧸"],[/pop.up|chat|teks singkat/,"💬"],[/dokumenter|profil tokoh|di balik layar/,"🎥"],[/time loop|lintas zaman|masa lalu|masa depan/,"⏳"]
+ ];
+ const found=rules.find(([pattern])=>pattern.test(v));
+ if(found)return found[1];
+ const typeIcons={product_ad:"🛍️",ugc:"📱",asmr:"🎧",lipsync:"🎤",motion_control:"🕺",chibi_3d:"🧸",travel_tourism:"🌴",podcast:"🎙️",music_video:"🎵",transformation:"🔄",explainer:"📊",news_commentary:"📰",fashion_model:"👗",real_estate:"🏡"};
+ return typeIcons[type]||"🎬";
+}
+function escapeVideoSubTypeText(value){
+ return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
 function updateVideoSubType(){
  const type=$("videoType").value,opts=videoSubTypeOptions[type]||[],panel=$("videoSubTypePanel"),select=$("videoSubType"),label=$("videoSubTypeLabel"),hint=$("videoSubTypeHint");
  if(!panel||!select)return;
@@ -818,9 +831,9 @@ function updateVideoSubType(){
  panel.classList.toggle("hidden",!opts.length);
  if(!opts.length){select.innerHTML='<option value="">Tidak ada subjenis tambahan</option>';select.value="";return;}
  label.textContent=type==="ugc"?"PILIH FORMAT UGC":type==="product_ad"?"PILIH FORMAT IKLAN PRODUK":"PILIH SUBJENIS VIDEO";
- select.innerHTML='<option value="">Pilih format (opsional)</option>'+opts.map(v=>'<option value="'+v.replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+v+'</option>').join("");
+ select.innerHTML='<option value="">🧩 Pilih format (opsional)</option>'+opts.map(v=>'<option value="'+escapeVideoSubTypeText(v)+'">'+getVideoSubTypeIcon(v,type)+' '+escapeVideoSubTypeText(v)+'</option>').join("");
  if(opts.includes(previous))select.value=previous;
- hint.textContent=type==="ugc"?"Contoh: Unboxing, review, tutorial, daily vlog, atau affiliate. AI akan menyesuaikan hook, dialog, demonstrasi, dan CTA.":"Pilihan ini akan mengarahkan struktur cerita, adegan, dialog, visual, kamera, audio, dan prompt Google Flow.";
+ hint.textContent=type==="ugc"?"Contoh: 🎁 Unboxing, ⭐ review, 🛠️ tutorial, 📹 daily vlog, atau 🛍️ affiliate. AI akan menyesuaikan hook, dialog, demonstrasi, dan CTA.":"Pilih subjenis dengan ikon yang sesuai. AI akan mengarahkan struktur cerita, adegan, dialog, visual, kamera, audio, dan prompt Google Flow.";
 }
 
 let lipsyncPreviewUrl=null;
