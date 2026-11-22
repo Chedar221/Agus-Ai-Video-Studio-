@@ -505,6 +505,8 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
   .featureNavLinks>.generatorChooser .makeVideoToggle{font-size:8px!important;padding-left:1px!important;padding-right:1px!important}
 }
 
+#videoSubTypePanel.hidden{display:none!important}
+#videoSubTypePanel:not(.hidden){display:block!important}
 /* SIMPLE USER WORKFLOW: expose only the four creative inputs and results */
 #ideaConcept,#productionSettings,#storyboardStudio,#characterStudio,#promptLibrary,#directorStudio,#musicStudio,#productionGenerate,#ugcFields,#silentPopupFields,#lipsyncFields,#motionFields,#productAdFields,.notice,.generatorChooser,.quickSubnav,.quickOptions{display:none!important}
 #quickStudio .quickSubpanel{display:block!important;padding:4px 0}
@@ -567,7 +569,12 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 </div>
 <select id="projectType" class="hidden" aria-hidden="true" tabindex="-1"><option value="story">Video cerita / konten biasa</option><option value="product_ad">Iklan produk profesional</option></select>
 <div class="field"><button type="button" id="videoTypeToggle" class="videoTypeToggle" aria-expanded="false" aria-controls="videoTypeCards"><span>🎞️ JENIS VIDEO</span><span id="videoTypeToggleValue">Otomatis berdasarkan ide</span><span class="toggleChevron">⌄</span></button><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option></select>
-<div id="videoTypeCards" class="videoTypeCards hidden" role="group" aria-label="Pilih jenis video"></div><div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
+<div id="videoTypeCards" class="videoTypeCards hidden" role="group" aria-label="Pilih jenis video"></div>
+<div id="videoSubTypePanel" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
+ <div class="field"><label id="videoSubTypeLabel" for="videoSubType">PILIH FORMAT / SUBJENIS</label>
+ <select id="videoSubType"><option value="">Pilih format video</option></select>
+ <div id="videoSubTypeHint" class="hint">Pilih format agar AI menyesuaikan alur cerita, adegan, dialog, kamera, dan prompt Google Flow.</div></div>
+</div><div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
 <div id="ugcFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726"><h3>📱 Pengaturan UGC Creator</h3><div class="field"><label for="ugcFormat">FORMAT UGC</label><select id="ugcFormat"><option value="UGC Product Review">Review Produk</option><option value="UGC Testimoni">Testimoni</option><option value="UGC Storytelling">Storytelling</option><option value="UGC Vlog">Vlog / Daily Experience</option><option value="UGC Soft Selling">Soft Selling</option><option value="UGC Hard Selling">Hard Selling</option><option value="UGC Unboxing">Unboxing</option><option value="UGC Before & After">Before & After</option></select></div><div class="hint">AI akan membuat gaya bicara langsung ke kamera, ekspresi natural, hook singkat, pengalaman autentik, dan CTA sesuai format. Hindari testimoni atau klaim palsu; isi pengalaman dan fakta yang benar pada ide cerita.</div></div>
 <div id="silentPopupFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
 <h3>💬 Pengaturan Silent Character + Pop-up Text</h3>
@@ -706,7 +713,7 @@ function removeLiteralNewlineArtifacts(root=document.body){
 removeLiteralNewlineArtifacts();
 new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,{childList:true,subtree:true,characterData:true});
 let project=null,latestText="",referenceUrls=[],activeProjectId=null;
-const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
  for(const file of files){
@@ -730,6 +737,38 @@ async function getReferenceImages(){
  return out;
 }
 function getData(){return Object.fromEntries(fields.map(k=>[k,$(k).value.trim()]));}
+
+const videoSubTypeOptions={
+ product_ad:["Product Showcase / Hero Shot","Unboxing Produk","Review Produk","Demo Cara Pakai / Tutorial","Before & After","Testimoni Pelanggan","Soft Selling","Hard Selling / Promo","Perbandingan Produk"],
+ superhero:["Origin Story / Asal Kekuatan","Transformasi Kostum","Pertarungan Superhero","Hero Reveal / Perkenalan Pahlawan","Misi Penyelamatan"],
+ kingdom:["Kehidupan Istana","Perebutan Takhta","Perang Kerajaan","Kisah Raja dan Ratu","Petualangan Kesatria"],
+ mythology:["Legenda Dewa / Dewi","Makhluk Mitologi","Asal-usul Tempat","Kutukan dan Ramalan","Kisah Pahlawan Legendaris"],
+ scifi:["Kehidupan Masa Depan","Robot dan AI","Eksplorasi Luar Angkasa","Dunia Pasca-apokaliptik","Teknologi Eksperimental"],
+ horror:["Horor Supranatural","Horor Psikologis","Misteri dan Investigasi","Urban Legend / Cerita Rakyat","Found Footage"],
+ cinema_ad:["Brand Story / Cerita Merek","Product Hero Film","Iklan Jasa","Iklan Sinematik Emosional","Promo Event"],
+ timetravel:["Ke Masa Lalu","Ke Masa Depan","Pertemuan Lintas Zaman","Perubahan Sejarah Alternatif","Time Loop"],
+ action:["Kejar-kejaran","Pertarungan Bela Diri","Misi Penyelamatan","Pencurian / Heist","Operasi Rahasia"],
+ family_drama:["Drama Keluarga Mengharukan","Konflik Orang Tua dan Anak","Perjuangan Keluarga","Reuni Keluarga","Kisah Pengorbanan"],
+ chibi_3d:["Komedi Chibi","Petualangan Chibi","Edukasi Anak","Kehidupan Sehari-hari","Kisah Persahabatan","Kritik Sosial Komedi"],
+ ugc:["Unboxing Produk","Review Produk","First Impression / Kesan Pertama","Testimoni / Pengalaman Nyata","Tutorial / Cara Pakai","GRWM / Get Ready With Me","Daily Vlog / Day in My Life","Storytelling Personal","Before & After","Soft Selling","Hard Selling / Promo","Affiliate Product Recommendation"],
+ silent_popup:["Komedi Tanpa Dialog","Cerita Ekspresi Karakter","Chat / Percakapan Pop-up","Edukasi Teks Singkat","Reaksi dan Meme"],
+ documentary:["Profil Tokoh / UMKM","Dokumenter Tempat","Sejarah dan Budaya","Proses di Balik Layar","Edukasi / Explainer","Dokumenter Perjalanan"],
+ movie_universe:["Origin Character","World Building / Pengenalan Dunia","Misi Utama","Konflik Antar-Faksi","Teaser / Trailer Universe"],
+ lipsync:["Lipsync Lagu","Karakter Bernyanyi","Cover Lagu / Karaoke","Dialog Sinkron / Voice Performance"],
+ motion_control:["Dance / Tarian","Aksi dan Gerakan Tubuh","Fashion Walk","Gerakan Olahraga","Gerakan Sinematik"]
+};
+function updateVideoSubType(){
+ const type=$("videoType").value,opts=videoSubTypeOptions[type]||[],panel=$("videoSubTypePanel"),select=$("videoSubType"),label=$("videoSubTypeLabel"),hint=$("videoSubTypeHint");
+ if(!panel||!select)return;
+ const previous=select.value;
+ panel.classList.toggle("hidden",!opts.length);
+ if(!opts.length){select.innerHTML='<option value="">Tidak ada subjenis tambahan</option>';select.value="";return;}
+ label.textContent=type==="ugc"?"PILIH FORMAT UGC":type==="product_ad"?"PILIH FORMAT IKLAN PRODUK":"PILIH SUBJENIS VIDEO";
+ select.innerHTML='<option value="">Pilih format (opsional)</option>'+opts.map(v=>'<option value="'+v.replace(/&/g,"&amp;").replace(/"/g,"&quot;")+'">'+v+'</option>').join("");
+ if(opts.includes(previous))select.value=previous;
+ hint.textContent=type==="ugc"?"Contoh: Unboxing, review, tutorial, daily vlog, atau affiliate. AI akan menyesuaikan hook, dialog, demonstrasi, dan CTA.":"Pilihan ini akan mengarahkan struktur cerita, adegan, dialog, visual, kamera, audio, dan prompt Google Flow.";
+}
+
 function updateVideoTypeFields(){const t=$("videoType").value;$("lipsyncFields").classList.toggle("hidden",t!=="lipsync");$("motionFields").classList.toggle("hidden",t!=="motion_control");$("ugcFields").classList.toggle("hidden",t!=="ugc");$("silentPopupFields").classList.toggle("hidden",t!=="silent_popup");}
 
 const videoTypeIcons={
@@ -762,7 +801,7 @@ function syncVideoTypeCards(){
  });
 }
 
-$("videoType").addEventListener("change",()=>{ $("projectType").value=$("videoType").value==="product_ad"?"product_ad":"story"; updateProjectType(); updateVideoTypeFields(); });updateVideoTypeFields();
+$("videoType").addEventListener("change",()=>{ $("projectType").value=$("videoType").value==="product_ad"?"product_ad":"story"; updateProjectType(); updateVideoTypeFields(); updateVideoSubType(); });updateVideoTypeFields();updateVideoSubType();
 renderVideoTypeCards();
 $("videoTypeToggle").addEventListener("click",()=>setVideoTypePicker($("videoTypeCards").classList.contains("hidden")));
 updateVideoTypeToggleLabel();
