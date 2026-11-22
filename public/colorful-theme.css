@@ -85,3 +85,29 @@ a{color:#e9d5a8!important}
 a:hover,button:hover{filter:brightness(1.12)!important}
 hr{border-color:#665332!important}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* FINAL NAV + VIDEO ACTION OVERRIDES: Hasil Video, Hasil Disimpan, Proses Video */
+#featureNav .featureNavLinks>.featureLink,
+#featureNav .featureNavLinks>.featureLink:not(.active){
+ background:linear-gradient(145deg,#24221d,#15130f)!important;
+ color:#f0d9a2!important;border:1px solid #a8894b!important;
+}
+#featureNav .featureNavLinks>.featureLink.active,
+#featureNav .featureNavLinks>.featureLink:hover,
+#makeVideoToggle,.featureNav .makeVideoToggle,
+.generatorChooser .makeVideoToggle{
+ background:linear-gradient(135deg,#f4dfa9,#bd914d)!important;
+ color:#19150e!important;border:1px solid #e2c27e!important;
+}
+#featureNav .featureNavLinks>.featureLink:focus-visible,
+#makeVideoToggle:focus-visible{outline:2px solid #f4dfa9!important;outline-offset:2px}
+.generatorChoice,.generatorChoice.flowChoice,.generatorChoice.leonardoChoice{
+ background:linear-gradient(145deg,#24221d,#15130f)!important;
+ color:#f4ead4!important;border:1px solid #a8894b!important;
+}
+.generatorChoiceIcon{background:linear-gradient(145deg,#f0d9a2,#bd914d)!important;color:#19150e!important}
+.generatorChooserHead,.generatorChooserHead span{color:#f0d9a2!important}
+.generatorChoiceText b,.generatorChoiceText small,.generatorChooserNote{color:#eee5d5!important}
+#outputPanel,#savedProjects{background:linear-gradient(145deg,#1b2029f5,#10141bfa)!important;color:#f4f0e7!important;border:1px solid #b08d4c88!important}
+#outputPanel button,#savedProjects button{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border-color:#e2c27e!important}
