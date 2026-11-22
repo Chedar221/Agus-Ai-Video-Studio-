@@ -540,12 +540,14 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 /* CHEDAR AI STUDIO — guided first-time creation */
 .ideaExampleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ideaExample{min-height:42px;padding:9px 10px;border:1px solid #8e7448;background:linear-gradient(145deg,#182536,#101a28);color:#e9d7b2;border-radius:10px;font-size:11px;text-transform:none;letter-spacing:0;justify-content:flex-start}.ideaExample:focus-visible{outline:2px solid #f0d49b;outline-offset:2px}#copyFlowAll{border-color:#c6a05b;background:linear-gradient(135deg,#f0d49b,#c3944d);color:#1b160d;font-weight:900}@media(max-width:380px){.ideaExampleGrid{grid-template-columns:1fr}}
 .logo{object-fit:contain!important;border-radius:12px!important;background:#080808!important;padding:1px!important}
+/* AI DESIGN STUDIO */
+#designStudio textarea[readonly]{min-height:110px;color:#e9e0cc}#designStudio .quickLead{margin-bottom:14px}@media(max-width:600px){#designStudio .grid{grid-template-columns:1fr}#designStudio .field[style*="grid-column"]{grid-column:auto!important}}
 </style>
 <link rel="stylesheet" href="/colorful-theme.css?v=20261122-4">
 </head>
 <body>
 <header><div class="top"><div class="brand"><img class="logo" src="/20261122_194334.png" alt="Logo CHEDAR AI STUDIO" fetchpriority="high"><div><h1>CHEDAR AI STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.2 · AUTO DIRECTOR</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
-<nav class="featureNav" id="featureNav" aria-label="Navigasi utama"><div class="featureNavInner"><div class="featureNavLinks"><button type="button" class="featureLink active" data-target="quickStudio">✦ Buat Video</button><button type="button" class="featureLink" data-target="outputPanel">Hasil Video</button><button type="button" class="featureLink" data-target="savedProjects">▣ Hasil Disimpan</button></div></div></nav>
+<nav class="featureNav" id="featureNav" aria-label="Navigasi utama"><div class="featureNavInner"><div class="featureNavLinks"><button type="button" class="featureLink active" data-target="quickStudio">✦ Buat Video</button><button type="button" class="featureLink" data-target="outputPanel">Hasil Video</button><button type="button" class="featureLink" data-target="savedProjects">▣ Hasil Disimpan</button><button type="button" class="featureLink" data-target="designStudio">✧ AI Design Studio</button></div></div></nav>
 
 <main>
 <section class="hero"><div class="eyebrow">Your idea · Your story · Your film</div><h2>Wujudkan ide menjadi paket produksi video.</h2><p>Susun cerita, storyboard, prompt gambar, dan prompt video Google Flow dalam satu ruang kerja. Hasil akhir video tetap dibuat di Google Flow.</p></section>
@@ -705,6 +707,30 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="actions"><button class="gold small" id="copyFlowAll">Salin semua prompt Flow</button><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="copyStoryboard">Salin storyboard</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button><button class="ghost small danger" id="deleteCurrentResult">Hapus hasil</button></div></section>
 <section class="panel" id="savedProjects"><h3><span class="num">09</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel" id="flowGuide"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
+
+<section class="panel" id="designStudio">
+<h3><span class="num">✧</span> AI Design Studio</h3>
+<p class="quickLead">Buat konsep desain profesional dari ide sederhana. AI menyusun teks, layout, arahan visual, dan prompt siap pakai.</p>
+<div class="grid">
+<div class="field"><label for="designType">JENIS DESAIN</label><select id="designType"><option value="poster">AI Poster Maker</option><option value="infographic">AI Infografis</option><option value="social">AI Social Media Designer</option><option value="thumbnail">AI Thumbnail Maker</option><option value="flyer">AI Flyer & Brosur</option><option value="branding">AI Logo & Branding</option><option value="product">AI Product Design</option><option value="invitation">AI Undangan & Banner</option></select></div>
+<div class="field"><label for="designRatio">UKURAN / FORMAT</label><select id="designRatio"><option value="9:16">Vertikal 9:16 · Story/Reels</option><option value="1:1">Kotak 1:1 · Feed</option><option value="4:5">Portrait 4:5 · Instagram</option><option value="16:9">Landscape 16:9 · YouTube</option><option value="A4">A4 · Dokumen cetak</option><option value="custom">Banner / ukuran khusus</option></select></div>
+<div class="field"><label for="designTitle">JUDUL / NAMA USAHA</label><input id="designTitle" placeholder="Contoh: Promo Laundry Hemat"></div>
+<div class="field"><label for="designAudience">TARGET AUDIENS</label><input id="designAudience" placeholder="Contoh: masyarakat umum, pelanggan lokal"></div>
+<div class="field"><label for="designStyle">GAYA DESAIN</label><select id="designStyle"><option>Premium minimalis</option><option>Elegan hitam dan gold</option><option>Modern colorfull</option><option>Clean corporate</option><option>Luxury editorial</option><option>Playful dan ceria</option><option>Tradisional Indonesia</option><option>Futuristik</option></select></div>
+<div class="field"><label for="designColor">WARNA UTAMA</label><input id="designColor" placeholder="Contoh: hitam, gold, putih"></div>
+<div class="field" style="grid-column:1/-1"><label for="designDetails">INFORMASI / ISI DESAIN</label><textarea id="designDetails" placeholder="Tuliskan promo, harga, tanggal, lokasi, kontak, atau poin informasi yang wajib dicantumkan."></textarea></div>
+<div class="field" style="grid-column:1/-1"><label for="designNotes">ARAHAN TAMBAHAN (OPSIONAL)</label><textarea id="designNotes" placeholder="Contoh: tampilkan produk besar di tengah, sisakan ruang logo, jangan ubah ejaan dan nomor WhatsApp."></textarea></div>
+</div>
+<div class="actions"><button type="button" class="gold" id="designGenerate">✦ Buat Konsep Desain dengan AI</button><button type="button" class="secondary" id="designReset">Reset</button></div>
+<div id="designStatus" class="status" role="status">Siap membuat konsep desain.</div>
+<div id="designResult" class="hidden" style="margin-top:14px"><div class="summary"><h4 id="designResultTitle">Hasil Konsep Desain</h4><p id="designResultType"></p></div>
+<div class="field"><label>TEKS FINAL DESAIN</label><textarea id="designCopy" rows="7" readonly></textarea></div>
+<div class="field"><label>PANDUAN LAYOUT DAN KOMPOSISI</label><textarea id="designLayout" rows="6" readonly></textarea></div>
+<div class="field"><label>PROMPT VISUAL SIAP PAKAI</label><textarea id="designPrompt" rows="10" readonly></textarea></div>
+<div class="actions"><button type="button" class="gold" id="designCopyAll">Salin semua hasil</button><button type="button" class="secondary" id="designCopyPrompt">Salin prompt visual</button><button type="button" class="secondary" id="designDownload">Unduh TXT</button></div></div>
+<p class="quickFoot">Catatan: fitur ini menyusun konsep, teks, layout, dan prompt visual dengan Groq AI. Render gambar final belum dilakukan di website; tempel prompt ke generator gambar pilihan Anda. Foto/logo dapat ditambahkan saat proses render.</p>
+</section>
+
 </div></div>
 <footer>CHEDAR AI STUDIO · Studio produksi prompt AI · Powered by Google Gemini</footer>
 </main>
@@ -1115,5 +1141,5 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   link.addEventListener("click",()=>{toggle.setAttribute("aria-expanded","false");menu.hidden=true;});
  });
 })();
-</script><script src="/studio-enhancements.js?v=20261122-1"></script><script src="/admin-access.js?v=20261120-1"></script><!-- DIRECT GENERATE CLICK ROUTE is handled by the early diagnostic capture listener. -->
+</script><script src="/ai-design-studio.js?v=20261122-1"></script><script src="/studio-enhancements.js?v=20261122-1"></script><script src="/admin-access.js?v=20261120-1"></script><!-- DIRECT GENERATE CLICK ROUTE is handled by the early diagnostic capture listener. -->
 </body></html>
