@@ -1,6 +1,6 @@
-# CHEDAR AI KREATOR 3.2
+# CHEDAR AI STUDIO 3.2
 
-Studio pribadi untuk mengembangkan ide menjadi cerita, storyboard teks, prompt gambar, dan prompt video siap digunakan di Google Flow.
+Studio kreator untuk mengembangkan ide menjadi cerita, storyboard teks, prompt gambar, dan prompt video siap digunakan di Google Flow. Fokus utama: alur sederhana untuk pengguna pemula, prompt per adegan yang siap disalin, dan konsistensi karakter.
 
 ## Fitur
 - Generate paket produksi melalui Google Gemini Developer API.
@@ -9,6 +9,8 @@ Studio pribadi untuk mengembangkan ide menjadi cerita, storyboard teks, prompt g
 - Pengaturan durasi, jumlah adegan, rasio, genre, bahasa, karakter suara, dan arahan sutradara.
 - Template lokal tanpa AI, salin prompt, unduh TXT, simpan/buka/hapus proyek di perangkat.
 - Antarmuka responsif dan dukungan instalasi PWA.
+- Alur cepat dengan contoh ide siap sentuh dan tombol salin semua prompt Google Flow.
+- Proyek tersimpan lokal pada browser/perangkat pengguna; belum ada akun dan sinkronisasi cloud.
 
 ## Konfigurasi Vercel
 1. Buat API key di https://aistudio.google.com/apikey
