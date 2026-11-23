@@ -695,6 +695,24 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div id="musicStatus" class="status" role="status">Siap menyusun musik berdasarkan ide video.</div>
 <div class="musicNote">Catatan: pembuatan lagu dan MP3 dilakukan di Suno, bukan di server website ini. Paket gratis Suno memiliki batas kredit dan ketentuan penggunaan tersendiri. Periksa lisensi sebelum memakai lagu untuk keperluan komersial.</div>
 </div></section>
+
+<section class="panel" id="voiceControlPanel">
+ <h3><span class="num">07A</span> Narasi & Dialog Karakter</h3>
+ <p class="hint">Atur teks yang diucapkan. Teks manual dipertahankan persis; tiap karakter memakai suara yang dipilih dan berbicara bergantian.</p>
+ <label for="narrationMode">Mode narasi</label>
+ <select id="narrationMode"><option value="auto" selected>Otomatis jika teks kosong</option><option value="manual">Gunakan teks saya persis</option><option value="none">Tanpa narasi</option></select>
+ <label for="narrationText">Teks narasi (boleh dikosongkan)</label>
+ <textarea id="narrationText" rows="3" placeholder="Kosongkan untuk narasi otomatis, atau isi narasi yang harus dibacakan persis..."></textarea>
+ <label for="dialogueCount">Jumlah karakter yang berbicara</label>
+ <select id="dialogueCount"><option value="1">1 karakter</option><option value="2">2 karakter</option><option value="3">3 karakter</option><option value="4">4 karakter</option></select>
+ <div class="speakerCard" id="speakerCard1"><h4>Karakter 1</h4><label>Nama karakter</label><input id="speaker1Name" placeholder="Contoh: Agus"><label>Suara AI</label><select id="speaker1Voice"><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Charon">Charon — berat dan tenang</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib (kosong = AI boleh membuat)</label><textarea id="speaker1Dialogue" rows="2" placeholder="Tulis dialog karakter 1 persis seperti yang harus diucapkan..."></textarea></div>
+ <div class="speakerCard" id="speakerCard2" hidden><h4>Karakter 2</h4><label>Nama karakter</label><input id="speaker2Name" placeholder="Nama karakter 2"><label>Suara AI</label><select id="speaker2Voice"><option value="Puck">Puck — ceria dan ekspresif</option><option value="Kore">Kore — jelas dan tegas</option><option value="Charon">Charon — berat dan tenang</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker2Dialogue" rows="2" placeholder="Dialog karakter 2..."></textarea></div>
+ <div class="speakerCard" id="speakerCard3" hidden><h4>Karakter 3</h4><label>Nama karakter</label><input id="speaker3Name" placeholder="Nama karakter 3"><label>Suara AI</label><select id="speaker3Voice"><option value="Charon">Charon — berat dan tenang</option><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker3Dialogue" rows="2" placeholder="Dialog karakter 3..."></textarea></div>
+ <div class="speakerCard" id="speakerCard4" hidden><h4>Karakter 4</h4><label>Nama karakter</label><input id="speaker4Name" placeholder="Nama karakter 4"><label>Suara AI</label><select id="speaker4Voice"><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Charon">Charon — berat dan tenang</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker4Dialogue" rows="2" placeholder="Dialog karakter 4..."></textarea></div>
+ <div class="actions"><button class="gold" id="generateSpeechBtn">Buat Audio AI dari Proyek</button></div>
+ <div id="speechStatus" class="status" role="status">Audio dibuat setelah paket video berhasil di-generate.</div>
+ <div id="speechResults"></div>
+</section>
 <div class="panel" id="productionGenerate"><h3><span class="num">08</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
 </div>
 <div class="stack">
@@ -735,7 +753,7 @@ function removeLiteralNewlineArtifacts(root=document.body){
 removeLiteralNewlineArtifacts();
 new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,{childList:true,subtree:true,characterData:true});
 let project=null,latestText="",referenceUrls=[],activeProjectId=null;
-const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncSongTitle","lipsyncArtist","lipsyncGenre","lipsyncNotes","motionReference","motionNotes","motionVideoFileName","motionVideoFileType","motionVideoDuration","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncSongTitle","lipsyncArtist","lipsyncGenre","lipsyncNotes","motionReference","motionNotes","motionVideoFileName","motionVideoFileType","motionVideoDuration","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","narrationMode","narrationText","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
  const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(f.name)).slice(0,5),out=[];
  for(const file of files){
@@ -1116,4 +1134,52 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
  });
 })();
 </script><script src="/studio-enhancements.js?v=20261122-1"></script><script src="/admin-access.js?v=20261120-1"></script><!-- DIRECT GENERATE CLICK ROUTE is handled by the early diagnostic capture listener. -->
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const count=$("dialogueCount"),btn=$("generateSpeechBtn"),status=$("speechStatus"),results=$("speechResults");
+ if(count)count.addEventListener("change",()=>{for(let i=1;i<=4;i++){const card=$("speakerCard"+i);if(card)card.hidden=i>Number(count.value);}});
+ function setStatus(t,kind=""){if(status){status.textContent=t;status.className="status "+kind;}}
+ function wavUrl(base64){const raw=atob(base64),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);return URL.createObjectURL(new Blob([bytes],{type:"audio/wav"}));}
+ btn?.addEventListener("click",async()=>{
+  if(!window.project && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
+  const scenes=window.project?.scenes;
+  if(!Array.isArray(scenes)||!scenes.length){setStatus("Paket video belum tersedia. Generate proyek terlebih dahulu.","err");return;}
+  const segments=[];
+  const mode=$("narrationMode")?.value||"auto",narration=$("narrationText")?.value?.trim()||"";
+  const n=Number(count?.value||1);
+  for(const scene of scenes){
+   if(mode!=="none" && scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:"Kore",style:"natural Indonesian narration"});
+   const raw=String(scene.dialogue||"");
+   if(raw.trim()){
+    const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+    for(const line of lines){
+     let speakerIndex=0,text=line;
+     const match=line.match(/^([^:：]{1,50})[:：]\s*(.+)$/);
+     if(match){text=match[2];const found=Array.from({length:n},(_,i)=>i+1).find(i=>(($("speaker"+i+"Name")?.value||"").trim().toLowerCase()===match[1].trim().toLowerCase()));speakerIndex=found?found-1:0;}
+     const idx=Math.max(0,Math.min(n-1,speakerIndex)),voice=$("speaker"+(idx+1)+"Voice")?.value||"Kore",name=$("speaker"+(idx+1)+"Name")?.value||("Karakter "+(idx+1));
+     segments.push({label:name+" · Adegan "+scene.number,text,voice,style:"natural spoken Indonesian, consistent character voice"});
+    }
+   }
+  }
+  if(!segments.length){setStatus("Tidak ada teks narasi atau dialog pada hasil proyek. Periksa mode audio dan isi dialog.","err");return;}
+  btn.disabled=true;results.innerHTML="";let done=0;
+  try{
+   for(const seg of segments){
+    setStatus("Membuat audio "+(done+1)+"/"+segments.length+": "+seg.label+" ...");
+    const res=await fetch("/api/speech",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:seg.text,voice:seg.voice,style:seg.style})});
+    const data=await res.json();if(!res.ok)throw new Error(data.error||"Gagal membuat audio.");
+    const url=wavUrl(data.audio);const card=document.createElement("div");card.className="scene";
+    const title=document.createElement("b");title.textContent=seg.label+" · "+seg.voice;
+    const audio=document.createElement("audio");audio.controls=true;audio.src=url;audio.style.width="100%";
+    const link=document.createElement("a");link.href=url;link.download=("chedar-"+seg.label).replace(/[^a-z0-9-_]+/gi,"-")+".wav";link.textContent="Unduh WAV";
+    card.append(title,audio,link);results.appendChild(card);done++;
+   }
+   setStatus("Selesai. "+done+" klip WAV siap diputar dan diunduh satu per satu.","ok");
+  }catch(e){setStatus(e.message||"Audio gagal dibuat.","err");}
+  finally{btn.disabled=false;}
+ });
+})();
+</script>
 </body></html>
