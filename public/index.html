@@ -1143,8 +1143,8 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
  function setStatus(t,kind=""){if(status){status.textContent=t;status.className="status "+kind;}}
  function wavUrl(base64){const raw=atob(base64),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);return URL.createObjectURL(new Blob([bytes],{type:"audio/wav"}));}
  btn?.addEventListener("click",async()=>{
-  if(!window.project && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
-  const scenes=window.project?.scenes;
+  if(typeof project === 'undefined' && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
+  const scenes=project?.scenes;
   if(!Array.isArray(scenes)||!scenes.length){setStatus("Paket video belum tersedia. Generate proyek terlebih dahulu.","err");return;}
   const segments=[];
   const mode=$("narrationMode")?.value||"auto",narration=$("narrationText")?.value?.trim()||"";
