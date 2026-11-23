@@ -1047,7 +1047,7 @@ $("quickGenerate").onclick=async(event)=>{
   const previousProject=project;
   await $("aiBtn").onclick(photos);
   if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director otomatis...";const suiteOk=await window.ChedarProductionSuite.runAll();if(!suiteOk)$("quickStatus").textContent="Paket utama berhasil dibuat, tetapi fitur pendamping belum selesai. Buka Hasil Video untuk memakai paket utama dan jalankan ulang 5 fitur otomatis.";}
-  if(project && project!==previousProject){const audioStatus=$("speechStatus");if(audioStatus)audioStatus.textContent="Paket video selesai. Menyiapkan audio narasi dan dialog sesuai pilihan...";$("generateSpeechBtn")?.click();}
+  if(project && project!==previousProject){const audioStatus=$("speechStatus");if(audioStatus)audioStatus.textContent="Paket video selesai. Menyiapkan audio narasi dan dialog sesuai pilihan...";if(window.ChedarGenerateSpeech)await window.ChedarGenerateSpeech();}
   else if(project===previousProject){const detail=($("quickStatus").textContent||"").trim();if(!detail||detail==="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini."||detail.includes("foto siap dikirim"))$("quickStatus").textContent="Paket belum berhasil dibuat. "+($("status").textContent||"Periksa koneksi dan konfigurasi mesin AI.");}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
  finally{button.disabled=false;button.textContent="✦ BUAT VIDEO";}
@@ -1196,7 +1196,7 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
    return URL.createObjectURL(new Blob([out],{type:"audio/wav"}));
   }finally{await ctx.close();}
  }
- btn?.addEventListener("click",async()=>{
+ async function generateProjectSpeech(){
   if(typeof project === 'undefined' && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
   const scenes=project?.scenes;
   if(!Array.isArray(scenes)||!scenes.length){setStatus("Paket video belum tersedia. Generate proyek terlebih dahulu.","err");return;}
@@ -1239,9 +1239,12 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
    const combinedLink=document.createElement("a");combinedLink.href=combinedUrl;combinedLink.download="chedar-audio-lengkap.wav";combinedLink.textContent="Unduh audio lengkap WAV";
    combined.append(combinedTitle,combinedPlayer,combinedLink);results.prepend(combined);
    setStatus("Selesai. "+done+" klip berhasil dibuat dan digabung menjadi satu audio WAV dengan jeda 0,4 detik.","ok");
-  }catch(e){setStatus(e.message||"Audio gagal dibuat.","err");}
+   if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket video dan audio narasi/dialog sudah dibuat.";
+  }catch(e){setStatus(e.message||"Audio gagal dibuat.","err");if($("quickStatus"))$("quickStatus").textContent="Paket video berhasil dibuat, tetapi audio gagal: "+(e.message||"Coba ulangi.");}
   finally{btn.disabled=false;}
- });
+ }
+ window.ChedarGenerateSpeech=generateProjectSpeech;
+ btn?.addEventListener("click",()=>generateProjectSpeech());
 })();
 </script>
 </body></html>
