@@ -3,8 +3,7 @@ const style=document.createElement("style");style.textContent=`
 html.admin-locked #productionSettings,html.admin-locked #promptLibrary,html.admin-locked #advancedPromptStudio{display:none!important}
 #adminAccessButton{border:1px solid #b99a5a;background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c;font-weight:900}
 #adminAccessButton.admin-on{background:#173b30;border-color:#4b9c7c;color:#b8f0d7}
-#adminEngineButton{display:none;border:1px solid #c49a58;background:#17243a;color:#f1d8a4;font-weight:900}
-html:not(.admin-locked) #adminEngineButton{display:inline-flex}
+#adminEngineButton{display:inline-flex;border:1px solid #c49a58;background:linear-gradient(135deg,#f0dba9,#c49a58);color:#17202c;font-weight:900}
 .adminControlStack{position:static!important;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:10px;width:100%;margin:12px auto 4px;padding:0;background:transparent;border:0;box-shadow:none;min-width:0;z-index:auto}.adminControlStack button{flex:1 1 0;width:auto;max-width:190px;min-width:0;min-height:44px;justify-content:center;white-space:nowrap}
 .aiEngineOverlay{position:fixed;inset:0;z-index:5001;display:none;align-items:center;justify-content:center;padding:16px;background:#050a12df;backdrop-filter:blur(9px)}.aiEngineOverlay.open{display:flex}
 .aiEngineDialog{width:min(440px,100%);background:linear-gradient(145deg,#1a2a40,#0d1726);border:1px solid #c49a58;border-radius:18px;padding:20px;box-shadow:0 24px 90px #000a}
@@ -26,10 +25,10 @@ document.body.appendChild(overlay);const nav=document.querySelector(".topright")
 adminStack.className="adminControlStack";
 const access=document.createElement("button");
 access.type="button";access.id="adminAccessButton";access.className="small";access.textContent="LOGIN ADMIN";adminStack.appendChild(access);
-const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);const quickGenerate=document.getElementById("quickGenerate");if(quickGenerate){quickGenerate.insertAdjacentElement("afterend",adminStack);}else{nav?.appendChild(adminStack);}
+const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ PILIH MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);const quickGenerate=document.getElementById("quickGenerate");if(quickGenerate){quickGenerate.insertAdjacentElement("afterend",adminStack);}else{nav?.appendChild(adminStack);}
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
-<h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilihan ini berlaku untuk pembuatan proyek utama dan lima departemen produksi otomatis pada perangkat admin ini.</p>
+<h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilih mesin AI untuk pembuatan proyek dan alat produksi di perangkat ini. Pengaturan ini tidak mengubah API key atau pengaturan pengguna lain.</p>
 <label for="aiEngineSelect">PROVIDER AI</label><select id="aiEngineSelect"><option value="gemini">Google Gemini — mesin utama</option><option value="groq">Groq — gratis / cepat</option><option value="openrouter">OpenRouter — model gratis</option><option value="openai">OpenAI — alternatif</option></select>
 <div class="hint" id="aiEngineHint">Gemini menggunakan GEMINI_API_KEY di Vercel. Groq: GROQ_API_KEY. OpenRouter: OPENROUTER_API_KEY.</div>
 <div class="engineActions"><button type="button" class="secondary" id="aiEngineCancel">BATAL</button><button type="button" class="gold" id="aiEngineSave">SIMPAN PILIHAN</button></div><div id="aiEngineStatus" role="status"></div>
@@ -48,7 +47,7 @@ engineOverlay.addEventListener("click",e=>{if(e.target===engineOverlay)closeEngi
 document.getElementById("aiEngineSave").addEventListener("click",()=>{localStorage.setItem("chedar_ai_engine_v2",engineSelect.value);syncEngineButton();engineStatus.textContent="Pilihan mesin AI disimpan untuk perangkat admin ini.";window.dispatchEvent(new CustomEvent("chedar:ai-engine-changed",{detail:{engine:engineSelect.value}}));setTimeout(closeEngine,700);});
 
 const status=document.getElementById("adminLoginStatus"),setStatus=(m,ok=false)=>{status.textContent=m;status.classList.toggle("ok",ok);};
-const setAdmin=(enabled,email="")=>{document.documentElement.classList.toggle("admin-locked",!enabled);access.classList.toggle("admin-on",enabled);access.textContent=enabled?"ADMIN · KELUAR":"LOGIN ADMIN";engineButton.style.display=enabled?"inline-flex":"none";if(!enabled){syncEngineButton();}access.title=enabled?"Keluar dari akun admin "+email:"Masuk sebagai admin";
+const setAdmin=(enabled,email="")=>{document.documentElement.classList.toggle("admin-locked",!enabled);access.classList.toggle("admin-on",enabled);access.textContent=enabled?"ADMIN · KELUAR":"LOGIN ADMIN";engineButton.style.display="inline-flex";syncEngineButton();access.title=enabled?"Keluar dari akun admin "+email:"Masuk sebagai admin";
 document.querySelectorAll("#videoType option").forEach(o=>{if(["lipsync","motion_control"].includes(o.value))o.disabled=!enabled;});
 if(!enabled&&["lipsync","motion_control"].includes(document.getElementById("videoType")?.value)){const s=document.getElementById("videoType");s.value="auto";s.dispatchEvent(new Event("change"));}};
 const check=async()=>{try{const r=await fetch("/api/admin-auth",{credentials:"same-origin",cache:"no-store"}),d=await r.json();setAdmin(Boolean(d.authenticated),d.email||"");if(!d.configured)access.title="Login admin belum dikonfigurasi di Vercel";}catch{setAdmin(false);}};
