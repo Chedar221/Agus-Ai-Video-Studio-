@@ -1,110 +1,113 @@
-/* CHEDAR AI STUDIO — Colorful Premium Theme
-   Visual-only overrides. No layout, interaction, state, or feature logic changed. */
-:root{
-  color-scheme:dark;
-  --bg:#090d1b;--panel:#14172b;--panel2:#1b2140;--line:#3b4770;
-  --ink:#f7f4ff;--muted:#b5bad2;--blue:#69c9ff;--blue2:#596cff;
-  --gold:#ffd36e;--gold2:#ffe7a8;--green:#63e6be;--red:#ff7d9c;
-  --color-cyan:#39d7e8;--color-violet:#9c7bff;--color-pink:#ff75b8;--color-orange:#ffad69;
-}
-html{background:var(--bg)}
-body{
- background:
-  radial-gradient(ellipse at 8% 0%,#1c9bb52b 0,transparent 32%),
-  radial-gradient(ellipse at 92% 5%,#9b59ff2c 0,transparent 34%),
-  radial-gradient(ellipse at 55% 95%,#ff5fa51a 0,transparent 38%),var(--bg)!important;
- color:var(--ink)
-}
-header,.featureNav{
- background:linear-gradient(100deg,rgba(14,23,48,.97),rgba(31,18,54,.96),rgba(12,35,55,.97))!important;
- border-bottom:1px solid #7f7bca66!important;
- box-shadow:0 9px 30px #07091688!important
-}
-.logo,.mark{
- background:linear-gradient(135deg,#5ce1e6,#8d7aff 48%,#ff80bd)!important;
- border:2px solid #f4dcff!important;color:#15132b!important;
- box-shadow:0 0 0 3px #8b79ff30,0 7px 24px #8c70ff55!important
-}
-.brand h1{background:linear-gradient(90deg,#fff1b8,#a6f5ff,#e2b5ff);-webkit-background-clip:text;background-clip:text;color:transparent}
-.brand small{color:#b9c9e9!important}
-.eyebrow,.navCaption{color:#7ce6ef!important}
-.hero h2,.hero h1{background:linear-gradient(100deg,#fff4cf 0%,#a9f0ff 42%,#d7b8ff 75%,#ffb9d8 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
-.panel,.hero-card,.feature,.workflow,.musicBox,.speakerCard{
- background:linear-gradient(145deg,rgba(28,36,70,.96),rgba(17,27,53,.98) 55%,rgba(37,24,58,.94))!important;
- border:1px solid #7185c466!important;
- box-shadow:0 15px 38px #05081766,inset 0 1px #ffffff12!important
-}
-.panel:nth-child(4n+1){border-top-color:#46dce2!important}
-.panel:nth-child(4n+2){border-top-color:#9b83ff!important}
-.panel:nth-child(4n+3){border-top-color:#ff82bd!important}
-.panel:nth-child(4n){border-top-color:#ffc36e!important}
-.panel h3,.feature h3{color:#f5edff}
-.num,.feature-icon,.step-num,.quickUploadIcon,.videoTypeCard .typeIcon{
- background:linear-gradient(135deg,#43d9e8,#8d7bff 55%,#ff80b9)!important;
- color:#17152c!important;border:1px solid #ffffff55!important;
- box-shadow:0 4px 15px #8d7bff33
-}
-label{color:#d7dafa!important}
-input,select,textarea,.summary,.scene,.prompt,.promptLibraryCard,.empty,.quickUpload{
- background:linear-gradient(145deg,#0d1730,#17152e)!important;
- border-color:#53628e!important;color:#f5f3ff!important
-}
-input:focus,select:focus,textarea:focus{
- border-color:#61e1ec!important;box-shadow:0 0 0 3px #54d8eb30!important
-}
-select option{background:#171a34;color:#fff}
-button,.featureLink,.quickSubtab,.generatorChoice{
- border-color:#6373a5!important
-}
-.primary,.gold,#copyFlowAll,.quickGenerate{
- background:linear-gradient(110deg,#45dbe2,#7e86ff 48%,#d27dff 76%,#ff8bbd)!important;
- border:1px solid #d9d2ff!important;color:#11152d!important;
- box-shadow:0 6px 20px #826cff3b!important;font-weight:900
-}
-.secondary,.ghost,.sectionNav button,.quickSubtab,.featureLink{
- background:linear-gradient(120deg,#25345d,#332653 55%,#174154)!important;
- color:#f0edff!important;border-color:#6577ad!important
-}
-.featureLink.active,.quickSubtab.active,.videoTypeCard.active{
- background:linear-gradient(110deg,#43dce4,#8a83ff 55%,#fa8fc4)!important;
- color:#14152c!important;border-color:#e2d7ff!important;
- box-shadow:0 5px 18px #897aff55!important
-}
-.featureNavLinks>.featureLink,.featureNavLinks>.generatorChooser .makeVideoToggle{
- background:linear-gradient(110deg,#1aa9bb,#6556d9 52%,#b94c91)!important;
- border:1px solid #a7c5ff!important;color:#fff!important;
- box-shadow:0 4px 14px #6659db55!important
-}
-.featureNavLinks>.featureLink.active{
- background:linear-gradient(110deg,#50e1df,#a08aff 55%,#ff9bc9)!important;color:#16142e!important
-}
-.videoTypeCard{background:linear-gradient(145deg,#162b4a,#30224b)!important;border-color:#586b9c!important;color:#f6f1ff!important}
-.videoTypeCard:nth-child(4n+1) .typeIcon{background:linear-gradient(135deg,#44dce5,#397de5)!important}
-.videoTypeCard:nth-child(4n+2) .typeIcon{background:linear-gradient(135deg,#9b82ff,#e17bda)!important}
-.videoTypeCard:nth-child(4n+3) .typeIcon{background:linear-gradient(135deg,#ff8db9,#ffb36b)!important}
-.videoTypeCard:nth-child(4n) .typeIcon{background:linear-gradient(135deg,#63e6be,#35a9bb)!important}
-.videoTypeToggle{background:linear-gradient(110deg,#183c54,#3b285c,#512b53)!important;border-color:#8c85d5!important;color:#f6eaff!important}
-.quickStudio{background:linear-gradient(145deg,#182c51,#30204d 55%,#173b4c)!important;border-color:#7d91d9!important}
-.quickLead,.quickFoot,.hint,.musicNote{color:#c0c9e5!important}
-.quickUpload{border-color:#7f8ad0!important}
-.quickUpload b,.summary h4,.promptLibraryCard b{color:#ffe2a0!important}
-.scene{border-color:#6374a5!important;border-left:3px solid #49d9e2!important}
-#storyboardView .scene:nth-child(4n+2){border-top-color:#9a83ff!important}
-#storyboardView .scene:nth-child(4n+3){border-top-color:#ff82bd!important}
-#storyboardView .scene:nth-child(4n){border-top-color:#ffc36e!important}
-.time{color:#7ce8ed!important}
-.musicBox{border-color:#a47bd8!important;background:linear-gradient(145deg,#252052,#17304d,#40234c)!important}
-.musicBox .musicTitle strong{color:#ffd1f0!important}
-.musicBox .musicTitle span{color:#b9f5ff!important;border-color:#6a9ac8!important}
-.notice{background:linear-gradient(110deg,#263d55,#3b2853,#4c2b50)!important;border-color:#8b81c9!important;color:#f4eaff!important}
-.status.ok{color:#71efc1!important}.status.err{color:#ff91a9!important}
-.pill,.live{background:#25375a;color:#aef4f2!important;border-color:#5b9cb2!important}
-.generatorChoice{background:linear-gradient(135deg,#172d4b,#35254f)!important}
-.generatorChoiceIcon{background:linear-gradient(135deg,#38cbd8,#826eff)!important;color:#10142c}
-.ideaExample{background:linear-gradient(130deg,#193b50,#342653)!important;border-color:#7389c7!important;color:#f8edff!important}
-.quickPhotoItem img,.preview img{border-color:#69dce7!important}
-footer{color:#9eaad0!important}
-a{transition:filter .18s ease}
-a:hover{filter:brightness(1.14)}
-button:focus-visible,a:focus-visible{outline:2px solid #7debf0!important;outline-offset:2px}
+/* CHEDAR AI STUDIO — premium black & gold theme; visual overrides only */
+:root{color-scheme:dark;--bg:#080a0e;--panel:#11151c;--panel2:#191f29;--line:#403722;--ink:#f4f0e7;--muted:#b0aa9d;--gold:#d6b36b;--gold2:#f0d9a2;--blue:#d6b36b;--blue2:#a77c37;--green:#8cc6a7;--red:#e78d83}
+html{scroll-behavior:smooth}
+body{background:radial-gradient(ellipse at 82% -12%,#70532635 0,transparent 34%),radial-gradient(ellipse at 7% 12%,#30343c55 0,transparent 38%),#080a0e!important;color:var(--ink)!important}
+header,.topbar,.featureNav{background:rgba(8,10,14,.96)!important;border-color:#9b793d55!important;box-shadow:0 9px 28px #0007!important}
+.logo,.mark,.num,.step-num,.feature-icon{background:linear-gradient(145deg,#f2dda9,#b68a43)!important;color:#19150e!important;border-color:#d6b36b!important;box-shadow:0 5px 20px #d6b36b20!important}
+.brand h1,.brand strong{letter-spacing:.12em}
+.eyebrow,.hero h1 span,.workflow-item span,.navCaption{color:var(--gold2)!important}
+.hero h2,.hero h1{color:#f5f0e6}
+.panel,.hero-card,.workflow,.feature,.step,.workflow-item,.promptLibraryCard{background:linear-gradient(145deg,#1b2029f5,#10141bfa 70%,#171a20f5)!important;border:1px solid #9b793d45!important;box-shadow:0 15px 42px #0006,inset 0 1px #ffffff08!important}
+.panel:hover,.feature:hover{border-color:#d6b36b88!important}
+input,select,textarea,.prompt,.summary{background:#090c11!important;color:#f4f0e7!important;border-color:#51452e!important}
+input:focus,select:focus,textarea:focus{border-color:#d6b36b!important;box-shadow:0 0 0 3px #d6b36b25!important}
+button,.primary,.top-action,.gold,.featureLink.active{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border:1px solid #e2c27e!important;box-shadow:0 6px 20px #d6b36b20!important}
+.secondary,.ghost,.tab,.featureLink,.sectionNav button{background:linear-gradient(145deg,#202630,#151a22)!important;color:#e7dfd0!important;border:1px solid #625237!important}
+.tab.active{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important}
+.notice{background:linear-gradient(120deg,#292217,#17150f)!important;border-color:#a8894b88!important;color:#ead8b5!important}
+#outputPanel{border-color:#c5a15c88!important}
+.musicBox{background:linear-gradient(145deg,#211e1a,#12161d)!important;border-color:#8a7045!important}
+.musicBox .musicTitle strong{color:#f0d9a2!important}
+.pill,.live{border-color:#8b754a!important;color:#e8d5aa!important}
+a:hover{color:#f0d9a2}
+button:hover{filter:brightness(1.1)}
+footer{color:#9b8a68!important}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* Gold consistency: replace remaining red action/active button accents */
+.danger,
+button.danger,
+.featureNavLinks>.featureLink.active{
+ background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;
+ border:1px solid #e2c27e!important;
+ color:#19150e!important;
+ box-shadow:0 6px 20px #d6b36b20!important;
+}
+.featureNavLinks>.featureLink.active:hover,
+.danger:hover,button.danger:hover{filter:brightness(1.1)!important}
+
+/* FULL SITE THEME PASS — force the black & gold palette across every workspace section */
+:root{
+ color-scheme:dark!important;
+ --bg:#080a0e!important;--panel:#11151c!important;--panel2:#191f29!important;
+ --line:#403722!important;--ink:#f4f0e7!important;--muted:#b0aa9d!important;
+ --gold:#d6b36b!important;--gold2:#f0d9a2!important;--blue:#d6b36b!important;
+ --blue2:#a77c37!important;--green:#8cc6a7!important;--red:#e2c27e!important;
+}
+html,body{background-color:#080a0e!important;color:#f4f0e7!important}
+body{background-image:radial-gradient(ellipse at 82% -12%,#70532635 0,transparent 34%),radial-gradient(ellipse at 7% 12%,#30343c55 0,transparent 38%),linear-gradient(135deg,#080a0e,#10141b 55%,#080a0e)!important}
+header,.top,.topbar,.featureNav,.topbar,nav,.nav{
+ background:rgba(8,10,14,.97)!important;color:#f4f0e7!important;
+ border-color:#9b793d66!important;
+}
+main,.layout,.stack,.hero,.section,.workspace,.content,.container{color:#f4f0e7!important}
+.panel,.hero-card,.workflow,.feature,.step,.workflow-item,.promptLibraryCard,
+.scene,.summary,.preview,.musicBox,.notice,.empty,.resultHead,
+#outputPanel,.storyboardGrid,.promptLibraryGrid{
+ background:linear-gradient(145deg,#1b2029f5,#10141bfa 70%,#171a20f5)!important;
+ color:#f4f0e7!important;border-color:#9b793d66!important;
+ box-shadow:0 12px 34px #0006,inset 0 1px #ffffff08!important;
+}
+.panel h1,.panel h2,.panel h3,.panel h4,.hero h1,.hero h2,.feature h3,
+.workflow h2,.workflow-item b,.scene b,.resultHead h3,.brand h1,.brand strong,
+label,.field label{color:#f4f0e7!important}
+p,.hint,.muted,.brand small,.feature p,.workflow-item p,.scene p,
+.summary p,.musicNote,footer,.footer{color:#bdb5a6!important}
+.eyebrow,.hero h1 span,.musicBox .musicTitle strong,.promptLibraryCard b,
+.scene label,.workflow-item span,.navCaption{color:#f0d9a2!important}
+input,select,textarea,.prompt,pre,code{
+ background:#090c11!important;color:#f4f0e7!important;
+ border-color:#625237!important;
+}
+input::placeholder,textarea::placeholder{color:#8f887b!important}
+button,.primary,.top-action,.gold,.featureLink.active,.tab.active,
+.actions button:not(.secondary):not(.ghost):not(.tab):not(.danger){
+ background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;
+ color:#19150e!important;border:1px solid #e2c27e!important;
+}
+.secondary,.ghost,.tab,.featureLink,.sectionNav button,.musicBox .musicActions button.secondary{
+ background:linear-gradient(145deg,#202630,#151a22)!important;
+ color:#eee5d5!important;border:1px solid #76613b!important;
+}
+.danger,button.danger{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border-color:#e2c27e!important}
+.pill,.live,.time{background:#17150f!important;color:#f0d9a2!important;border-color:#8b754a!important}
+a{color:#e9d5a8!important}
+a:hover,button:hover{filter:brightness(1.12)!important}
+hr{border-color:#665332!important}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+
+/* FINAL NAV + VIDEO ACTION OVERRIDES: Hasil Video, Hasil Disimpan, Proses Video */
+#featureNav .featureNavLinks>.featureLink,
+#featureNav .featureNavLinks>.featureLink:not(.active){
+ background:linear-gradient(145deg,#24221d,#15130f)!important;
+ color:#f0d9a2!important;border:1px solid #a8894b!important;
+}
+#featureNav .featureNavLinks>.featureLink.active,
+#featureNav .featureNavLinks>.featureLink:hover,
+#makeVideoToggle,.featureNav .makeVideoToggle,
+.generatorChooser .makeVideoToggle{
+ background:linear-gradient(135deg,#f4dfa9,#bd914d)!important;
+ color:#19150e!important;border:1px solid #e2c27e!important;
+}
+#featureNav .featureNavLinks>.featureLink:focus-visible,
+#makeVideoToggle:focus-visible{outline:2px solid #f4dfa9!important;outline-offset:2px}
+.generatorChoice,.generatorChoice.flowChoice,.generatorChoice.leonardoChoice{
+ background:linear-gradient(145deg,#24221d,#15130f)!important;
+ color:#f4ead4!important;border:1px solid #a8894b!important;
+}
+.generatorChoiceIcon{background:linear-gradient(145deg,#f0d9a2,#bd914d)!important;color:#19150e!important}
+.generatorChooserHead,.generatorChooserHead span{color:#f0d9a2!important}
+.generatorChoiceText b,.generatorChoiceText small,.generatorChooserNote{color:#eee5d5!important}
+#outputPanel,#savedProjects{background:linear-gradient(145deg,#1b2029f5,#10141bfa)!important;color:#f4f0e7!important;border:1px solid #b08d4c88!important}
+#outputPanel button,#savedProjects button{background:linear-gradient(135deg,#f0d9a2,#bd914d)!important;color:#19150e!important;border-color:#e2c27e!important}

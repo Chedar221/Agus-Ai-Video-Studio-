@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b1018">
+<meta name="description" content="CHEDAR AI STUDIO — ruang kerja kreator untuk mengubah ide menjadi storyboard dan prompt video AI profesional.">
+<title>CHEDAR AI STUDIO</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/20261122_194334.png">
+<link rel="apple-touch-icon" href="/20261122_194334.png">
+<style>
+:root{color-scheme:dark;--bg:#090e16;--panel:#111a27;--panel2:#172333;--line:#2c3948;--gold:#d9b36d;--gold2:#f0d49b;--ink:#f4f1e9;--muted:#a5afbd;--green:#69c7a0}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 75% -20%,#4a3820 0,transparent 35%),radial-gradient(ellipse at 5% 30%,#17263a 0,transparent 38%),var(--bg);color:var(--ink);font:15px/1.55 Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+a{color:inherit;text-decoration:none}button{font:inherit;cursor:pointer}
+.topbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(20px,calc((100vw - 1180px)/2));border-bottom:1px solid #ffffff12;background:#080d15d9;backdrop-filter:blur(18px);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.mark{width:48px;height:48px;flex:0 0 48px;object-fit:contain;border-radius:12px;background:#080808;border:1px solid #b88743;padding:1px;display:block;box-shadow:0 8px 24px #d5ac5a2c}.brand strong{display:block;font-size:13px;letter-spacing:.13em}.brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:.13em}
+.nav{display:flex;align-items:center;gap:22px;color:#c0c8d2;font-size:12px}.nav a:hover{color:var(--gold2)}.top-action{border:1px solid #8f713d;background:#d9b36d;color:#19140c;padding:10px 15px;border-radius:10px;font-weight:800;font-size:12px}
+main{max-width:1180px;margin:auto;padding:44px 22px 70px}.eyebrow{color:var(--gold);font-size:10px;font-weight:850;letter-spacing:.22em;text-transform:uppercase}.hero{display:grid;grid-template-columns:1.15fr .85fr;gap:34px;align-items:center;padding:30px 0 44px}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.05;letter-spacing:-.045em;margin:13px 0 17px;max-width:690px}.hero h1 span{color:var(--gold2)}.hero p{color:var(--muted);font-size:15px;max-width:600px;margin:0 0 24px}.hero-actions{display:flex;flex-wrap:wrap;gap:10px}.primary{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#f0d49b,#c3944d);color:#1a140a;border-radius:11px;padding:13px 18px;font-weight:850;font-size:13px;box-shadow:0 10px 30px #c3944d24}.secondary{display:inline-flex;align-items:center;border:1px solid #445160;background:#121b28;color:#e7e5df;border-radius:11px;padding:13px 17px;font-weight:700;font-size:13px}
+.hero-card{position:relative;border:1px solid #8f713d66;border-radius:22px;padding:24px;background:linear-gradient(145deg,#1b2634,#101722 75%);box-shadow:0 25px 70px #0007;overflow:hidden}.hero-card:before{content:"";position:absolute;width:240px;height:240px;right:-90px;top:-110px;background:#d6ad5a1a;border-radius:50%;filter:blur(4px)}.card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:23px}.card-top b{font-size:12px;letter-spacing:.1em}.live{font-size:9px;color:#a8e2c7;border:1px solid #4a9875;border-radius:30px;padding:5px 9px}.steps{display:grid;gap:12px}.step{display:flex;align-items:center;gap:12px;border:1px solid #ffffff12;background:#ffffff06;border-radius:12px;padding:12px}.step-num{width:29px;height:29px;border-radius:9px;background:#d9b36d20;color:var(--gold2);display:grid;place-items:center;font-size:11px;font-weight:900}.step b{display:block;font-size:12px}.step small{color:var(--muted);font-size:10px}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:16px;margin:10px 0 18px}.section-head h2{font-size:23px;margin:6px 0 0;letter-spacing:-.02em}.section-head p{font-size:11px;color:var(--muted);margin:0}
+.features{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}.feature{border:1px solid var(--line);border-radius:16px;background:linear-gradient(155deg,#172333,#101722);padding:17px;min-height:180px}.feature-icon{width:38px;height:38px;border-radius:11px;background:#d9b36d18;border:1px solid #d9b36d35;color:var(--gold2);display:grid;place-items:center;font-size:17px;margin-bottom:17px}.feature h3{font-size:13px;margin:0 0 6px}.feature p{font-size:11px;color:var(--muted);margin:0;line-height:1.55}
+.workflow{margin-top:36px;border:1px solid var(--line);border-radius:18px;background:#111a27c9;padding:22px}.workflow-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:17px}.workflow-item{padding:14px;border-radius:12px;background:#ffffff06;border:1px solid #ffffff10}.workflow-item b{display:block;font-size:12px;margin:8px 0 4px}.workflow-item p{font-size:10px;color:var(--muted);margin:0}.workflow-item span{color:var(--gold);font-size:10px;font-weight:900;letter-spacing:.1em}
+.notice{margin-top:18px;border:1px solid #80683e66;background:#2a2114a8;border-radius:12px;padding:13px 15px;color:#e7d5ad;font-size:11px}.footer{border-top:1px solid #ffffff12;margin-top:44px;padding-top:20px;color:#778394;font-size:10px;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:850px){.hero{grid-template-columns:1fr;gap:22px;padding-top:16px}.features{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow-grid{grid-template-columns:repeat(2,1fr)}.nav{display:none}}
+@media(max-width:520px){.topbar{height:62px;padding:0 13px}.mark{width:36px;height:36px;border-radius:11px}.brand strong{font-size:11px}.brand small{font-size:8px}.top-action{padding:9px 11px;font-size:10px}main{padding:24px 13px 42px}.hero h1{font-size:37px}.hero p{font-size:13px}.hero-card{padding:17px;border-radius:17px}.features{gap:9px}.feature{padding:13px;min-height:170px}.feature-icon{margin-bottom:12px}.section-head h2{font-size:20px}.section-head p{display:none}.workflow{padding:15px}.workflow-grid{gap:8px}.workflow-item{padding:11px}.footer{flex-direction:column}}
+</style>
+<link rel="stylesheet" href="/colorful-theme.css?v=20261122-4">
+</head>
+<body>
+<header class="topbar">
+ <a class="brand" href="/" aria-label="CHEDAR AI STUDIO">
+  <img class="mark" src="/20261122_194334.png" alt="Logo CHEDAR AI STUDIO" fetchpriority="high"><span><strong>CHEDAR AI STUDIO</strong><small>AI STORY & PROMPT WORKSPACE</small></span>
+ </a>
+ <nav class="nav"><a href="#fitur">Fitur</a><a href="#alur">Alur kerja</a><a href="/workspace">Prompt Workspace</a></nav>
+ <a class="top-action" href="/workspace">Mulai Berkarya ↗</a>
+</header>
+<main>
+ <section class="hero">
+  <div>
+   <div class="eyebrow">Your idea · Your character · Your film</div>
+   <h1>Dari ide sederhana menjadi <span>prompt video AI</span> profesional.</h1>
+   <p>Ruang kerja kreator untuk mengembangkan cerita, menjaga konsistensi karakter dari foto referensi, menyusun storyboard, dan menghasilkan prompt video yang siap digunakan di Google Flow maupun platform AI lainnya.</p>
+   <div class="hero-actions"><a class="primary" href="/workspace">✦ Buka Prompt Workspace <span>→</span></a><a class="secondary" href="#fitur">Jelajahi fitur</a></div>
+  </div>
+  <aside class="hero-card">
+   <div class="card-top"><b>PRODUCTION PIPELINE</b><span class="live">STUDIO WORKSPACE</span></div>
+   <div class="steps">
+    <div class="step"><span class="step-num">01</span><span><b>Ide & cerita</b><small>Bangun konsep, hook, dialog, dan ending</small></span></div>
+    <div class="step"><span class="step-num">02</span><span><b>Character DNA</b><small>Foto referensi, wajah, bentuk tubuh, outfit</small></span></div>
+    <div class="step"><span class="step-num">03</span><span><b>Storyboard</b><small>Susun adegan dan arahan kamera</small></span></div>
+    <div class="step"><span class="step-num">04</span><span><b>Prompt Studio</b><small>Prompt siap salin sesuai platform tujuan</small></span></div>
+   </div>
+  </aside>
+ </section>
+ <section id="fitur">
+  <div class="section-head"><div><div class="eyebrow">Creative toolkit</div><h2>Semua kebutuhan produksi dalam satu studio.</h2></div><p>Dirancang untuk kreator pemula hingga profesional.</p></div>
+  <div class="features">
+   <article class="feature"><div class="feature-icon">✧</div><h3>AI Story Creator</h3><p>Kembangkan ide menjadi cerita lengkap dengan hook, alur, dialog, narasi, dan ending.</p></article>
+   <article class="feature"><div class="feature-icon">◉</div><h3>Character DNA Lock</h3><p>Susun profil visual karakter dari foto referensi agar wajah dan ciri khas konsisten.</p></article>
+   <article class="feature"><div class="feature-icon">▦</div><h3>AI Storyboard</h3><p>Pecah cerita menjadi adegan dengan durasi, visual, aksi, dan arahan kamera.</p></article>
+   <article class="feature"><div class="feature-icon">⌘</div><h3>Realistic Prompt Engine</h3><p>Rangkai detail sinematik, gerakan, audio, dialog, outfit, dan negative prompt.</p></article>
+  </div>
+ </section>
+ <section class="workflow" id="alur">
+  <div class="eyebrow">Simple production flow</div><div class="section-head"><div><h2>Mulai dari satu ide. Selesaikan dengan prompt siap pakai.</h2></div></div>
+  <div class="workflow-grid">
+   <div class="workflow-item"><span>STEP 01</span><b>Tulis ide video</b><p>Ceritakan gagasanmu dengan bahasa sehari-hari.</p></div>
+   <div class="workflow-item"><span>STEP 02</span><b>Masukkan referensi</b><p>Unggah foto karakter dan outfit pilihanmu.</p></div>
+   <div class="workflow-item"><span>STEP 03</span><b>Atur adegan</b><p>Periksa dan edit storyboard sebelum lanjut.</p></div>
+   <div class="workflow-item"><span>STEP 04</span><b>Salin prompt</b><p>Gunakan prompt pada platform video AI pilihanmu.</p></div>
+  </div>
+ </section>
+</main>
+</body>
+</html>

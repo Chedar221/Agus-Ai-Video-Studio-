@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827">
-<meta name="description" content="CHEDAR AI KREATOR — AI Story Director dan prompt produksi Google Flow">
-<title>CHEDAR AI KREATOR</title><link rel="manifest" href="/manifest.webmanifest">
+<meta name="description" content="CHEDAR AI STUDIO — AI Story Director dan prompt produksi Google Flow">
+<title>CHEDAR AI STUDIO</title><link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" href="/20261122_194334.png">
+<link rel="apple-touch-icon" href="/20261122_194334.png">
 <style>
 :root{--bg:#0b1220;--panel:#121d2e;--panel2:#18263a;--line:#29394f;--ink:#edf3fb;--muted:#9aabc0;--blue:#72a5ff;--blue2:#245fd1;--gold:#e9bd72;--green:#59c99a;--red:#ff8585}
 *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% -15%,#20385c 0,transparent 38%),var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,Arial}
@@ -140,7 +142,7 @@ button,input,select,textarea{touch-action:manipulation}
 #storyboardView{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 @media(max-width:600px){#storyboardView{grid-template-columns:1fr}}
 
-/* CHEDAR AI KREATOR — premium editorial finish */
+/* CHEDAR AI STUDIO — premium editorial finish */
 :root{--bg:#080d16;--panel:#111a29;--panel2:#182438;--line:#33445a;--ink:#f4f1e9;--muted:#a4afbd;--gold:#d9b878;--gold2:#f2dca9}
 body{background:radial-gradient(ellipse at 82% -12%,#49391f55 0,transparent 34%),radial-gradient(ellipse at 8% 12%,#1c3650 0,transparent 38%),#080d16}
 header{background:rgba(8,13,22,.94);border-bottom:1px solid #8d74433d;box-shadow:0 8px 30px #0003}
@@ -505,8 +507,10 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
   .featureNavLinks>.generatorChooser .makeVideoToggle{font-size:8px!important;padding-left:1px!important;padding-right:1px!important}
 }
 
+#videoSubTypePanel.hidden{display:none!important}
+#videoSubTypePanel:not(.hidden){display:block!important}
 /* SIMPLE USER WORKFLOW: expose only the four creative inputs and results */
-#ideaConcept,#productionSettings,#storyboardStudio,#characterStudio,#promptLibrary,#directorStudio,#musicStudio,#productionGenerate,#ugcFields,#silentPopupFields,#lipsyncFields,#motionFields,#productAdFields,.notice,.generatorChooser,.quickSubnav,.quickOptions{display:none!important}
+#ideaConcept,#productionSettings,#storyboardStudio,#characterStudio,#promptLibrary,#directorStudio,#musicStudio,#productionGenerate,#ugcFields,#silentPopupFields,#motionFields,#productAdFields,.notice,.generatorChooser,.quickSubnav,.quickOptions{display:none!important}
 #quickStudio .quickSubpanel{display:block!important;padding:4px 0}
 #quickStudio .quickSubpanel.hidden{display:block!important}
 #quickStudio .quickSubpanel .field{margin-bottom:12px}
@@ -533,9 +537,14 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 #quickStudio #quickGenerate::before,
 #quickStudio #quickGenerate::after { pointer-events:none!important; }
 #quickStudio #quickStatus { position:relative!important; z-index:1001!important; display:block!important; }
-</style></head>
+/* CHEDAR AI STUDIO — guided first-time creation */
+.ideaExampleGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ideaExample{min-height:42px;padding:9px 10px;border:1px solid #8e7448;background:linear-gradient(145deg,#182536,#101a28);color:#e9d7b2;border-radius:10px;font-size:11px;text-transform:none;letter-spacing:0;justify-content:flex-start}.ideaExample:focus-visible{outline:2px solid #f0d49b;outline-offset:2px}#copyFlowAll{border-color:#c6a05b;background:linear-gradient(135deg,#f0d49b,#c3944d);color:#1b160d;font-weight:900}@media(max-width:380px){.ideaExampleGrid{grid-template-columns:1fr}}
+.logo{object-fit:contain!important;border-radius:12px!important;background:#080808!important;padding:1px!important}
+</style>
+<link rel="stylesheet" href="/colorful-theme.css?v=20261122-4">
+\n\n</head>
 <body>
-<header><div class="top"><div class="brand"><div class="logo" role="img" aria-label="Logo CHEDAR AI KREATOR"><svg viewBox="0 0 100 100" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="cakGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b5"/><stop offset=".48" stop-color="#d5a84e"/><stop offset="1" stop-color="#8d6425"/></linearGradient></defs><circle cx="50" cy="50" r="48" fill="#080808" stroke="url(#cakGold)" stroke-width="3"/><circle cx="50" cy="50" r="40" fill="none" stroke="url(#cakGold)" stroke-width="1.5"/><circle cx="50" cy="50" r="34" fill="none" stroke="#9d772f" stroke-width="1" stroke-dasharray="2 3"/><path d="M61 28a25 25 0 1 0 11 37l-9-6a14 14 0 1 1 0-18z" fill="url(#cakGold)"/><path d="M43 50h29M62 39l11 11-11 11" fill="none" stroke="#080808" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><path d="m50 8 3 7 7 3-7 3-3 7-3-7-7-3 7-3z" fill="#fff0b5"/></svg></div><div><h1>CHEDAR AI KREATOR</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.2 · AUTO DIRECTOR</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
+<header><div class="top"><div class="brand"><img class="logo" src="/20261122_194334.png" alt="Logo CHEDAR AI STUDIO" fetchpriority="high"><div><h1>CHEDAR AI STUDIO</h1><small>AI STORY DIRECTOR · FLOW PROMPT WORKSPACE</small></div></div><div class="topright"><span class="pill">STUDIO 3.2 · AUTO DIRECTOR</span><button class="ghost small" id="promptLibraryBtn">Prompt Library</button><button class="ghost small" id="savedBtn">Proyek tersimpan</button></div></div></header>
 <nav class="featureNav" id="featureNav" aria-label="Navigasi utama"><div class="featureNavInner"><div class="featureNavLinks"><button type="button" class="featureLink active" data-target="quickStudio">✦ Buat Video</button><button type="button" class="featureLink" data-target="outputPanel">Hasil Video</button><button type="button" class="featureLink" data-target="savedProjects">▣ Hasil Disimpan</button></div></div></nav>
 
 <main>
@@ -560,25 +569,26 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
         <span class="generatorChoiceIcon">🎨</span><span class="generatorChoiceText"><b>LEONARDO AI</b><small>Buka Leonardo untuk membuat video</small></span><span class="generatorChoiceArrow">↗</span>
       </a>
     </div>
-    <p class="generatorChooserNote">Prompt dari CHEDAR AI KREATOR disalin dan ditempel secara manual di layanan pilihan.</p>
+    <p class="generatorChooserNote">Prompt dari CHEDAR AI STUDIO disalin dan ditempel secara manual di layanan pilihan.</p>
   </div>
 </div>
 <select id="projectType" class="hidden" aria-hidden="true" tabindex="-1"><option value="story">Video cerita / konten biasa</option><option value="product_ad">Iklan produk profesional</option></select>
-<div class="field"><button type="button" id="videoTypeToggle" class="videoTypeToggle" aria-expanded="false" aria-controls="videoTypeCards"><span>🎞️ JENIS VIDEO</span><span id="videoTypeToggleValue">Otomatis berdasarkan ide</span><span class="toggleChevron">⌄</span></button><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option><option value="asmr">ASMR Video Director</option></select>
+<div class="field"><button type="button" id="videoTypeToggle" class="videoTypeToggle" aria-expanded="false" aria-controls="videoTypeCards"><span>🎞️ JENIS VIDEO</span><span id="videoTypeToggleValue">Otomatis berdasarkan ide</span><span class="toggleChevron">⌄</span></button><select id="videoType" class="hidden" aria-hidden="true" tabindex="-1"><option value="auto">Otomatis berdasarkan ide</option><option value="product_ad">Iklan Produk Profesional</option><option value="superhero">Transformasi Superhero</option><option value="kingdom">Film Kerajaan Epik</option><option value="mythology">Mitologi dan Legenda</option><option value="scifi">Sci-Fi Masa Depan</option><option value="horror">Horor Supernatural</option><option value="cinema_ad">Iklan Kelas Bioskop</option><option value="timetravel">Time Travel / Lintas Zaman</option><option value="action">Action Movie</option><option value="family_drama">Drama Film Keluarga</option><option value="chibi_3d">Chibi 3D Animasi Lucu</option><option value="ugc">UGC Creator / Konten Natural</option><option value="silent_popup">Silent Character + Pop-up Text</option><option value="documentary">Dokumenter Sinematik</option><option value="movie_universe">AI Movie Universe</option><option value="lipsync">Lipsync Foto / Karakter Bernyanyi</option><option value="motion_control">Motion Control / Ikuti Gerakan Referensi</option><option value="asmr">ASMR Video Director</option><option value="storytelling">Storytelling Drama & Komedi</option><option value="travel_tourism">Travel & Tourism</option><option value="podcast">Podcast & Talking Head</option><option value="music_video">Music Video</option><option value="transformation">Transformation / Before-After</option><option value="explainer">Explainer & Infografis</option><option value="news_commentary">News & Commentary</option><option value="fashion_model">Fashion & Model</option><option value="real_estate">Real Estate / Properti</option></select>
 <div id="videoTypeCards" class="videoTypeCards hidden" role="group" aria-label="Pilih jenis video"></div>
-<div id="asmrFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726;border-color:#b99a5a88">
-<h3>🎧 CHEDAR ASMR DIRECTOR</h3>
-<div class="grid">
-<div class="field"><label for="asmrSubtype">JENIS ASMR</label><select id="asmrSubtype"><option value="Satisfying ASMR">Satisfying ASMR</option><option value="Food ASMR">Food ASMR</option><option value="Relaxing ASMR">Relaxing / Sleep ASMR</option><option value="Nature ASMR">Nature ASMR</option><option value="Crafting ASMR">Crafting / Handmade ASMR</option><option value="Whispering & Tapping ASMR">Whispering & Tapping ASMR</option></select></div>
-<div class="field"><label for="asmrSoundFocus">FOKUS SUARA</label><select id="asmrSoundFocus"><option value="Close-miked crisp detail sounds">Detail suara tajam dan dekat</option><option value="Soft gentle tactile sounds">Suara sentuhan lembut</option><option value="Crunch, crackle and chew textures">Kriuk, renyah dan tekstur makanan</option><option value="Water, rain and flowing ambience">Air, hujan dan aliran alam</option><option value="Wood, paper and tool handling">Kayu, kertas dan alat kerajinan</option><option value="Soft whisper, tapping and brushing">Bisikan, tapping dan brushing</option></select></div>
-<div class="field"><label for="asmrCameraStyle">GAYA KAMERA</label><select id="asmrCameraStyle"><option value="Extreme macro close-up with shallow depth of field">Extreme macro close-up</option><option value="Macro detail mixed with steady medium shots">Macro detail + medium shot</option><option value="Top-down overhead close-up">Top-down / dari atas</option><option value="Slow cinematic close-up with gentle push-in">Slow cinematic push-in</option></select></div>
-<div class="field"><label for="asmrAmbience">SUASANA AUDIO</label><select id="asmrAmbience"><option value="Clean intimate studio silence">Studio hening dan intim</option><option value="Soft natural room ambience">Ambience ruangan natural</option><option value="Peaceful outdoor nature ambience">Suasana alam yang tenang</option><option value="Warm cozy indoor ambience">Indoor hangat dan nyaman</option></select></div>
-</div>
-<div class="field"><label for="asmrExtra">ARAHAN ASMR TAMBAHAN</label><textarea id="asmrExtra" rows="2" placeholder="Contoh: suara tetesan air sangat detail, gerakan tangan perlahan, tidak ada musik."></textarea></div>
+<div id="videoSubTypePanel" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
+ <div class="field"><label id="videoSubTypeLabel" for="videoSubType">PILIH FORMAT / SUBJENIS</label>
+ <select id="videoSubType"><option value="">Pilih format video</option></select>
+ <div id="videoSubTypeHint" class="hint">Pilih format agar AI menyesuaikan alur cerita, adegan, dialog, kamera, dan prompt Google Flow.</div></div>
+</div><div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
+<div id="asmrFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#10151d;border:1px solid #b99a5a88">
+<h3>🎧 CHEDAR ASMR DIRECTOR</h3><div class="grid">
+<div class="field"><label for="asmrSubtype">JENIS ASMR</label><select id="asmrSubtype"><option value="Satisfying ASMR">Satisfying ASMR</option><option value="Food ASMR">Food ASMR</option><option value="Relaxing / Sleep ASMR">Relaxing / Sleep ASMR</option><option value="Nature ASMR">Nature ASMR</option><option value="Crafting / Handmade ASMR">Crafting / Handmade ASMR</option><option value="Whispering & Tapping ASMR">Whispering & Tapping ASMR</option></select></div>
+<div class="field"><label for="asmrSoundFocus">FOKUS SUARA</label><select id="asmrSoundFocus"><option value="Close-miked crisp detail sounds">Detail suara tajam dan dekat</option><option value="Soft gentle tactile sounds">Suara sentuhan lembut</option><option value="Crunch, crackle and chew textures">Kriuk dan tekstur makanan</option><option value="Water, rain and flowing ambience">Air, hujan dan alam</option><option value="Wood, paper and tool handling">Kayu, kertas dan kerajinan</option><option value="Soft whisper, tapping and brushing">Bisikan, tapping dan brushing</option></select></div>
+<div class="field"><label for="asmrCameraStyle">GAYA KAMERA</label><select id="asmrCameraStyle"><option value="Extreme macro close-up">Extreme macro close-up</option><option value="Macro detail with steady medium shots">Macro detail + medium shot</option><option value="Top-down overhead close-up">Top-down / dari atas</option><option value="Slow cinematic close-up push-in">Slow cinematic push-in</option></select></div>
+<div class="field"><label for="asmrAmbience">SUASANA AUDIO</label><select id="asmrAmbience"><option value="Clean intimate studio silence">Studio hening</option><option value="Soft natural room ambience">Ambience ruangan natural</option><option value="Peaceful outdoor nature ambience">Suasana alam tenang</option><option value="Warm cozy indoor ambience">Indoor hangat</option></select></div></div>
+<div class="field"><label for="asmrExtra">ARAHAN ASMR TAMBAHAN</label><textarea id="asmrExtra" rows="2" placeholder="Contoh: suara tetesan air sangat detail, gerakan tangan perlahan."></textarea></div>
 <label style="display:flex;align-items:center;gap:8px;margin:4px 0 8px"><input id="asmrNoMusic" type="checkbox" checked style="width:auto"> Tanpa musik latar, fokus pada suara ASMR asli</label>
-<div class="hint">Generator akan mengarahkan detail suara, close-up tekstur, gerakan lembut, mixing bersih, dan prompt Google Flow khusus ASMR.</div>
-</div>
-<div class="hint">Pilihan ini mengarahkan alur cerita, karakter, visual, kamera, efek, dan prompt Google Flow secara khusus.</div></div>
+<div class="hint">Pengaturan ini mengarahkan audio, close-up tekstur, gerakan lembut, dan prompt Google Flow khusus ASMR.</div></div>
 <div id="ugcFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726"><h3>📱 Pengaturan UGC Creator</h3><div class="field"><label for="ugcFormat">FORMAT UGC</label><select id="ugcFormat"><option value="UGC Product Review">Review Produk</option><option value="UGC Testimoni">Testimoni</option><option value="UGC Storytelling">Storytelling</option><option value="UGC Vlog">Vlog / Daily Experience</option><option value="UGC Soft Selling">Soft Selling</option><option value="UGC Hard Selling">Hard Selling</option><option value="UGC Unboxing">Unboxing</option><option value="UGC Before & After">Before & After</option></select></div><div class="hint">AI akan membuat gaya bicara langsung ke kamera, ekspresi natural, hook singkat, pengalaman autentik, dan CTA sesuai format. Hindari testimoni atau klaim palsu; isi pengalaman dan fakta yang benar pada ide cerita.</div></div>
 <div id="silentPopupFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
 <h3>💬 Pengaturan Silent Character + Pop-up Text</h3>
@@ -587,15 +597,20 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="popupPlacement">POSISI TULISAN</label><select id="popupPlacement"><option value="Area aman tengah layar, tidak menutupi wajah">Area aman tengah layar</option><option value="Atas karakter seperti bubble">Di atas karakter seperti bubble</option><option value="Bawah layar seperti subtitle">Bawah layar seperti subtitle</option><option value="Berpindah sesuai komposisi adegan">Dinamis sesuai adegan</option></select></div>
 <div class="hint">Karakter hanya berekspresi dan berakting. Tidak berbicara, tidak menggerakkan bibir. Semua pesan muncul sebagai teks pop-up yang terbaca jelas.</div></div>
 <div id="lipsyncFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
-<h3>🎙️ Pengaturan Lipsync</h3>
-<div class="field"><label for="lipsyncAudio">SUMBER AUDIO</label><select id="lipsyncAudio"><option value="Lagu / MP3">Lagu / MP3</option><option value="Rekaman suara / dialog">Rekaman suara / dialog</option><option value="Audio dibuat kemudian">Audio dibuat kemudian</option></select></div>
-<div class="field"><label for="lipsyncNotes">ARAHAN LIPSYNC</label><textarea id="lipsyncNotes" rows="2" placeholder="Contoh: Ikuti lirik, ekspresi natural, gerak bibir presisi."></textarea></div>
-<div class="hint">Audio perlu dilampirkan secara terpisah pada fitur lipsync di Google Flow atau alat yang mendukungnya.</div></div>
+<h3>🎙️ CHEDAR LIPSYNC SONG REFERENCE</h3>
+<div class="field"><label for="lipsyncAudio">SUMBER AUDIO</label><select id="lipsyncAudio"><option value="Lagu / MP3 milik pengguna">Lagu / MP3 milik pengguna</option><option value="Rekaman suara sendiri">Rekaman suara sendiri</option><option value="Audio dari video referensi">Audio dari video referensi</option><option value="Audio dibuat kemudian">Audio dibuat kemudian</option></select></div>
+<div class="field"><label for="lipsyncSongFile">UPLOAD REFERENSI LAGU / AUDIO (MP3, WAV, M4A, OGG)</label><input id="lipsyncSongFile" type="file" accept="audio/mpeg,audio/mp3,audio/wav,audio/x-wav,audio/mp4,audio/ogg,.mp3,.wav,.m4a,.ogg"><div class="hint" id="lipsyncSongFileInfo">Pilih file lagu atau rekaman suara dari perangkat. File dipakai sebagai referensi lokal untuk menyiapkan prompt.</div></div>
+<div class="field" id="lipsyncAudioPreviewWrap" hidden><label>PREVIEW AUDIO</label><audio id="lipsyncSongPreview" controls preload="metadata" style="width:100%"></audio></div>
+<div class="grid"><div class="field"><label for="lipsyncSongTitle">JUDUL LAGU</label><input id="lipsyncSongTitle" placeholder="Contoh: Satu Rasa Cinta"></div><div class="field"><label for="lipsyncArtist">PENYANYI</label><input id="lipsyncArtist" placeholder="Nama penyanyi"></div><div class="field"><label for="lipsyncGenre">GENRE MUSIK</label><select id="lipsyncGenre"><option value="">Pilih genre musik</option><option>Pop</option><option>Pop Bali</option><option>Dangdut</option><option>Funkot</option><option>DJ Remix</option><option>Rock</option><option>R&B</option><option>Hip-hop</option><option>Jazz</option><option>Akustik</option><option>Elektronik / EDM</option><option>Instrumental</option><option>Lainnya</option></select></div></div>
+<div class="field"><label for="lipsyncNotes">ARAHAN LIPSYNC & LIRIK</label><textarea id="lipsyncNotes" rows="3" placeholder="Contoh: Ikuti audio dan lirik asli secara presisi, artikulasi bibir natural, ekspresi mengikuti emosi lagu, jangan mengubah lirik."></textarea></div>
+<div class="hint">CHEDAR AI STUDIO menyiapkan prompt dan membaca metadata file di perangkat. Untuk proses lipsync sebenarnya, unggah juga file audio yang sama ke Google Flow atau alat lipsync yang mendukung audio.</div></div>
 <div id="motionFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
-<h3>🕺 Pengaturan Motion Control</h3>
-<div class="field"><label for="motionReference">DESKRIPSI GERAKAN REFERENSI</label><textarea id="motionReference" rows="3" placeholder="Jelaskan gerakan tarian, berjalan, gestur, aksi atau koreografi yang ingin ditiru."></textarea></div>
-<div class="field"><label for="motionNotes">ARAHAN GERAKAN</label><textarea id="motionNotes" rows="2" placeholder="Contoh: Pertahankan wajah dan pakaian; ikuti timing gerakan referensi."></textarea></div>
-<div class="hint">Video gerakan referensi perlu dimasukkan ke fitur Motion Control pada alat yang mendukungnya. CHEDAR AI KREATOR menyiapkan arahan dan prompt.</div></div>
+<h3>🕺 CHEDAR MOTION CONTROL REFERENCE</h3>
+<div class="field"><label for="motionVideoFile">UPLOAD VIDEO REFERENSI GERAKAN (MP4, MOV, WEBM)</label><input id="motionVideoFile" type="file" accept="video/mp4,video/quicktime,video/webm,.mp4,.mov,.webm"><div class="hint" id="motionVideoFileInfo">Pilih video gerakan, tarian, aksi, atau gestur dari perangkat. Video akan dipratinjau di sini.</div></div>
+<div class="field" id="motionVideoPreviewWrap" hidden><label>PREVIEW VIDEO REFERENSI</label><video id="motionVideoPreview" controls playsinline preload="metadata" style="width:100%;max-height:260px;border-radius:10px;background:#000"></video></div>
+<div class="field"><label for="motionReference">DESKRIPSI GERAKAN REFERENSI (OPSIONAL)</label><textarea id="motionReference" rows="3" placeholder="Contoh: Ikuti koreografi dance, urutan gerak tangan dan kaki, arah tubuh, pose, dan ekspresi pada video referensi."></textarea></div>
+<div class="field"><label for="motionNotes">ARAHAN GERAKAN</label><textarea id="motionNotes" rows="2" placeholder="Contoh: Pertahankan wajah, pakaian, proporsi tubuh; ikuti timing dan ritme gerakan referensi."></textarea></div>
+<div class="hint">CHEDAR AI STUDIO membaca nama file dan metadata video untuk menyusun prompt. File video tidak dikirim ke server AI. Untuk transfer gerakan sebenarnya, unggah video yang sama ke fitur Motion Control pada Google Flow atau alat yang mendukung video referensi.</div></div>
 <div id="productAdFields" class="panel hidden" style="padding:12px;margin:10px 0;background:#0d1726">
 <h3>✦ Pengaturan iklan produk</h3>
 <div class="field"><label for="productName">NAMA PRODUK / MEREK</label><input id="productName" placeholder="Nama produk atau merek"></div>
@@ -605,14 +620,27 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="field"><label for="productCTA">AJAKAN / KONTAK (OPSIONAL)</label><input id="productCTA" placeholder="Contoh: Pesan sekarang melalui WhatsApp"></div>
 <div class="field"><label for="productLock">KUNCI IDENTITAS PRODUK</label><textarea id="productLock" rows="4">Produk harus sama persis dengan foto referensi: pertahankan bentuk, proporsi, warna, material, tekstur, tutup, label, logo, tulisan, tipografi, susunan elemen, dan detail kemasan. Jangan mendesain ulang, mengganti merek, mengarang tulisan, menambah/mengurangi komponen, atau mengubah isi/ukuran produk. Tampilkan produk sebagai objek yang sama di setiap adegan.</textarea><div class="hint">Unggah foto produk asli yang jelas, terutama tampak depan. Foto tambahan bisa menunjukkan sisi dan detail produk.</div></div>
 </div>
-<div class="quickSubpanel" id="quickIdeaPanel"><div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Ceritakan ide video secara sederhana. AI akan mengembangkan cerita, adegan, dan dialog..." rows="4"></textarea></div></div>
+<div class="quickSubpanel" id="quickIdeaPanel"><div class="field"><label for="quickIdea">IDE CERITA ANDA</label><textarea id="quickIdea" placeholder="Contoh: Seorang pemuda Bali membantu seorang nenek yang tersesat di tengah hujan. Ceritanya mengharukan dan berakhir bahagia." rows="4"></textarea><div class="hint">Cukup tulis 1–3 kalimat. Tidak perlu membuat naskah sendiri; AI akan menyusun alur, adegan, dialog, kamera, dan audio.</div></div><div class="ideaExamples" aria-label="Contoh ide cerita"><div class="hint" style="margin-bottom:7px">ATAU SENTUH CONTOH IDE INI</div><div class="ideaExampleGrid"><button type="button" class="ideaExample" data-idea="Seorang pemuda Bali pulang larut malam melewati jalan desa yang sepi. Ia mendengar suara gamelan dari pura tua dan mengalami kejadian misterius. Buat horor sinematik dengan akhir mengejutkan.">👻 Horor Bali</button><button type="button" class="ideaExample" data-idea="Agus dan sahabatnya berdebat lucu tentang siapa yang paling rajin bekerja. Keduanya saling menyindir dengan komedi Bali yang natural dan berakhir dengan punchline tak terduga.">😂 Komedi Bali</button><button type="button" class="ideaExample" data-idea="Seorang ayah sederhana bekerja keras setiap hari demi pendidikan anaknya. Tampilkan perjuangan, kasih sayang keluarga, dan akhir yang mengharukan serta memotivasi.">❤️ Kisah inspiratif</button><button type="button" class="ideaExample" data-idea="Buat iklan sinematik profesional untuk sebuah usaha lokal. Tampilkan masalah pelanggan, layanan sebagai solusi, detail layanan, suasana premium, dan ajakan menghubungi usaha tersebut.">✨ Iklan usaha</button></div></div></div>
 <div class="quickSubpanel" id="quickReferencePanel"><div class="field"><label id="referenceLabel">FOTO REFERENSI (OPSIONAL)</label><label class="quickUpload" id="quickUpload" for="reference"><div class="quickUploadIcon">＋</div><div><b>TEKAN UNTUK TAMBAHKAN FOTO</b><div class="hint" id="refName" aria-live="polite">Pilih hingga 5 foto karakter, produk, atau lokasi.</div></div><input id="reference" type="file" accept="image/*" multiple></label><div id="refGallery" class="quickGallery" style="display:flex!important;visibility:visible!important"></div><script>
 (()=>{const status=()=>document.getElementById("quickStatus");window.__CHEDAR_BOOT_ERROR=null;window.addEventListener("error",e=>{window.__CHEDAR_BOOT_ERROR={message:e.message||"JavaScript error",file:e.filename||"",line:e.lineno||0,column:e.colno||0};const el=status();if(el)el.textContent="Kesalahan aplikasi: "+window.__CHEDAR_BOOT_ERROR.message+" (baris "+window.__CHEDAR_BOOT_ERROR.line+")";},true);window.addEventListener("unhandledrejection",e=>{window.__CHEDAR_BOOT_ERROR={message:e.reason?.message||String(e.reason||"Promise error"),file:"Promise",line:0,column:0};const el=status();if(el)el.textContent="Proses gagal: "+window.__CHEDAR_BOOT_ERROR.message;});document.addEventListener("click",e=>{const b=e.target instanceof Element?e.target.closest("#quickGenerate"):null;if(!b)return;e.preventDefault();e.stopImmediatePropagation();const el=status();if(el){el.style.display="block";}const run=b.onclick;if(typeof run!=="function"){const x=window.__CHEDAR_BOOT_ERROR;if(el)el.textContent=x?"Aplikasi gagal dimuat: "+x.message+" | "+x.file+":"+x.line+":"+x.column:"Handler generator belum terpasang. Skrip utama berhenti sebelum inisialisasi.";return;}if(el)el.textContent="Klik diterima. Menjalankan generator...";try{Promise.resolve(run.call(b,e)).catch(err=>{if(el)el.textContent="Generator gagal: "+(err?.message||String(err));});}catch(err){if(el)el.textContent="Generator gagal: "+(err?.message||String(err));}},true);})();
 (()=>{const input=document.getElementById("reference"),gallery=document.getElementById("refGallery"),name=document.getElementById("refName");if(!input||!gallery)return;input.addEventListener("change",()=>{gallery.replaceChildren();gallery.style.display="flex";gallery.style.visibility="visible";const files=Array.from(input.files||[]).filter(f=>f.type&&f.type.startsWith("image/")).slice(0,5);if(name)name.textContent=files.length?files.length+" foto terlampir": "Belum ada foto dipilih";files.forEach((file,index)=>{const card=document.createElement("div");card.className="quickPhotoItem";card.style.display="flex";const img=document.createElement("img");img.alt="Pratinjau foto "+(index+1);img.src=URL.createObjectURL(file);img.style.cssText="display:block;width:76px;height:76px;object-fit:cover;border-radius:9px;border:1px solid #d9b878";const caption=document.createElement("small");caption.textContent=file.name;caption.style.cssText="display:block;max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap";card.append(img,caption);gallery.append(card);});if(!files.length&&name)name.textContent="File gambar tidak ditemukan. Pilih JPG, PNG, atau WEBP.";});})();
 </script></div></div>
 <div class="quickSubpanel" id="quickDialoguePanel"><div class="field"><label for="quickExtraDialogue">DIALOG TAMBAHAN (OPSIONAL)</label><textarea id="quickExtraDialogue" rows="3" placeholder="Tulis kalimat khusus yang wajib dimasukkan. AI tetap membuat dialog lain yang sesuai cerita."></textarea><div class="hint">Kosongkan jika ingin AI menyusun semua dialog sendiri. Jika diisi, AI akan mempertahankan kalimat ini dan melengkapi dialog cerita.</div></div></div>
+<style>
+/* VOICE CONTROLS IN QUICK CREATE */
+#quickStudio #generateSpeechBtn{display:none!important}
+#quickStudio #voiceControlPanel{display:block!important;margin:14px 0;padding:14px!important;background:#101c2b;border:1px solid #b99a5a88;border-radius:14px}
+#quickStudio #voiceControlPanel>label{display:block;margin:12px 0 6px;color:#e8d09e;font-size:12px;font-weight:800}
+#quickStudio #voiceControlPanel select,#quickStudio #voiceControlPanel input,#quickStudio #voiceControlPanel textarea{width:100%;box-sizing:border-box}
+#quickStudio #voiceControlPanel .speakerCard{display:block}
+#quickStudio #voiceControlPanel .speakerCard[hidden]{display:none!important}
+#quickStudio #voiceControlPanel .speakerCard label{display:block;margin:9px 0 5px;font-size:11px;color:#c8d5e6}
+</style>
+<script>
+(()=>{const placeVoiceControls=()=>{const panel=document.getElementById("voiceControlPanel");const quick=document.getElementById("quickStudio");const duration=quick?.querySelector(".quickDurationField");if(panel&&quick&&duration&&panel.parentElement!==quick){quick.insertBefore(panel,duration);}};if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",placeVoiceControls,{once:true});else placeVoiceControls();})();
+</script>
 <div class="field quickDurationField"><label for="quickDuration">DURASI TOTAL VIDEO</label><select id="quickDuration"><option value="10">10 detik · 1 adegan</option><option value="20">20 detik · 2 adegan</option><option value="30">30 detik · 3 adegan</option><option value="60" selected>60 detik · 6 adegan</option><option value="90">90 detik · 9 adegan</option><option value="120">120 detik · 12 adegan</option></select><div class="hint">Setiap adegan disiapkan sebagai klip 10 detik agar mudah dibuat di Google Flow.</div></div><input type="hidden" id="quickRatio" value="Vertikal 9:16">
-<button class="gold quickGenerate" id="quickGenerate">✦ BUAT VIDEO OTOMATIS</button>
+<button class="gold quickGenerate" id="quickGenerate">✦ BUAT VIDEO</button>
 <div class="actions" style="justify-content:center;margin-top:7px"><button type="button" class="ghost small" id="quickResetStudio">↺ RESET STUDIO</button></div>
 <p class="quickFoot">AI akan membuat konsep, naskah, storyboard, prompt gambar, prompt video Flow, narasi, dan arahan produksi.</p>
 <div id="quickStatus" class="status" role="status"></div>
@@ -639,9 +667,9 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="hint">Catatan: Studio menyusun panel dan prompt. Render gambar storyboard dilakukan di Google Flow atau alat gambar pilihan Anda.</div></section>
 <section class="panel" id="characterStudio"><h3><span class="num">04</span> Character Consistency PRO & referensi</h3>
 
-<div class="field"><label for="faceLock">Kunci identitas wajah (PRO)</label><textarea id="faceLock">Gunakan satu identitas karakter yang sama di seluruh adegan. Pertahankan struktur wajah, jarak mata, bentuk alis, hidung, bibir, rahang, warna kulit, garis rambut, dan usia visual.</textarea><div class="hint">Deskripsi teks ini membantu prompt menjaga konsistensi. Foto tetap perlu dilampirkan manual di Flow.</div></div>
+<div class="field"><label for="faceLock">Kunci identitas wajah (PRO)</label><textarea id="faceLock">WAJAH ASLI LOCK PRO — WAJIB AKTIF. Gunakan foto referensi yang diunggah sebagai sumber identitas utama dan pertahankan orang yang sama di seluruh adegan. Jangan mendesain ulang, mempercantik, meremajakan, menuakan, atau menafsirkan ulang wajah. Pertahankan bentuk dan proporsi wajah, dahi, mata dan jaraknya, alis, hidung, bibir, pipi, rahang, dagu, telinga, warna dan tekstur kulit, garis rambut, serta ciri khas yang terlihat. Ekspresi dan sudut kamera boleh berubah, tetapi identitas dan proporsi wajah tidak boleh berubah.</textarea><div class="hint">KUNCI WAJAH PRO aktif otomatis pada semua paket prompt. Untuk hasil terbaik, lampirkan foto referensi wajah yang sama sebagai Character/Ingredients reference pada setiap klip di Google Flow. Prompt tidak dapat memaksa generator eksternal menjamin kemiripan 100%.</div></div>
 <div class="grid"><div class="field"><label for="wardrobeLock">Kunci pakaian & properti</label><textarea id="wardrobeLock">Pakaian, aksesori, kendaraan, dan properti utama harus sama antaradegan kecuali perubahan memang diminta dalam cerita.</textarea></div>
-<div class="field"><label for="negativeLock">Hindari perubahan karakter</label><textarea id="negativeLock">No face morphing, no identity drift, no age change, no hairstyle change, no wardrobe changes, no duplicate character, no distorted face or hands.</textarea></div></div>
+<div class="field"><label for="negativeLock">Hindari perubahan karakter</label><textarea id="negativeLock">STRICT FACE IDENTITY LOCK: no face morphing, no identity drift, no different person, no face redesign, no beautification, no skin smoothing, no age change, no gender change, no altered facial proportions, no eye/nose/lip/jaw changes, no hairstyle or hairline change. Do not replace the reference face with a generic look-alike. No duplicate character, no distorted face or hands.</textarea></div></div>
 <div class="actions"><button class="secondary small" id="applyCharacterLock">Terapkan kunci ke semua prompt</button><button class="ghost small" id="resetCharacterLock">Pulihkan kunci standar</button></div>
 <div class="field"><label for="character">Deskripsi karakter utama</label><textarea id="character">Gunakan foto referensi yang saya lampirkan sebagai acuan karakter utama. Pertahankan identitas wajah, bentuk wajah, warna kulit, gaya rambut, usia visual, dan ciri khas yang sama di semua adegan.</textarea></div>
 
@@ -680,6 +708,24 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div id="musicStatus" class="status" role="status">Siap menyusun musik berdasarkan ide video.</div>
 <div class="musicNote">Catatan: pembuatan lagu dan MP3 dilakukan di Suno, bukan di server website ini. Paket gratis Suno memiliki batas kredit dan ketentuan penggunaan tersendiri. Periksa lisensi sebelum memakai lagu untuk keperluan komersial.</div>
 </div></section>
+
+<section class="panel" id="voiceControlPanel">
+ <h3><span class="num">07A</span> Narasi & Dialog Karakter</h3>
+ <p class="hint">Atur teks yang diucapkan. Teks manual dipertahankan persis; tiap karakter memakai suara yang dipilih dan berbicara bergantian.</p>
+ <label for="narrationMode">Mode narasi</label>
+ <select id="narrationMode"><option value="auto" selected>Otomatis jika teks kosong</option><option value="manual">Gunakan teks saya persis</option><option value="none">Tanpa narasi</option></select>
+ <label for="narratorVoice">Suara narator</label><select id="narratorVoice"><option value="Kore">Kore — jelas dan tegas</option><option value="Charon">Charon — berat dan tenang</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Puck">Puck — ceria dan ekspresif</option></select><label for="narrationText">Teks narasi (boleh dikosongkan)</label>
+ <textarea id="narrationText" rows="3" placeholder="Kosongkan untuk narasi otomatis, atau isi narasi yang harus dibacakan persis..."></textarea>
+ <label for="dialogueCount">Jumlah karakter yang berbicara</label>
+ <select id="dialogueCount" onchange="updateDialogueCount()" oninput="updateDialogueCount()"><option value="1">1 karakter</option><option value="2">2 karakter</option><option value="3">3 karakter</option><option value="4">4 karakter</option></select>
+ <div class="speakerCard" id="speakerCard1"><h4>Karakter 1</h4><label>Nama karakter</label><input id="speaker1Name" placeholder="Contoh: Agus"><label>Suara AI</label><select id="speaker1Voice"><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Charon">Charon — berat dan tenang</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib (kosong = AI boleh membuat)</label><textarea id="speaker1Dialogue" rows="2" placeholder="Tulis dialog karakter 1 persis seperti yang harus diucapkan..."></textarea></div>
+ <div class="speakerCard" id="speakerCard2" hidden><h4>Karakter 2</h4><label>Nama karakter</label><input id="speaker2Name" placeholder="Nama karakter 2"><label>Suara AI</label><select id="speaker2Voice"><option value="Puck">Puck — ceria dan ekspresif</option><option value="Kore">Kore — jelas dan tegas</option><option value="Charon">Charon — berat dan tenang</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker2Dialogue" rows="2" placeholder="Dialog karakter 2..."></textarea></div>
+ <div class="speakerCard" id="speakerCard3" hidden><h4>Karakter 3</h4><label>Nama karakter</label><input id="speaker3Name" placeholder="Nama karakter 3"><label>Suara AI</label><select id="speaker3Voice"><option value="Charon">Charon — berat dan tenang</option><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker3Dialogue" rows="2" placeholder="Dialog karakter 3..."></textarea></div>
+ <div class="speakerCard" id="speakerCard4" hidden><h4>Karakter 4</h4><label>Nama karakter</label><input id="speaker4Name" placeholder="Nama karakter 4"><label>Suara AI</label><select id="speaker4Voice"><option value="Fenrir">Fenrir — kuat dan berenergi</option><option value="Kore">Kore — jelas dan tegas</option><option value="Puck">Puck — ceria dan ekspresif</option><option value="Charon">Charon — berat dan tenang</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Leda">Leda — muda dan ceria</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Zephyr">Zephyr — ringan dan ramah</option></select><label>Dialog wajib</label><textarea id="speaker4Dialogue" rows="2" placeholder="Dialog karakter 4..."></textarea></div>
+ <div class="actions"><button class="gold" id="generateSpeechBtn">Buat Audio AI dari Proyek</button></div>
+ <div id="speechStatus" class="status" role="status">Audio dibuat setelah paket video berhasil di-generate.</div>
+ <div id="speechResults"></div>
+</section>
 <div class="panel" id="productionGenerate"><h3><span class="num">08</span> Produksi</h3><div class="actions"><button class="gold" id="aiBtn">✦ Generate dengan AI</button><button class="secondary" id="templateBtn">Buat template tanpa AI</button><button class="ghost" id="resetBtn">Reset form</button></div><div id="status" class="status" role="status">Siap membuat proyek baru.</div></div>
 </div>
 <div class="stack">
@@ -687,20 +733,23 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="tabs"><button class="tab active" data-tab="story">Cerita</button><button class="tab" data-tab="storyboard">Storyboard</button><button class="tab" data-tab="image">Prompt gambar</button><button class="tab" data-tab="video">Prompt video</button><button class="tab" data-tab="check">Checklist</button></div>
 <div id="storyView"><div class="empty">Hasil cerita dan paket produksi akan muncul di sini setelah Generate.</div></div>
 <div id="storyboardView" class="hidden"></div><div id="imageView" class="hidden"></div><div id="videoView" class="hidden"></div><div id="checkView" class="hidden"></div>
-<div class="actions"><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="copyStoryboard">Salin storyboard</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button><button class="ghost small danger" id="deleteCurrentResult">Hapus hasil</button></div></section>
+<div class="actions"><button class="gold small" id="copyFlowAll">Salin semua prompt Flow</button><button class="secondary small" id="copyAll">Salin semua hasil</button><button class="secondary small" id="copyStoryboard">Salin storyboard</button><button class="secondary small" id="download">Unduh paket TXT</button><button class="secondary small" id="save">Simpan proyek</button><button class="ghost small danger" id="deleteCurrentResult">Hapus hasil</button></div></section>
 <section class="panel" id="savedProjects"><h3><span class="num">09</span> Proyek tersimpan</h3><div id="projectList" class="empty">Belum ada proyek tersimpan di perangkat ini.</div></section>
 <section class="panel" id="flowGuide"><h3><span class="num">i</span> Alur kerja Google Flow</h3><ol class="list"><li>Generate konsep dan paket produksi di Studio.</li><li>Salin prompt gambar untuk membuat referensi storyboard.</li><li>Lampirkan foto referensi karakter di Flow bila diperlukan.</li><li>Generate klip satu per satu memakai prompt video.</li><li>Periksa kontinuitas karakter, suara, lokasi, dan transisi.</li></ol></section>
+
+
+
 </div></div>
-<footer>CHEDAR AI KREATOR · Studio produksi prompt AI · Powered by OpenAI</footer>
+<footer>CHEDAR AI STUDIO · Studio produksi prompt AI · Powered by Google Gemini</footer>
 </main>
 <div id="legacyCompatibilityFields" hidden aria-hidden="true">
-<select id="dialogueCount"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
+<select id="legacyDialogueCount"><option value="1" selected>1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option></select>
 <select id="audioMode"><option value="both" selected>both</option><option value="none">none</option><option value="voice">voice</option></select>
-<select id="narratorVoice"><option value="natural">natural</option></select>
-<div id="speakerCard1"><input id="speaker1Name"><input id="speaker1Voice"><textarea id="speaker1Dialogue"></textarea></div>
-<div id="speakerCard2"><input id="speaker2Name"><input id="speaker2Voice"><textarea id="speaker2Dialogue"></textarea></div>
-<div id="speakerCard3"><input id="speaker3Name"><input id="speaker3Voice"><textarea id="speaker3Dialogue"></textarea></div>
-<div id="speakerCard4"><input id="speaker4Name"><input id="speaker4Voice"><textarea id="speaker4Dialogue"></textarea></div>
+<select id="legacyNarratorVoice"><option value="natural">natural</option></select>
+<div id="legacySpeakerCard1"><input id="legacySpeaker1Name"><input id="legacySpeaker1Voice"><textarea id="legacySpeaker1Dialogue"></textarea></div>
+<div id="legacySpeakerCard2"><input id="legacySpeaker2Name"><input id="legacySpeaker2Voice"><textarea id="legacySpeaker2Dialogue"></textarea></div>
+<div id="legacySpeakerCard3"><input id="legacySpeaker3Name"><input id="legacySpeaker3Voice"><textarea id="legacySpeaker3Dialogue"></textarea></div>
+<div id="legacySpeakerCard4"><input id="legacySpeaker4Name"><input id="legacySpeaker4Voice"><textarea id="legacySpeaker4Dialogue"></textarea></div>
 <input id="audioTiming" type="hidden" value=""><input id="audioMix" type="hidden" value=""><div id="audioQualitySummary"></div><div id="suiteStatus"></div>
 </div>
 <script>
@@ -717,45 +766,138 @@ function removeLiteralNewlineArtifacts(root=document.body){
 removeLiteralNewlineArtifacts();
 new MutationObserver(()=>removeLiteralNewlineArtifacts()).observe(document.body,{childList:true,subtree:true,characterData:true});
 let project=null,latestText="",referenceUrls=[],activeProjectId=null;
-const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncNotes","motionReference","motionNotes","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
+const fields=["idea","title","genre","style","ratio","videoType","ugcFormat","videoSubType","popupTextStyle","popupAnimation","popupPlacement","lipsyncAudio","lipsyncSongTitle","lipsyncArtist","lipsyncGenre","lipsyncNotes","motionReference","motionNotes","motionVideoFileName","motionVideoFileType","motionVideoDuration","asmrSubtype","asmrSoundFocus","asmrCameraStyle","asmrAmbience","asmrExtra","asmrNoMusic","duration","scenes","language","voice","character","faceLock","wardrobeLock","negativeLock","wardrobe","location","continuity","camera","lighting","dialogue","audio","extra","projectType","productName","productDescription","productAudience","productOffer","productCTA","productLock","audioMode","narratorVoice","narrationMode","narrationText","audioTiming","audioMix","dialogueCount","speaker1Name","speaker1Voice","speaker1Dialogue","speaker2Name","speaker2Voice","speaker2Dialogue","speaker3Name","speaker3Voice","speaker3Dialogue","speaker4Name","speaker4Voice","speaker4Dialogue"];
 async function getReferenceImages(){
- const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")).slice(0,5),out=[];
+ const files=Array.from($("reference")?.files||[]).filter(f=>f.type.startsWith("image/")||/\.(jpe?g|png|webp|gif|heic|heif|bmp)$/i.test(f.name)).slice(0,5),out=[];
  for(const file of files){
-  let source,width,height,bitmap=null;
+  let source=null,width=0,height=0,bitmap=null,objectUrl=null;
   try{
-   if("createImageBitmap" in window){bitmap=await createImageBitmap(file);source=bitmap;width=bitmap.width;height=bitmap.height;}
-   else{
-    source=await new Promise((resolve,reject)=>{const img=new Image(),url=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Foto tidak bisa dibaca: "+file.name));};img.src=url;});
+   if("createImageBitmap" in window){
+    try{bitmap=await createImageBitmap(file);source=bitmap;width=bitmap.width;height=bitmap.height;}catch(bitmapError){bitmap=null;}
+   }
+   if(!source){
+    objectUrl=URL.createObjectURL(file);
+    source=await new Promise((resolve,reject)=>{
+     const img=new Image();
+     img.onload=()=>{if(img.naturalWidth&&img.naturalHeight)resolve(img);else reject(new Error("Ukuran foto tidak terbaca."));};
+     img.onerror=()=>reject(new Error("Format foto tidak didukung browser."));
+     img.src=objectUrl;
+    });
     width=source.naturalWidth;height=source.naturalHeight;
    }
+   if(!width||!height)throw new Error("Ukuran foto tidak valid.");
    const scale=Math.min(1,1024/Math.max(width,height));
    const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(width*scale));canvas.height=Math.max(1,Math.round(height*scale));
    const ctx=canvas.getContext("2d");if(!ctx)throw new Error("Browser tidak bisa memproses foto.");
-   ctx.drawImage(source,0,0,canvas.width,canvas.height);bitmap?.close?.();
-   const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.65));
-   if(!blob)throw new Error("Foto gagal dikompres: "+file.name);
-   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Foto gagal dibaca: "+file.name));reader.readAsDataURL(blob);});
+   ctx.drawImage(source,0,0,canvas.width,canvas.height);
+   const blob=await new Promise(resolve=>canvas.toBlob(resolve,"image/jpeg",.82));
+   if(!blob)throw new Error("Foto gagal dikompres.");
+   const data=await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error("Foto gagal dibaca."));reader.readAsDataURL(blob);});
    out.push({name:file.name,dataUrl:data});
-  }catch(error){bitmap?.close?.();throw error;}
+  }catch(error){
+   throw new Error("Foto '"+file.name+"' tidak dapat dibaca. Coba unggah ulang dalam format JPG, PNG, atau WebP. "+(error?.message||""));
+  }finally{
+   bitmap?.close?.();
+   if(objectUrl)URL.revokeObjectURL(objectUrl);
+  }
  }
  return out;
 }
 function getData(){
- const data=Object.fromEntries(fields.map(k=>[k,$(k).type==="checkbox"?String($(k).checked):$(k).value.trim()]));
+ const data=Object.fromEntries(fields.flatMap(k=>{const el=$(k);if(!el)return [];return [[k,el.type==="checkbox"?String(el.checked):String(el.value??"").trim()]];}));
+ const motionFile=$("motionVideoFile")?.files?.[0];
+ if(motionFile){data.motionVideoFileName=motionFile.name.slice(0,180);data.motionVideoFileType=motionFile.type||"video/unknown";data.motionVideoDuration=$("motionVideoPreview")?.dataset?.duration||"";}
+ const songFile=$("lipsyncSongFile")?.files?.[0];
+ if(songFile){data.lipsyncAudioFileName=songFile.name.slice(0,180);data.lipsyncAudioFileType=songFile.type||"audio/unknown";data.lipsyncAudioDuration=$("lipsyncSongPreview")?.dataset?.duration||"";}
  if(data.videoType==="asmr"){
-  const noMusic=data.asmrNoMusic==="true";
-  const asmrAudio="ASMR AUDIO DIRECTION: "+data.asmrSubtype+". Sound focus: "+data.asmrSoundFocus+". Ambience: "+data.asmrAmbience+". "+(noMusic?"No background music; prioritize isolated natural ASMR sounds.":"Only very subtle unobtrusive ambient bed; ASMR sounds remain dominant.")+" Use close, clean, detailed stereo recording; preserve transients and realistic texture; no clipping, distortion, artificial exaggerated sounds or unrelated dialogue.";
-  const asmrCamera="ASMR CAMERA: "+data.asmrCameraStyle+". Prioritize tactile macro details, deliberate slow movements, stable framing, shallow depth of field where appropriate, and uninterrupted readable action.";
-  data.audio=[data.audio,asmrAudio].filter(Boolean).join("\n\n");
-  data.camera=[data.camera,asmrCamera].filter(Boolean).join("\n\n");
-  data.extra=[data.extra,"ASMR SPECIAL DIRECTION: "+data.asmrSubtype+". "+(data.asmrExtra||"Keep every action intentional, calm and satisfying. Maintain consistent object positions and natural physical interaction.")+" No random cuts, no sudden loud sounds, no visual clutter, no subtitles unless requested."].filter(Boolean).join("\n\n");
+  const audioGuide="ASMR AUDIO: "+data.asmrSubtype+". Sound focus: "+data.asmrSoundFocus+". Ambience: "+data.asmrAmbience+". "+(data.asmrNoMusic==="true"?"No background music; isolate natural ASMR sounds.":"Only subtle ambience; ASMR remains dominant.")+" Clean close stereo recording, detailed realistic texture, no clipping or sudden loud sounds.";
+  const cameraGuide="ASMR CAMERA: "+data.asmrCameraStyle+". Use stable framing, tactile macro details, deliberate slow movements, shallow depth of field and uninterrupted readable action.";
+  data.audio=[data.audio,audioGuide].filter(Boolean).join("\n\n");
+  data.camera=[data.camera,cameraGuide].filter(Boolean).join("\n\n");
+  data.extra=[data.extra,"ASMR DIRECTION: "+(data.asmrExtra||"Calm satisfying actions, natural physical interaction, consistent object positions.")+" No random cuts, no visual clutter, no unrelated dialogue."].filter(Boolean).join("\n\n");
  }
  return data;
 }
+
+const videoSubTypeOptions={
+ asmr:["Satisfying ASMR","Food ASMR","Relaxing / Sleep ASMR","Nature ASMR","Crafting / Handmade ASMR","Whispering & Tapping ASMR"],
+ product_ad:["Product Showcase / Hero Shot","Unboxing Produk","Review Produk","Demo Cara Pakai / Tutorial","Before & After","Testimoni Pelanggan","Soft Selling","Hard Selling / Promo","Perbandingan Produk"],
+ superhero:["Origin Story / Asal Kekuatan","Transformasi Kostum","Pertarungan Superhero","Hero Reveal / Perkenalan Pahlawan","Misi Penyelamatan"],
+ kingdom:["Kehidupan Istana","Perebutan Takhta","Perang Kerajaan","Kisah Raja dan Ratu","Petualangan Kesatria"],
+ mythology:["Legenda Dewa / Dewi","Makhluk Mitologi","Asal-usul Tempat","Kutukan dan Ramalan","Kisah Pahlawan Legendaris"],
+ scifi:["Kehidupan Masa Depan","Robot dan AI","Eksplorasi Luar Angkasa","Dunia Pasca-apokaliptik","Teknologi Eksperimental"],
+ horror:["Horor Supranatural","Horor Psikologis","Misteri dan Investigasi","Urban Legend / Cerita Rakyat","Found Footage"],
+ cinema_ad:["Brand Story / Cerita Merek","Product Hero Film","Iklan Jasa","Iklan Sinematik Emosional","Promo Event"],
+ timetravel:["Ke Masa Lalu","Ke Masa Depan","Pertemuan Lintas Zaman","Perubahan Sejarah Alternatif","Time Loop"],
+ action:["Kejar-kejaran","Pertarungan Bela Diri","Misi Penyelamatan","Pencurian / Heist","Operasi Rahasia"],
+ family_drama:["Drama Keluarga Mengharukan","Konflik Orang Tua dan Anak","Perjuangan Keluarga","Reuni Keluarga","Kisah Pengorbanan"],
+ chibi_3d:["Komedi Chibi","Petualangan Chibi","Edukasi Anak","Kehidupan Sehari-hari","Kisah Persahabatan","Kritik Sosial Komedi"],
+ ugc:["Unboxing Produk","Review Produk","First Impression / Kesan Pertama","Testimoni / Pengalaman Nyata","Tutorial / Cara Pakai","GRWM / Get Ready With Me","Daily Vlog / Day in My Life","Storytelling Personal","Before & After","Soft Selling","Hard Selling / Promo","Affiliate Product Recommendation"],
+ silent_popup:["Komedi Tanpa Dialog","Cerita Ekspresi Karakter","Chat / Percakapan Pop-up","Edukasi Teks Singkat","Reaksi dan Meme"],
+ documentary:["Profil Tokoh / UMKM","Dokumenter Tempat","Sejarah dan Budaya","Proses di Balik Layar","Edukasi / Explainer","Dokumenter Perjalanan"],
+ movie_universe:["Origin Character","World Building / Pengenalan Dunia","Misi Utama","Konflik Antar-Faksi","Teaser / Trailer Universe"],
+ lipsync:["Lipsync Lagu","Karakter Bernyanyi","Cover Lagu / Karaoke","Dialog Sinkron / Voice Performance"],
+ motion_control:["Dance / Tarian","Aksi dan Gerakan Tubuh","Fashion Walk","Gerakan Olahraga","Gerakan Sinematik"],
+ storytelling:["Drama Pendek","Komedi Situasi / Sketsa","Cerita Inspiratif","Romansa","Kisah Kehidupan Sehari-hari","Cerita Persahabatan","Motivasi dan Pengembangan Diri"],
+ travel_tourism:["Promosi Destinasi Wisata","Travel Vlog / Itinerary","Cinematic Travel Film","Review Hotel / Vila","Wisata Kuliner","Budaya dan Tradisi Lokal","Petualangan Alam"],
+ podcast:["Podcast Solo / Monolog","Podcast Dua Orang","Wawancara Narasumber","Podcast Edukasi","Podcast Opini / Commentary","Video Talking Head","Motivational Talk"],
+ music_video:["Official Music Video","DJ Performance / Remix Visual","Live Stage Performance","Acoustic Session","Lyric Video","Karaoke Performance","Music Visualizer"],
+ transformation:["Before & After","Renovasi Rumah / Ruangan","Makeover / Fashion Transformation","Product Transformation","Restorasi Barang","Proses Pembuatan","Time-lapse Transformation"],
+ explainer:["Edukasi Singkat","Tutorial Langkah demi Langkah","Infografis Bergerak","Fakta Menarik","Penjelasan Teknologi","How It Works","Konten Edukasi Anak"],
+ news_commentary:["Berita dan Informasi","Kritik Sosial","Opini / Commentary","Analisis Isu","Update Komunitas / Lokal","Fact-based Explainer"],
+ fashion_model:["Fashion Show / Runway","Outfit of the Day (OOTD)","Lookbook / Katalog Busana","Model Photoshoot Video","Fashion Product Showcase","Beauty / Makeup Showcase"],
+ real_estate:["House Tour","Villa / Hotel Tour","Property Showcase","Interior Design Showcase","Arsitektur Eksterior","Promosi Properti","Virtual Walkthrough"],
+};
+function getVideoSubTypeIcon(value,type){
+ const v=String(value||"").toLowerCase();
+ const rules=[
+  [/unboxing|buka kemasan/,"🎁"],[/review|perbandingan|showcase/,"⭐"],[/first impression|kesan pertama/,"👀"],[/testimoni|pengalaman nyata/,"💬"],[/tutorial|cara pakai|langkah demi langkah|how it works/,"🛠️"],[/grwm|makeup|beauty/,"💄"],[/daily vlog|travel vlog|vlog/,"📹"],[/storytelling|cerita personal|kisah/,"📖"],[/before.*after|transformasi|makeover/,"🔄"],[/soft selling|hard selling|promo|affiliate|rekomendasi/,"🛍️"],[/drama|konflik|romansa|persahabatan/,"🎭"],[/komedi|meme|sketsa|reaksi/,"😂"],[/motivasi|inspiratif|pengembangan diri/,"💡"],[/destinasi|travel|perjalanan|petualangan|tour/,"🌍"],[/hotel|vila|properti|house|interior|arsitektur/,"🏡"],[/kuliner|food/,"🍜"],[/budaya|tradisi|sejarah|legenda|mitologi/,"🏛️"],[/podcast|wawancara|talking head|monolog|opini/,"🎙️"],[/musik|music|lagu|karaoke|lyric|acoustic|dj|remix/,"🎵"],[/runway|fashion|outfit|lookbook|model|photoshoot/,"👗"],[/edukasi|explainer|fakta|infografis|teknologi/,"📚"],[/berita|news|kritik|analisis|commentary/,"📰"],[/horor|misteri|supranatural|found footage|kutukan/,"👻"],[/aksi|pertarungan|kejar|penyelamatan|operasi/,"💥"],[/kerajaan|istana|takhta|kesatria/,"👑"],[/superhero|pahlawan|kekuatan/,"🦸"],[/robot|ai|luar angkasa|masa depan|sci.fi/,"🚀"],[/asmr|satisfying|relaxing|sleep|whisper|tapping/,"🎧"],[/alam|nature|hujan|air/,"🌿"],[/craft|handmade|restorasi|proses pembuatan/,"🧵"],[/karakter|chibi|animasi/,"🧸"],[/pop.up|chat|teks singkat/,"💬"],[/dokumenter|profil tokoh|di balik layar/,"🎥"],[/time loop|lintas zaman|masa lalu|masa depan/,"⏳"]
+ ];
+ const found=rules.find(([pattern])=>pattern.test(v));
+ if(found)return found[1];
+ const typeIcons={product_ad:"🛍️",ugc:"📱",asmr:"🎧",lipsync:"🎤",motion_control:"🕺",chibi_3d:"🧸",travel_tourism:"🌴",podcast:"🎙️",music_video:"🎵",transformation:"🔄",explainer:"📊",news_commentary:"📰",fashion_model:"👗",real_estate:"🏡"};
+ return typeIcons[type]||"🎬";
+}
+function escapeVideoSubTypeText(value){
+ return String(value).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+}
+function updateVideoSubType(){
+ const type=$("videoType").value,opts=videoSubTypeOptions[type]||[],panel=$("videoSubTypePanel"),select=$("videoSubType"),label=$("videoSubTypeLabel"),hint=$("videoSubTypeHint");
+ if(!panel||!select)return;
+ const previous=select.value;
+ panel.classList.toggle("hidden",!opts.length);
+ if(!opts.length){select.innerHTML='<option value="">Tidak ada subjenis tambahan</option>';select.value="";return;}
+ label.textContent=type==="ugc"?"PILIH FORMAT UGC":type==="product_ad"?"PILIH FORMAT IKLAN PRODUK":"PILIH SUBJENIS VIDEO";
+ select.innerHTML='<option value="">🧩 Pilih format (opsional)</option>'+opts.map(v=>'<option value="'+escapeVideoSubTypeText(v)+'">'+getVideoSubTypeIcon(v,type)+' '+escapeVideoSubTypeText(v)+'</option>').join("");
+ if(opts.includes(previous))select.value=previous;
+ hint.textContent=type==="ugc"?"Contoh: 🎁 Unboxing, ⭐ review, 🛠️ tutorial, 📹 daily vlog, atau 🛍️ affiliate. AI akan menyesuaikan hook, dialog, demonstrasi, dan CTA.":"Pilih subjenis dengan ikon yang sesuai. AI akan mengarahkan struktur cerita, adegan, dialog, visual, kamera, audio, dan prompt Google Flow.";
+}
+
+let lipsyncPreviewUrl=null;
+$("lipsyncSongFile")?.addEventListener("change",()=>{
+ const file=$("lipsyncSongFile").files?.[0],info=$("lipsyncSongFileInfo"),audio=$("lipsyncSongPreview"),wrap=$("lipsyncAudioPreviewWrap");
+ if(lipsyncPreviewUrl){URL.revokeObjectURL(lipsyncPreviewUrl);lipsyncPreviewUrl=null;}
+ if(!file){wrap.hidden=true;info.textContent="Pilih file lagu atau rekaman suara dari perangkat.";return;}
+ const valid=/\.(mp3|wav|m4a|ogg)$/i.test(file.name)||/^audio\//i.test(file.type);
+ if(!valid){$("lipsyncSongFile").value="";wrap.hidden=true;info.textContent="Format tidak didukung. Gunakan MP3, WAV, M4A, atau OGG.";return;}
+ lipsyncPreviewUrl=URL.createObjectURL(file);audio.src=lipsyncPreviewUrl;audio.dataset.duration="";wrap.hidden=false;info.textContent=file.name+" · "+(file.size/1048576).toFixed(2)+" MB";
+ audio.onloadedmetadata=()=>{audio.dataset.duration=Number.isFinite(audio.duration)?String(Math.round(audio.duration)):"";};
+});
+let motionPreviewUrl=null;
+$("motionVideoFile")?.addEventListener("change",()=>{
+ const file=$("motionVideoFile").files?.[0],info=$("motionVideoFileInfo"),video=$("motionVideoPreview"),wrap=$("motionVideoPreviewWrap");
+ if(motionPreviewUrl){URL.revokeObjectURL(motionPreviewUrl);motionPreviewUrl=null;}
+ if(!file){wrap.hidden=true;info.textContent="Pilih video gerakan, tarian, aksi, atau gestur dari perangkat.";return;}
+ const valid=/\.(mp4|mov|webm)$/i.test(file.name)||/^video\//i.test(file.type);
+ if(!valid){$("motionVideoFile").value="";wrap.hidden=true;info.textContent="Format tidak didukung. Gunakan MP4, MOV, atau WEBM.";return;}
+ motionPreviewUrl=URL.createObjectURL(file);video.src=motionPreviewUrl;video.dataset.duration="";wrap.hidden=false;
+ info.textContent=file.name+" · "+(file.size/1048576).toFixed(2)+" MB";
+ video.onloadedmetadata=()=>{video.dataset.duration=Number.isFinite(video.duration)?String(Math.round(video.duration)):"";};
+});
 function updateVideoTypeFields(){const t=$("videoType").value;$("lipsyncFields").classList.toggle("hidden",t!=="lipsync");$("motionFields").classList.toggle("hidden",t!=="motion_control");$("ugcFields").classList.toggle("hidden",t!=="ugc");$("silentPopupFields").classList.toggle("hidden",t!=="silent_popup");$("asmrFields").classList.toggle("hidden",t!=="asmr");}
 
 const videoTypeIcons={
- auto:["✨","Otomatis berdasarkan ide"],product_ad:["🛍️","Iklan Produk Profesional"],superhero:["🦸","Transformasi Superhero"],kingdom:["👑","Film Kerajaan Epik"],mythology:["🐉","Mitologi dan Legenda"],scifi:["🚀","Sci-Fi Masa Depan"],horror:["👻","Horor Supernatural"],cinema_ad:["🎬","Iklan Kelas Bioskop"],timetravel:["⏳","Time Travel / Lintas Zaman"],action:["💥","Action Movie"],family_drama:["👨‍👩‍👧","Drama Film Keluarga"],chibi_3d:["🧸","Chibi 3D Animasi Lucu"],ugc:["📱","UGC Creator / Konten Natural"],silent_popup:["💬","Silent Character + Pop-up Text"],asmr:["🎧","ASMR Video Director"],documentary:["🎥","Dokumenter Sinematik"],movie_universe:["🌌","AI Movie Universe"],lipsync:["🎤","Lipsync Foto / Karakter Bernyanyi"],motion_control:["🕺","Motion Control / Ikuti Gerakan Referensi"]
+ auto:["✨","Otomatis berdasarkan ide"],product_ad:["🛍️","Iklan Produk Profesional"],superhero:["🦸","Transformasi Superhero"],kingdom:["👑","Film Kerajaan Epik"],mythology:["🐉","Mitologi dan Legenda"],scifi:["🚀","Sci-Fi Masa Depan"],horror:["👻","Horor Supernatural"],cinema_ad:["🎬","Iklan Kelas Bioskop"],timetravel:["⏳","Time Travel / Lintas Zaman"],action:["💥","Action Movie"],family_drama:["👨‍👩‍👧","Drama Film Keluarga"],chibi_3d:["🧸","Chibi 3D Animasi Lucu"],ugc:["📱","UGC Creator / Konten Natural"],silent_popup:["💬","Silent Character + Pop-up Text"],asmr:["🎧","ASMR Video Director"],documentary:["🎥","Dokumenter Sinematik"],movie_universe:["🌌","AI Movie Universe"],lipsync:["🎤","Lipsync Foto / Karakter Bernyanyi"],motion_control:["🕺","Motion Control / Ikuti Gerakan Referensi"],storytelling:["🎭","Storytelling Drama & Komedi"],travel_tourism:["🌴","Travel & Tourism"],podcast:["🎙️","Podcast & Talking Head"],music_video:["🎵","Music Video"],transformation:["✨","Transformation / Before-After"],explainer:["📊","Explainer & Infografis"],news_commentary:["📰","News & Commentary"],fashion_model:["👗","Fashion & Model"],real_estate:["🏡","Real Estate / Properti"],
 };
 
 function setVideoTypePicker(open){
@@ -784,7 +926,7 @@ function syncVideoTypeCards(){
  });
 }
 
-$("videoType").addEventListener("change",()=>{ $("projectType").value=$("videoType").value==="product_ad"?"product_ad":"story"; updateProjectType(); updateVideoTypeFields(); });updateVideoTypeFields();
+$("videoType").addEventListener("change",()=>{ $("projectType").value=$("videoType").value==="product_ad"?"product_ad":"story"; updateProjectType(); updateVideoTypeFields(); updateVideoSubType(); });updateVideoTypeFields();updateVideoSubType();
 renderVideoTypeCards();
 $("videoTypeToggle").addEventListener("click",()=>setVideoTypePicker($("videoTypeCards").classList.contains("hidden")));
 updateVideoTypeToggleLabel();
@@ -797,10 +939,25 @@ function updateProjectType(){
  $("quickIdea").placeholder=ad?"Contoh: Buat iklan profesional untuk produk ini, tampilkan detail dan ajakan membeli...":"Contoh: Saya ingin membuat video tentang perjuangan seorang sopir pariwisata Bali...";
 }
 $("projectType").addEventListener("change",updateProjectType);updateProjectType();
-function updateDialogueCount(){const count=Number($("dialogueCount").value||1);[1,2,3,4].forEach(n=>{$("speakerCard"+n).hidden=n>count;});}
-$("dialogueCount").addEventListener("change",updateDialogueCount);updateDialogueCount();
+function updateDialogueCount(){const selector=$("dialogueCount");const count=Math.max(1,Math.min(4,Number(selector?.value)||1));[1,2,3,4].forEach(n=>{const card=$("speakerCard"+n);if(!card)return;const visible=n<=count;card.toggleAttribute("hidden",!visible);card.style.display=visible?"block":"none";});}
+const dialogueCountSelector=$("dialogueCount");if(dialogueCountSelector){dialogueCountSelector.addEventListener("change",updateDialogueCount);dialogueCountSelector.addEventListener("input",updateDialogueCount);dialogueCountSelector.addEventListener("click",updateDialogueCount);dialogueCountSelector.onchange=updateDialogueCount;}
+updateDialogueCount();
 document.querySelectorAll("[data-quicktab]").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll("[data-quicktab]").forEach(x=>x.classList.toggle("active",x===tab));["quickIdeaPanel","quickReferencePanel","quickDialoguePanel"].forEach(id=>$(id).classList.toggle("hidden",id!==tab.dataset.quicktab));}));
-function buildSpeakerBrief(){const extra=$("quickExtraDialogue")?.value.trim()||"";$("dialogueCount").value="1";$("speaker1Name").value="Tokoh utama";$("speaker1Dialogue").value=extra;$("audioMode").value="both";$("dialogue").value=extra?'DIALOG TAMBAHAN WAJIB DIMASUKKAN PERSIS: "'+extra+'". Dialog ini bukan pengganti dialog lain; AI tetap menyusun dialog tambahan yang natural dan sesuai cerita. Gunakan satu suara tokoh utama yang konsisten.':"";}
+function buildSpeakerBrief(){
+ const extra=$("quickExtraDialogue")?.value.trim()||"";
+ const count=Math.max(1,Math.min(4,Number($("dialogueCount")?.value||1)));
+ $("dialogueCount").value=String(count);
+ if(!$("speaker1Name").value.trim())$("speaker1Name").value="Tokoh utama";
+ if(extra&&!$("speaker1Dialogue").value.trim())$("speaker1Dialogue").value=extra;
+ const narrationMode=$("narrationMode")?.value||"auto";
+ $("audioMode").value=narrationMode==="none"?"dialogue_only":"both";
+ $("dialogue").value=Array.from({length:count},(_,i)=>{
+  const name=$("speaker"+(i+1)+"Name")?.value.trim()||("Tokoh "+(i+1));
+  const text=$("speaker"+(i+1)+"Dialogue")?.value.trim()||"AI susun dialog sesuai cerita";
+  const voice=$("speaker"+(i+1)+"Voice")?.value||"Kore";
+  return name+" | Suara: "+voice+" | Dialog: "+text;
+ }).join("\n");
+}
 
 
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
@@ -815,7 +972,7 @@ function fallbackTemplate(){
  });
  return {title:d.title,logline:d.idea,synopsis:d.idea,story:d.idea,duration:total+" detik",sceneCount:n,globalCharacterLock:d.character,scenes,continuityChecklist:[d.continuity,"Wajah dan pakaian konsisten di semua klip","Audio dan karakter suara konsisten","Durasi total tepat "+total+" detik"],flowWorkflow:["Lampirkan foto referensi di Flow bila dibutuhkan","Buat storyboard dari prompt gambar per adegan","Generate klip sesuai urutan adegan","Periksa kontinuitas sebelum menyatukan klip"]};
 }
-function buildText(p){let t="CHEDAR AI KREATOR — PAKET PRODUKSI\n"+p.title+"\n\nLOGLINE\n"+p.logline+"\n\nSINOPSIS\n"+p.synopsis+"\n\nCERITA\n"+p.story+"\n\nCHARACTER LOCK\n"+p.globalCharacterLock+"\n";
+function buildText(p){let t="CHEDAR AI STUDIO — PAKET PRODUKSI\n"+p.title+"\n\nLOGLINE\n"+p.logline+"\n\nSINOPSIS\n"+p.synopsis+"\n\nCERITA\n"+p.story+"\n\nCHARACTER LOCK\n"+p.globalCharacterLock+"\n";
  for(const s of p.scenes||[])t+="\n==============================\nADEGAN "+s.number+" | "+s.timecode+" | "+s.durationSeconds+" detik\n==============================\nTUJUAN: "+s.purpose+"\nVISUAL: "+s.visual+"\nAKSI: "+s.action+"\nDIALOG: "+s.dialogue+"\nNARASI: "+(s.narration||"") + "\nKAMERA: "+s.camera+"\nLIGHTING: "+s.lighting+"\nAUDIO: "+s.sound+"\nTRANSISI: "+s.transition+"\n\nPROMPT GAMBAR:\n"+s.imagePrompt+"\n\nPROMPT VIDEO FLOW:\n"+s.videoPrompt+"\n";
  t+="\nCHECKLIST\n"+(p.continuityChecklist||[]).map(x=>"- "+x).join("\n")+"\n\nALUR FLOW\n"+(p.flowWorkflow||[]).map(x=>"- "+x).join("\n");
  if(p.productionSuite){t+="\n\n==============================\nLIMA DEPARTEMEN PRODUKSI OTOMATIS\n==============================\n";for(const [key,label] of [["character","CHARACTER BIBLE"],["storyboard","STORYBOARD"],["continuity","CONTINUITY CHECK"],["voice","VOICE DIRECTION"],["music","MUSIC DIRECTION"]])t+="\n\n"+label+"\n"+(p.productionSuite[key]||"");}
@@ -848,7 +1005,7 @@ $("quickGenerate").onclick=async(event)=>{
  $("videoType").value=isAd?"product_ad":selectedVideoType;$("projectType").value=isAd?"product_ad":"story";
  const typeProfiles={
   auto:{genre:"Drama realistis",style:"Cinematic realistis",camera:"Pilih shot dan gerakan kamera paling sesuai dengan cerita.",lighting:"Pencahayaan bermotivasi sesuai suasana cerita."},
-  asmr:{genre:"ASMR / Relaxing",style:"Macro cinematic ASMR",camera:"Extreme macro close-ups, tactile detail inserts, slow controlled push-ins, stable overhead shots, minimal camera movement.",lighting:"Soft diffused studio lighting, gentle highlights revealing texture, natural colors, no harsh flicker or distracting reflections."},
+  asmr:{genre:"ASMR / Relaxing",style:"Macro cinematic ASMR",camera:"Extreme macro close-ups, tactile detail inserts, slow controlled push-ins, stable overhead shots, minimal camera movement.",lighting:"Soft diffused studio lighting, gentle highlights revealing texture, natural colors."},
   product_ad:{genre:"Promosi bisnis",style:"Cinematic realistis",camera:"Commercial product cinematography; macro detail, hero shot, smooth slider/orbit terkontrol.",lighting:"Pencahayaan studio komersial yang bersih; bentuk, warna, logo dan label produk terbaca."},
   cinema_ad:{genre:"Promosi bisnis",style:"Cinematic realistis",camera:"Premium commercial camera language; macro detail, hero shot, controlled dolly and tracking.",lighting:"Premium studio lighting, polished highlights, controlled reflections."},
   superhero:{genre:"Aksi",style:"Film epik",camera:"Dynamic tracking, low-angle hero reveal, readable action coverage.",lighting:"Dramatic rim light, volumetric atmosphere, motivated energy effects."},
@@ -865,7 +1022,16 @@ $("quickGenerate").onclick=async(event)=>{
   documentary:{genre:"Dokumenter",style:"Dokumenter natural",camera:"Observational handheld, authentic wide establishing shots and detail inserts.",lighting:"Available natural light; preserve realistic locations and activity."},
   movie_universe:{genre:"Petualangan",style:"Film epik",camera:"World-building establishing wides, character reveals, symbolic inserts and coherent recurring compositions.",lighting:"Distinctive motivated lighting palette consistent with the fictional world."},
   lipsync:{genre:"Romantis",style:"Cinematic realistis",camera:"Stable close-up or medium close-up facing camera; keep mouth clearly visible.",lighting:"Even flattering face light, avoid shadows across mouth."},
-  motion_control:{genre:"Aksi",style:"Cinematic realistis",camera:"Full-body readable framing; stable tracking that preserves reference movement.",lighting:"Consistent directional light with clear body silhouette."}
+  motion_control:{genre:"Aksi",style:"Cinematic realistis",camera:"Full-body readable framing; stable tracking that preserves reference movement.",lighting:"Consistent directional light with clear body silhouette."},
+  storytelling:{genre:"Drama / Komedi",style:"Cinematic storytelling",camera:"Character-led coverage, expressive close-ups, readable two-shots and purposeful reaction shots.",lighting:"Motivated natural or practical lighting that supports the emotional tone."},
+  travel_tourism:{genre:"Travel & Tourism",style:"Cinematic travel film",camera:"Wide destination establishing shots, smooth gimbal tracking, scenic reveals, aerial-style views where appropriate, and detail inserts.",lighting:"Natural golden-hour or soft daylight; preserve believable colors and location atmosphere."},
+  podcast:{genre:"Podcast / Talk",style:"Professional studio conversation",camera:"Stable medium close-up, clean eye-level framing, alternating speaker close-ups and balanced two-shots; avoid distracting movement.",lighting:"Soft flattering key light, subtle background practicals, consistent exposure and natural skin tones."},
+  music_video:{genre:"Musik",style:"Cinematic music video",camera:"Rhythm-aware camera movement, performance close-ups, full-body stage shots, smooth tracking and purposeful beat-synced cuts.",lighting:"Expressive stage or performance lighting coordinated with music mood; preserve performer identity."},
+  transformation:{genre:"Transformation",style:"Cinematic before-after",camera:"Matched camera angle and framing before and after, clear process inserts, controlled time-lapse or smooth transition shots.",lighting:"Consistent comparison lighting; show believable progressive changes without unexplained jumps."},
+  explainer:{genre:"Edukasi",style:"Visual explainer",camera:"Clear presenter framing, purposeful cutaways, simple animated diagram shots and readable composition with safe text space.",lighting:"Bright clean educational lighting, strong subject separation and legible visual contrast."},
+  news_commentary:{genre:"Berita / Opini",style:"Editorial documentary",camera:"Stable presenter medium shot, relevant factual cutaways, clear location establishing shots and restrained movement.",lighting:"Neutral broadcast-style lighting, natural skin tones, clear professional presentation."},
+  fashion_model:{genre:"Fashion",style:"Premium fashion editorial",camera:"Full-body runway or outfit framing, smooth tracking, controlled orbit, fabric-detail close-ups and clean pose transitions.",lighting:"Polished fashion lighting that accurately preserves garment color, fabric texture and fit."},
+  real_estate:{genre:"Properti",style:"Premium real-estate showcase",camera:"Smooth stabilized walkthrough, wide room establishing shots, slow pans, architectural lines kept straight and detail inserts.",lighting:"Bright natural interior lighting, balanced windows and rooms, accurate material and space representation."},
  };
  const profile=typeProfiles[$("videoType").value]||typeProfiles.auto;
  $("genre").value=profile.genre;$("style").value=profile.style;$("camera").value=profile.camera;$("lighting").value=profile.lighting;
@@ -882,16 +1048,19 @@ $("quickGenerate").onclick=async(event)=>{
   const previousProject=project;
   await $("aiBtn").onclick(photos);
   if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director otomatis...";const suiteOk=await window.ChedarProductionSuite.runAll();if(!suiteOk)$("quickStatus").textContent="Paket utama berhasil dibuat, tetapi fitur pendamping belum selesai. Buka Hasil Video untuk memakai paket utama dan jalankan ulang 5 fitur otomatis.";}
+  if(project && project!==previousProject){const audioStatus=$("speechStatus");if(audioStatus)audioStatus.textContent="Paket video selesai. Menyiapkan audio narasi dan dialog sesuai pilihan...";if(window.ChedarGenerateSpeech)await window.ChedarGenerateSpeech();}
   else if(project===previousProject){const detail=($("quickStatus").textContent||"").trim();if(!detail||detail==="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini."||detail.includes("foto siap dikirim"))$("quickStatus").textContent="Paket belum berhasil dibuat. "+($("status").textContent||"Periksa koneksi dan konfigurasi mesin AI.");}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
- finally{button.disabled=false;button.textContent="✦ BUAT VIDEO OTOMATIS";}
+ finally{button.disabled=false;button.textContent="✦ BUAT VIDEO";}
 };
 $("aiBtn").onclick=async(preparedPhotos)=>{const d=getData();if(!d.idea){setStatus("Isi ide video terlebih dahulu.","err");return;}const b=$("aiBtn");b.disabled=true;b.textContent="AI sedang menyusun...";
  setStatus("Menghubungi AI dan menyusun seluruh adegan...");
- try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:((localStorage.getItem("chedar_ai_engine")||"openai")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
+ try{const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({...d,aiEngine:((localStorage.getItem("chedar_ai_engine_v2")||"gemini")),referenceImages:preparedPhotos||await getReferenceImages()})});const j=await r.json();if(!r.ok)throw new Error(j.error||"Generate AI gagal.");project=j.project;autoSaveProject();if($("audioQualitySummary"))$("audioQualitySummary").textContent="QC AUDIO: "+(project.scenes||[]).length+" adegan diperiksa · track narasi/dialog dipisah · aturan lip-sync dan mixing disertakan pada prompt Flow.";render();switchTab("story");setStatus("Paket produksi berhasil dibuat dan otomatis disimpan di perangkat ini. Hasil akan tetap tersedia setelah refresh.","ok");if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket produksi Anda sudah siap.";if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");}
  catch(e){setStatus(e.message,"err");if($("quickStatus"))$("quickStatus").textContent=e.message;}finally{b.disabled=false;b.textContent="✦ Generate dengan AI";}};
 $("templateBtn").onclick=()=>{project=fallbackTemplate();render();switchTab("story");setStatus("Template lokal berhasil dibuat. Ini draft dasar, bukan hasil AI.","ok");if(window.AgusStudioNavigate)window.AgusStudioNavigate("outputPanel");};
 $("copyAll").onclick=()=>project?copy(latestText):setStatus("Belum ada hasil.","err");
+$("copyFlowAll").onclick=()=>{if(!project?.scenes?.length){setStatus("Buat paket video terlebih dahulu.","err");return;}const all=project.scenes.map(s=>"PROMPT GOOGLE FLOW — ADEGAN "+s.number+" ("+s.timecode+")\n\n"+s.videoPrompt).join("\n\n"+ "=".repeat(34)+"\n\n");copy(all);setStatus("Semua prompt Google Flow berhasil disalin. Tempel satu per satu ke Flow sesuai urutan adegan.","ok");};
+document.querySelectorAll("[data-idea]").forEach(button=>button.addEventListener("click",()=>{$("quickIdea").value=button.dataset.idea;$("quickIdea").focus();$("quickStatus").textContent="Contoh ide sudah dimasukkan. Anda bisa mengeditnya sebelum membuat video.";}));
 $("download").onclick=()=>{if(!project){setStatus("Belum ada hasil.","err");return;}const a=document.createElement("a"),u=URL.createObjectURL(new Blob([latestText],{type:"text/plain;charset=utf-8"}));a.href=u;a.download=(project.title||"AGUS-AI-VIDEO").replace(/[^a-z0-9-_]+/gi,"-")+".txt";a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);};
 function readSavedProjects(){try{return JSON.parse(localStorage.getItem("agusStudioProjects")||"[]");}catch{return [];}}
 function autoSaveProject(){if(!project)return false;try{const arr=readSavedProjects();const item={id:Date.now(),title:project.title||"Paket Video",project,form:getData(),savedAt:new Date().toLocaleString("id-ID")};activeProjectId=item.id;arr.unshift(item);localStorage.setItem("agusStudioProjects",JSON.stringify(arr.slice(0,20)));localStorage.setItem("agusStudioLastProject",JSON.stringify(item));renderSaved();return true;}catch(error){setStatus("Paket berhasil dibuat, tetapi penyimpanan perangkat gagal. Gunakan tombol Unduh untuk cadangan.","err");return false;}}
@@ -942,10 +1111,7 @@ $("resetBtn").onclick=()=>{
  if($("audioQualitySummary"))$("audioQualitySummary").textContent="Pemeriksaan audio otomatis aktif saat paket dibuat.";
  if(typeof switchTab==="function")switchTab("story");
  renderSaved();
- try{localStorage.setItem("chedar_ai_engine","openai");}catch{}
- const engineSelect=document.getElementById("aiEngineSelect");if(engineSelect)engineSelect.value="openai";
- const engineButton=document.getElementById("adminEngineButton");if(engineButton)engineButton.textContent="⚙ MESIN AI · OPENAI";
- setStatus("Semua isian, foto referensi, pilihan mesin AI, dan hasil aktif berhasil direset. Proyek tersimpan tetap aman.","ok");
+ setStatus("Semua isian, foto referensi, dan hasil aktif berhasil direset. Pilihan mesin AI tetap tersimpan. Proyek tersimpan tetap aman.","ok");
 };
 if($("quickResetStudio"))$("quickResetStudio").onclick=$("resetBtn").onclick;
 $("reference").onchange=e=>{
@@ -996,5 +1162,97 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   link.addEventListener("click",()=>{toggle.setAttribute("aria-expanded","false");menu.hidden=true;});
  });
 })();
-</script><script src="/admin-access.js?v=20261120-1"></script><!-- DIRECT GENERATE CLICK ROUTE is handled by the early diagnostic capture listener. -->
+</script><script src="/studio-enhancements.js?v=20261122-1"></script><script src="/admin-access.js?v=20261120-1"></script><!-- DIRECT GENERATE CLICK ROUTE is handled by the early diagnostic capture listener. -->
+
+<script>
+(function(){
+ const $=id=>document.getElementById(id);
+ const count=$("dialogueCount"),btn=$("generateSpeechBtn"),status=$("speechStatus"),results=$("speechResults");
+ if(count)count.addEventListener("change",()=>{for(let i=1;i<=4;i++){const card=$("speakerCard"+i);if(card)card.hidden=i>Number(count.value);}});
+ function setStatus(t,kind=""){if(status){status.textContent=t;status.className="status "+kind;}}
+ function wavUrl(base64,mimeType="audio/wav"){
+  const raw=atob(base64),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);
+  const isWav=bytes.length>12&&String.fromCharCode(...bytes.slice(0,4))==="RIFF";
+  if(isWav)return URL.createObjectURL(new Blob([bytes],{type:"audio/wav"}));
+  const rateMatch=String(mimeType).match(/rate[=\s]+(\d+)/i),rate=rateMatch?Number(rateMatch[1]):24000;
+  const pcm=bytes.length%2?bytes.slice(0,-1):bytes;
+  const out=new ArrayBuffer(44+pcm.length),view=new DataView(out),write=(pos,str)=>{for(let i=0;i<str.length;i++)view.setUint8(pos+i,str.charCodeAt(i));};
+  write(0,"RIFF");view.setUint32(4,36+pcm.length,true);write(8,"WAVE");write(12,"fmt ");view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,"data");view.setUint32(40,pcm.length,true);new Uint8Array(out,44).set(pcm);
+  return URL.createObjectURL(new Blob([out],{type:"audio/wav"}));
+ }
+ async function combineWav(urls,pauseSeconds=.4){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)throw new Error("Browser belum mendukung penggabungan audio.");
+  const ctx=new AudioCtx();
+  try{
+   const buffers=[];
+   for(const url of urls){const raw=await fetch(url).then(r=>r.arrayBuffer());buffers.push(await ctx.decodeAudioData(raw));}
+   const rate=buffers[0].sampleRate,channels=1,pause=Math.round(rate*pauseSeconds);
+   const total=buffers.reduce((sum,b)=>sum+b.length,0)+Math.max(0,buffers.length-1)*pause;
+   const pcm=new Float32Array(total);let offset=0;
+   for(const b of buffers){const src=b.getChannelData(0);pcm.set(src,offset);offset+=b.length+pause;}
+   const out=new ArrayBuffer(44+pcm.length*2),view=new DataView(out);
+   const write=(pos,str)=>{for(let i=0;i<str.length;i++)view.setUint8(pos+i,str.charCodeAt(i));};
+   write(0,"RIFF");view.setUint32(4,36+pcm.length*2,true);write(8,"WAVE");write(12,"fmt ");view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,channels,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,"data");view.setUint32(40,pcm.length*2,true);
+   for(let i=0;i<pcm.length;i++){const v=Math.max(-1,Math.min(1,pcm[i]));view.setInt16(44+i*2,v<0?v*32768:v*32767,true);}
+   return URL.createObjectURL(new Blob([out],{type:"audio/wav"}));
+  }finally{await ctx.close();}
+ }
+ async function generateProjectSpeech(){
+  if(typeof project === 'undefined' && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
+  const scenes=project?.scenes;
+  if(!Array.isArray(scenes)||!scenes.length){setStatus("Paket video belum tersedia. Generate proyek terlebih dahulu.","err");return;}
+  const segments=[];
+  const mode=$("narrationMode")?.value||"auto",narration=$("narrationText")?.value?.trim()||"";
+  const narratorVoice=$("narratorVoice")?.value||"Kore";
+  const n=Number(count?.value||1);
+  const useManualNarration=mode!=="none"&&Boolean(narration);
+  if(useManualNarration)segments.push({label:"Narasi · Manual",text:narration,voice:narratorVoice,style:"natural Indonesian narration; read the supplied text verbatim"});
+  for(const scene of scenes){
+   if(mode==="auto"&&!useManualNarration&&scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:narratorVoice,style:"natural Indonesian narration"});
+   const raw=String(scene.dialogue||"");
+   if(raw.trim()){
+    const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);
+    for(const line of lines){
+     let speakerIndex=0,text=line;
+     const match=line.match(/^([^:：]{1,50})[:：]\s*(.+)$/);
+     if(match){text=match[2];const found=Array.from({length:n},(_,i)=>i+1).find(i=>(($("speaker"+i+"Name")?.value||"").trim().toLowerCase()===match[1].trim().toLowerCase()));speakerIndex=found?found-1:0;}
+     const idx=Math.max(0,Math.min(n-1,speakerIndex)),voice=$("speaker"+(idx+1)+"Voice")?.value||"Kore",name=$("speaker"+(idx+1)+"Name")?.value||("Karakter "+(idx+1));
+     segments.push({label:name+" · Adegan "+scene.number,text,voice,style:"natural spoken Indonesian, consistent character voice"});
+    }
+   }
+  }
+  if(!segments.length){
+   results.innerHTML="";
+   setStatus("Tidak ada teks narasi atau dialog. Audio dilewati sesuai pilihan Anda.","ok");
+   if($("quickStatus"))$("quickStatus").textContent="Paket video selesai. Audio dilewati karena narasi dan dialog dikosongkan.";
+   return;
+  }
+  btn.disabled=true;results.innerHTML="";let done=0;
+  try{
+   for(const seg of segments){
+    setStatus("Membuat audio "+(done+1)+"/"+segments.length+": "+seg.label+" ...");
+    const res=await fetch("/api/speech",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:seg.text,voice:seg.voice,style:seg.style})});
+    const data=await res.json();if(!res.ok)throw new Error(data.error||"Gagal membuat audio.");
+    const url=wavUrl(data.audio,data.mimeType);const card=document.createElement("div");card.className="scene";
+    const title=document.createElement("b");title.textContent=seg.label+" · "+seg.voice;
+    const audio=document.createElement("audio");audio.controls=true;audio.src=url;audio.style.width="100%";
+    const link=document.createElement("a");link.href=url;link.download=("chedar-"+seg.label).replace(/[^a-z0-9-_]+/gi,"-")+".wav";link.textContent="Unduh WAV";
+    card.append(title,audio,link);results.appendChild(card);done++;
+   }
+   const clipUrls=Array.from(results.querySelectorAll("audio")).map(el=>el.src);
+   const combinedUrl=await combineWav(clipUrls,.4);
+   const combined=document.createElement("div");combined.className="scene";
+   const combinedTitle=document.createElement("b");combinedTitle.textContent="AUDIO GABUNGAN · Urutan otomatis + jeda 0,4 detik";
+   const combinedPlayer=document.createElement("audio");combinedPlayer.controls=true;combinedPlayer.src=combinedUrl;combinedPlayer.style.width="100%";
+   const combinedLink=document.createElement("a");combinedLink.href=combinedUrl;combinedLink.download="chedar-audio-lengkap.wav";combinedLink.textContent="Unduh audio lengkap WAV";
+   combined.append(combinedTitle,combinedPlayer,combinedLink);results.prepend(combined);
+   setStatus("Selesai. "+done+" klip berhasil dibuat dan digabung menjadi satu audio WAV dengan jeda 0,4 detik.","ok");
+   if($("quickStatus"))$("quickStatus").textContent="Selesai! Paket video dan audio narasi/dialog sudah dibuat.";
+  }catch(e){setStatus(e.message||"Audio gagal dibuat.","err");if($("quickStatus"))$("quickStatus").textContent="Paket video berhasil dibuat, tetapi audio gagal: "+(e.message||"Coba ulangi.");}
+  finally{btn.disabled=false;}
+ }
+ window.ChedarGenerateSpeech=generateProjectSpeech;
+ btn?.addEventListener("click",()=>generateProjectSpeech());
+})();
+</script>
 </body></html>
