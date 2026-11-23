@@ -25,7 +25,7 @@ document.body.appendChild(overlay);const nav=document.querySelector(".topright")
 adminStack.className="adminControlStack";
 const access=document.createElement("button");
 access.type="button";access.id="adminAccessButton";access.className="small";access.textContent="LOGIN ADMIN";adminStack.appendChild(access);
-const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ PILIH MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);const quickGenerate=document.getElementById("quickGenerate");if(quickGenerate){quickGenerate.insertAdjacentElement("afterend",adminStack);}else{nav?.appendChild(adminStack);}
+const engineButton=document.createElement("button");engineButton.type="button";engineButton.id="adminEngineButton";engineButton.className="small";engineButton.textContent="⚙ PILIH MESIN AI";engineButton.title="Pilih mesin AI untuk seluruh proses produksi";adminStack.appendChild(engineButton);const quickGenerate=document.getElementById("quickGenerate");const topRight=document.querySelector(".topright");if(topRight){topRight.appendChild(adminStack);}else if(quickGenerate){quickGenerate.insertAdjacentElement("afterend",adminStack);}else{nav?.appendChild(adminStack);}
 const engineOverlay=document.createElement("div");engineOverlay.className="aiEngineOverlay";engineOverlay.innerHTML=`
 <section class="aiEngineDialog" role="dialog" aria-modal="true" aria-labelledby="aiEngineTitle">
 <h2 id="aiEngineTitle">PILIH MESIN AI</h2><p>Pilih mesin AI untuk pembuatan proyek dan alat produksi di perangkat ini. Pengaturan ini tidak mengubah API key atau pengaturan pengguna lain.</p>
