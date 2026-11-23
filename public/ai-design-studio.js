@@ -26,7 +26,7 @@ async function composeFinalArtwork(source){
  const title=($("designTitle").value||$("designResultTitle").textContent||"").trim();
  const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\\n"+copy).trim();
  const priceMatch=combined.match(/(?:Rp\\.?\\s*)[0-9][0-9.,]*(?:\\s*\\/\\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\\s+/g," "):"";
- const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\\s*:?[+0-9][+0-9\\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\\s+/g," ").trim():"";
+ const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\\s*:?\\s*[+0-9][+0-9\\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\\s+/g," ").trim():"";
  const urlMatch=combined.match(/(?:https?:\\/\\/)?(?:www\\.)?[a-z0-9-]+\\.(?:com|id|app|net|org)(?:\\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
  let body=details||copy;[priceMatch?.[0],contactMatch?.[0],urlMatch?.[0]].filter(Boolean).forEach(v=>body=body.replace(v,""));
  body=body.replace(/\\s*[,;|]\\s*/g," · ").replace(/\\s+/g," ").trim();
