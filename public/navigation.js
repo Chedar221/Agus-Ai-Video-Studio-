@@ -98,7 +98,7 @@
     navLinks.appendChild(processVideoChooser);
   }
   function show(id, scroll=true) {
-    const allowed = ["quickStudio","outputPanel","savedProjects"];
+    const allowed = ["quickStudio","outputPanel","savedProjects","designStudio"];
     const target = allowed.includes(id) ? id : "quickStudio";
     allPanels.forEach(panel => {
       const visible = panel.id === target;
