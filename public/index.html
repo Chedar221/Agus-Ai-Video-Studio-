@@ -1142,6 +1142,23 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
  if(count)count.addEventListener("change",()=>{for(let i=1;i<=4;i++){const card=$("speakerCard"+i);if(card)card.hidden=i>Number(count.value);}});
  function setStatus(t,kind=""){if(status){status.textContent=t;status.className="status "+kind;}}
  function wavUrl(base64){const raw=atob(base64),bytes=new Uint8Array(raw.length);for(let i=0;i<raw.length;i++)bytes[i]=raw.charCodeAt(i);return URL.createObjectURL(new Blob([bytes],{type:"audio/wav"}));}
+ async function combineWav(urls,pauseSeconds=.4){
+  const AudioCtx=window.AudioContext||window.webkitAudioContext;if(!AudioCtx)throw new Error("Browser belum mendukung penggabungan audio.");
+  const ctx=new AudioCtx();
+  try{
+   const buffers=[];
+   for(const url of urls){const raw=await fetch(url).then(r=>r.arrayBuffer());buffers.push(await ctx.decodeAudioData(raw));}
+   const rate=buffers[0].sampleRate,channels=1,pause=Math.round(rate*pauseSeconds);
+   const total=buffers.reduce((sum,b)=>sum+b.length,0)+Math.max(0,buffers.length-1)*pause;
+   const pcm=new Float32Array(total);let offset=0;
+   for(const b of buffers){const src=b.getChannelData(0);pcm.set(src,offset);offset+=b.length+pause;}
+   const out=new ArrayBuffer(44+pcm.length*2),view=new DataView(out);
+   const write=(pos,str)=>{for(let i=0;i<str.length;i++)view.setUint8(pos+i,str.charCodeAt(i));};
+   write(0,"RIFF");view.setUint32(4,36+pcm.length*2,true);write(8,"WAVE");write(12,"fmt ");view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,channels,true);view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);view.setUint16(32,2,true);view.setUint16(34,16,true);write(36,"data");view.setUint32(40,pcm.length*2,true);
+   for(let i=0;i<pcm.length;i++){const v=Math.max(-1,Math.min(1,pcm[i]));view.setInt16(44+i*2,v<0?v*32768:v*32767,true);}
+   return URL.createObjectURL(new Blob([out],{type:"audio/wav"}));
+  }finally{await ctx.close();}
+ }
  btn?.addEventListener("click",async()=>{
   if(typeof project === 'undefined' && !document.querySelector("#storyView .summary")){setStatus("Buat paket video terlebih dahulu.","err");return;}
   const scenes=project?.scenes;
@@ -1176,7 +1193,14 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
     const link=document.createElement("a");link.href=url;link.download=("chedar-"+seg.label).replace(/[^a-z0-9-_]+/gi,"-")+".wav";link.textContent="Unduh WAV";
     card.append(title,audio,link);results.appendChild(card);done++;
    }
-   setStatus("Selesai. "+done+" klip WAV siap diputar dan diunduh satu per satu.","ok");
+   const clipUrls=Array.from(results.querySelectorAll("audio")).map(el=>el.src);
+   const combinedUrl=await combineWav(clipUrls,.4);
+   const combined=document.createElement("div");combined.className="scene";
+   const combinedTitle=document.createElement("b");combinedTitle.textContent="AUDIO GABUNGAN · Urutan otomatis + jeda 0,4 detik";
+   const combinedPlayer=document.createElement("audio");combinedPlayer.controls=true;combinedPlayer.src=combinedUrl;combinedPlayer.style.width="100%";
+   const combinedLink=document.createElement("a");combinedLink.href=combinedUrl;combinedLink.download="chedar-audio-lengkap.wav";combinedLink.textContent="Unduh audio lengkap WAV";
+   combined.append(combinedTitle,combinedPlayer,combinedLink);results.prepend(combined);
+   setStatus("Selesai. "+done+" klip berhasil dibuat dan digabung menjadi satu audio WAV dengan jeda 0,4 detik.","ok");
   }catch(e){setStatus(e.message||"Audio gagal dibuat.","err");}
   finally{btn.disabled=false;}
  });
