@@ -6,8 +6,6 @@ import { readFile } from "node:fs/promises";
 import generateHandler from "./api/generate.js";
 import productionToolsHandler from "./api/production-tools.js";
 import adminAuthHandler from "./api/admin-auth.js";
-import designGenerateHandler from "./api/design-generate.js";
-import designImageHandler from "./api/design-image.js";
 
 dotenv.config();
 const app = express();
@@ -26,8 +24,6 @@ app.use(express.static(path.join(__dirname, "public"), {
 }));
 app.post("/api/generate", generateHandler);
 app.post("/api/production-tools", productionToolsHandler);
-app.post("/api/design-generate", designGenerateHandler);
-app.post("/api/design-image", designImageHandler);
 app.all("/api/admin-auth", adminAuthHandler);
 app.get("/api/health", (_req, res) => res.json({ ok: true, service: "CHEDAR AI STUDIO", stage: 1 }));
 app.get("/", (_req, res) => res.sendFile(path.join(__dirname, "public", "home.html")));
