@@ -11,57 +11,69 @@ async function composeFinalArtwork(source){
  const bg=await loadImage(source),canvas=document.createElement("canvas"),ctx=canvas.getContext("2d");
  canvas.width=bg.naturalWidth||bg.width;canvas.height=bg.naturalHeight||bg.height;
  const w=canvas.width,h=canvas.height,p=Math.round(Math.min(w,h)*.055),gold="#f2c85b",white="#fff",ink="#101116";
+ const portrait=h>w*1.12,landscape=w>h*1.18;
  ctx.drawImage(bg,0,0,w,h);
- const top=ctx.createLinearGradient(0,0,0,h*.55);top.addColorStop(0,"rgba(4,7,12,.82)");top.addColorStop(.52,"rgba(4,7,12,.12)");top.addColorStop(1,"rgba(4,7,12,.72)");ctx.fillStyle=top;ctx.fillRect(0,0,w,h);
- const bottom=ctx.createLinearGradient(0,h*.58,0,h);bottom.addColorStop(0,"rgba(4,7,12,0)");bottom.addColorStop(.24,"rgba(4,7,12,.58)");bottom.addColorStop(1,"rgba(4,7,12,.94)");ctx.fillStyle=bottom;ctx.fillRect(0,h*.58,w,h*.42);
- const round=(x,y,ww,hh,r,fill,stroke)=>{ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(2,w*.002);ctx.stroke()}};
- const fit=(text,max,font,weight="800")=>{let size=font;do{ctx.font=weight+" "+size+"px system-ui,Arial";if(ctx.measureText(text).width<=max||size<=14)break;size-=2}while(size>14);return size};
- const wrap=(text,max,font,maxLines=4,weight="600")=>{ctx.font=weight+" "+font+"px system-ui,Arial";const words=String(text||"").replace(/\s+/g," ").trim().split(" ").filter(Boolean),lines=[];let line="";for(const word of words){const t=line?line+" "+word:word;if(ctx.measureText(t).width>max&&line){lines.push(line);line=word;if(lines.length===maxLines)break}else line=t}if(line&&lines.length<maxLines)lines.push(line);return lines};
+ // Preserve the generated photograph: add readable edge gradients, not a dark wash over the hero subject.
+ const top=ctx.createLinearGradient(0,0,0,h*(portrait?.30:.42));
+ top.addColorStop(0,"rgba(5,8,14,.72)");top.addColorStop(.62,"rgba(5,8,14,.18)");top.addColorStop(1,"rgba(5,8,14,0)");
+ ctx.fillStyle=top;ctx.fillRect(0,0,w,h*(portrait?.30:.42));
+ const bottom=ctx.createLinearGradient(0,h*(portrait?.57:.55),0,h);
+ bottom.addColorStop(0,"rgba(5,8,14,0)");bottom.addColorStop(.35,"rgba(5,8,14,.58)");bottom.addColorStop(1,"rgba(5,8,14,.92)");
+ ctx.fillStyle=bottom;ctx.fillRect(0,h*(portrait?.57:.55),w,h*(portrait?.43:.45));
+ const round=(x,y,ww,hh,r,fill,stroke)=>{ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(2,w*.0018);ctx.stroke()}};
+ const fit=(text,max,font,weight="850")=>{let size=font;do{ctx.font=weight+" "+size+"px system-ui,Arial";if(ctx.measureText(text).width<=max||size<=14)break;size-=2}while(size>14);return size};
+ const wrap=(text,max,font,maxLines=4,weight="650")=>{ctx.font=weight+" "+font+"px system-ui,Arial";const words=String(text||"").replace(/\\s+/g," ").trim().split(" ").filter(Boolean),lines=[];let line="";for(const word of words){const t=line?line+" "+word:word;if(ctx.measureText(t).width>max&&line){lines.push(line);line=word;if(lines.length===maxLines)break}else line=t}if(line&&lines.length<maxLines)lines.push(line);if(words.length>lines.join(" ").split(" ").length&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/[.,;:!?]?$/,"")+"…";return lines};
  const title=($("designTitle").value||$("designResultTitle").textContent||"").trim();
- const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\n"+copy).trim();
- const priceMatch=combined.match(/(?:Rp\.?\s*)[0-9][0-9.,]*(?:\s*\/\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\s+/g," "):"";
- const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\s*:?\s*[+0-9][+0-9\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\s+/g," ").trim():"";
- const urlMatch=combined.match(/(?:https?:\/\/)?(?:www\.)?[a-z0-9-]+\.(?:com|id|app|net|org)(?:\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
- let body=details||copy;
- [priceMatch?.[0],contactMatch?.[0],urlMatch?.[0]].filter(Boolean).forEach(v=>body=body.replace(v,""));
- body=body.replace(/\s*[,;|]\s*/g," · ").replace(/\s+/g," ").trim();
+ const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\\n"+copy).trim();
+ const priceMatch=combined.match(/(?:Rp\\.?\\s*)[0-9][0-9.,]*(?:\\s*\\/\\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\\s+/g," "):"";
+ const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\\s*:?[+0-9][+0-9\\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\\s+/g," ").trim():"";
+ const urlMatch=combined.match(/(?:https?:\\/\\/)?(?:www\\.)?[a-z0-9-]+\\.(?:com|id|app|net|org)(?:\\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
+ let body=details||copy;[priceMatch?.[0],contactMatch?.[0],urlMatch?.[0]].filter(Boolean).forEach(v=>body=body.replace(v,""));
+ body=body.replace(/\\s*[,;|]\\s*/g," · ").replace(/\\s+/g," ").trim();
  const typeName=names[$("designType").value]||"DESAIN IKLAN";
  let logoImage=null;if(logo){try{logoImage=await loadImage(logo.url)}catch(e){console.warn("Logo overlay skipped",e)}}
- // Header: original logo asset + category marker.
+ // Compact brand signature: keep the uploaded logo intact and let the photograph remain the hero.
  let cursor=p;
- if(logoImage){const maxLogo=Math.round(w*.145),lh=maxLogo*logoImage.height/logoImage.width;round(p,p*.55,maxLogo+18,lh+18,Math.min(18,w*.02),"#fff");ctx.drawImage(logoImage,p+9,p*.55+9,maxLogo,lh);cursor=p+maxLogo+34}
- ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.026)+"px system-ui,Arial";ctx.fillText(typeName.toUpperCase(),cursor,p+Math.round(w*.045));
- ctx.fillStyle="rgba(255,255,255,.78)";ctx.font="600 "+Math.round(w*.017)+"px system-ui,Arial";ctx.fillText("KAMPANYE · PROMOSI · BRAND VISUAL",cursor,p+Math.round(w*.076));
- // Hero headline block.
- const headY=Math.round(h*.235),headW=Math.round(w*.82);
- round(p,headY,headW,Math.round(h*.19),Math.round(w*.025),"rgba(5,8,14,.67)","rgba(255,255,255,.18)");
- ctx.fillStyle=gold;ctx.fillRect(p+Math.round(w*.035),headY+Math.round(h*.027),Math.round(w*.09),Math.max(5,Math.round(h*.006)));
- const titleFont=fit(title,headW-Math.round(w*.07),Math.round(w*.075),"900");
- const titleLines=wrap(title,headW-Math.round(w*.07),titleFont,3,"900");ctx.fillStyle=white;ctx.font="900 "+titleFont+"px system-ui,Arial";
- let ty=headY+Math.round(h*.09);titleLines.forEach(line=>{ctx.fillText(line,p+Math.round(w*.035),ty);ty+=Math.round(titleFont*1.12)});
- // Price spotlight panel.
- let sectionY=Math.round(h*.49);
+ if(logoImage){const maxLogo=Math.round(w*(portrait?.105:.085)),lh=maxLogo*logoImage.height/logoImage.width;round(p,p*.45,maxLogo+16,lh+16,Math.min(16,w*.018),"#fff");ctx.drawImage(logoImage,p+8,p*.45+8,maxLogo,lh);cursor=p+maxLogo+30}
+ ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.024)+"px system-ui,Arial";ctx.fillText(typeName.toUpperCase(),cursor,p+Math.round(w*.035));
+ ctx.fillStyle="rgba(255,255,255,.82)";ctx.font="600 "+Math.round(w*.014)+"px system-ui,Arial";ctx.fillText("KAMPANYE  ·  PROMOSI  ·  BRAND VISUAL",cursor,p+Math.round(w*.062));
+ // Editorial headline: no oversized glass panel covering the model or product.
+ const titleX=landscape?Math.round(w*.065):p;
+ const titleW=landscape?Math.round(w*.47):Math.round(w*(portrait?.62:.76));
+ const titleY=Math.round(h*(portrait?.285:landscape?.31:.28));
+ const titleFont=fit(title,titleW,Math.round(w*(portrait?.068:.073)),"950");
+ const titleLines=wrap(title,titleW,titleFont,3,"950");
+ ctx.save();ctx.shadowColor="rgba(0,0,0,.48)";ctx.shadowBlur=Math.round(w*.018);ctx.shadowOffsetY=Math.round(w*.004);
+ ctx.fillStyle=white;ctx.font="950 "+titleFont+"px system-ui,Arial";
+ let ty=titleY;titleLines.forEach(line=>{ctx.fillText(line,titleX,ty);ty+=Math.round(titleFont*1.08)});ctx.restore();
+ // Gold accent rule anchors the typography without adding another heavy card.
+ ctx.fillStyle=gold;ctx.fillRect(titleX,Math.round(titleY-titleFont*.48),Math.round(w*.09),Math.max(5,Math.round(w*.007)));
+ let sectionY=Math.round(h*(portrait?.565:landscape?.55:.56));
+ const infoX=landscape?Math.round(w*.065):p;
+ const infoW=landscape?Math.round(w*.47):Math.round(w*(portrait?.70:.82));
  if(price){
-  const ph=Math.round(h*.125);round(p,sectionY,Math.round(w*.82),ph,Math.round(w*.025),gold);
-  ctx.fillStyle=ink;ctx.font="850 "+Math.round(w*.023)+"px system-ui,Arial";ctx.fillText("PENAWARAN SPESIAL",p+Math.round(w*.035),sectionY+Math.round(ph*.28));
-  const ps=fit(price,Math.round(w*.74),Math.round(w*.105),"950");ctx.fillStyle=ink;ctx.font="950 "+ps+"px system-ui,Arial";ctx.fillText(price,p+Math.round(w*.035),sectionY+Math.round(ph*.79));
-  sectionY+=ph+Math.round(h*.025);
+  const ph=Math.round(h*(portrait?.105:.12));round(infoX,sectionY,infoW,ph,Math.round(w*.018),gold);
+  ctx.fillStyle=ink;ctx.font="850 "+Math.round(w*.019)+"px system-ui,Arial";ctx.fillText("PENAWARAN SPESIAL",infoX+Math.round(w*.025),sectionY+Math.round(ph*.30));
+  const ps=fit(price,infoW-Math.round(w*.05),Math.round(w*.082),"950");ctx.font="950 "+ps+"px system-ui,Arial";ctx.fillText(price,infoX+Math.round(w*.025),sectionY+Math.round(ph*.80));
+  sectionY+=ph+Math.round(h*.018);
  }
- // Body card with clean hierarchy.
- const cardY=sectionY,cardH=Math.round(h*.19),cardW=Math.round(w*.82);
  if(body){
-  round(p,cardY,cardW,cardH,Math.round(w*.025),"rgba(8,12,19,.82)","rgba(255,255,255,.2)");
-  ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.023)+"px system-ui,Arial";ctx.fillText("KENALI LAYANAN KAMI",p+Math.round(w*.03),cardY+Math.round(h*.035));
-  const bodyFont=Math.round(w*.024),lines=wrap(body,cardW-Math.round(w*.06),bodyFont,5,"650");ctx.fillStyle="rgba(255,255,255,.94)";ctx.font="650 "+bodyFont+"px system-ui,Arial";
-  let by=cardY+Math.round(h*.072);lines.forEach(line=>{ctx.fillText(line,p+Math.round(w*.03),by);by+=Math.round(bodyFont*1.5)});
+  const bodyFont=Math.round(w*(portrait?.020:.022)),lines=wrap(body,infoW-Math.round(w*.052),bodyFont,portrait?5:4,"650");
+  const cardH=Math.max(Math.round(h*(portrait?.145:.17)),Math.round(h*.055)+lines.length*bodyFont*1.45);
+  round(infoX,sectionY,infoW,cardH,Math.round(w*.018),"rgba(7,11,18,.78)","rgba(255,255,255,.24)");
+  ctx.fillStyle=gold;ctx.font="850 "+Math.round(w*.019)+"px system-ui,Arial";ctx.fillText("DETAIL LAYANAN",infoX+Math.round(w*.026),sectionY+Math.round(h*.035));
+  ctx.fillStyle="rgba(255,255,255,.97)";ctx.font="650 "+bodyFont+"px system-ui,Arial";
+  let by=sectionY+Math.round(h*.068);lines.forEach(line=>{ctx.fillText(line,infoX+Math.round(w*.026),by);by+=Math.round(bodyFont*1.42)});
  }
- // Footer CTA, contact and audience.
- const footerH=Math.round(h*.105),fy=h-p-footerH;
- round(p,fy,Math.round(w*.88),footerH,Math.round(w*.025),"rgba(242,200,91,.97)");
- ctx.fillStyle=ink;ctx.font="900 "+Math.round(w*.03)+"px system-ui,Arial";ctx.fillText(contact?contact.slice(0,54):"HUBUNGI KAMI SEKARANG",p+Math.round(w*.03),fy+Math.round(footerH*.43));
- ctx.font="750 "+Math.round(w*.022)+"px system-ui,Arial";ctx.fillText(website?website.slice(0,58):( $("designAudience").value.trim()||"PROMOSI TERBATAS" ).slice(0,58),p+Math.round(w*.03),fy+Math.round(footerH*.76));
- // Fine print brand signature.
- ctx.fillStyle="rgba(255,255,255,.68)";ctx.font="600 "+Math.round(w*.014)+"px system-ui,Arial";ctx.fillText("CHEDAR AI STUDIO",p,h-Math.round(p*.18));
+ // One strong CTA, separated from the information card and sized for mobile reading.
+ const footerH=Math.round(h*(portrait?.105:.13)),footerW=Math.round(w*(landscape?.48:.89)),footerX=landscape?Math.round(w*.065):p,fy=h-p-footerH;
+ round(footerX,fy,footerW,footerH,Math.round(w*.022),"rgba(242,200,91,.98)");
+ ctx.fillStyle=ink;const cta=contact?contact.slice(0,58):"HUBUNGI KAMI SEKARANG";
+ const ctaFont=fit(cta,footerW-Math.round(w*.055),Math.round(w*.027),"900");ctx.font="900 "+ctaFont+"px system-ui,Arial";
+ ctx.fillText(cta,footerX+Math.round(w*.027),fy+Math.round(footerH*.43));
+ const sub=website||($("designAudience").value.trim()||"PROMOSI TERBATAS");
+ ctx.font="750 "+Math.round(w*.019)+"px system-ui,Arial";ctx.fillText(sub.slice(0,64),footerX+Math.round(w*.027),fy+Math.round(footerH*.76));
+ ctx.fillStyle="rgba(255,255,255,.66)";ctx.font="600 "+Math.round(w*.012)+"px system-ui,Arial";ctx.fillText("CHEDAR AI STUDIO",p,h-Math.round(p*.18));
  return canvas.toDataURL("image/png");
 }
 function fileData(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=()=>reject(new Error("Foto tidak bisa dibaca."));reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error("Format foto tidak bisa diproses."));img.onload=()=>{const scale=Math.min(1,512/Math.max(img.width,img.height));const canvas=document.createElement("canvas");canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));canvas.getContext("2d").drawImage(img,0,0,canvas.width,canvas.height);resolve({data:canvas.toDataURL("image/jpeg",.78).split(",")[1],mime:"image/jpeg"})};img.src=reader.result};reader.readAsDataURL(file)})}
