@@ -1,5 +1,5 @@
-const CACHE = "chedar-ai-kreator-v32";
-const ASSETS = ["/", "/manifest.webmanifest", "/icon.svg"];
+const CACHE = "chedar-ai-studio-stage5";
+const ASSETS = ["/", "/manifest.webmanifest", "/icon.svg", "/20261122_194334.png"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
