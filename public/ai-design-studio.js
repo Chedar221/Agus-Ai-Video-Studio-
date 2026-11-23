@@ -67,12 +67,9 @@ async function composeFinalArtwork(source){
  }
  // One strong CTA, separated from the information card and sized for mobile reading.
  const footerH=Math.round(h*(portrait?.105:.13)),footerW=Math.round(w*(landscape?.48:.89)),footerX=landscape?Math.round(w*.065):p,fy=h-p-footerH;
- round(footerX,fy,footerW,footerH,Math.round(w*.022),"rgba(242,200,91,.98)");
- ctx.fillStyle=ink;const cta=contact?contact.slice(0,58):"";
- const ctaFont=fit(cta,footerW-Math.round(w*.055),Math.round(w*.027),"900");ctx.font="900 "+ctaFont+"px system-ui,Arial";
- ctx.fillText(cta,footerX+Math.round(w*.027),fy+Math.round(footerH*.43));
- const sub=website||($("designAudience").value.trim()||"");
- ctx.font="750 "+Math.round(w*.019)+"px system-ui,Arial";ctx.fillText(sub.slice(0,64),footerX+Math.round(w*.027),fy+Math.round(footerH*.76));
+ const cta=contact?contact.slice(0,58):"";
+ const sub=website||"";
+ if(cta||sub){round(footerX,fy,footerW,footerH,Math.round(w*.022),"rgba(242,200,91,.98)");ctx.fillStyle=ink;if(cta){const ctaFont=fit(cta,footerW-Math.round(w*.055),Math.round(w*.027),"900");ctx.font="900 "+ctaFont+"px system-ui,Arial";ctx.fillText(cta,footerX+Math.round(w*.027),fy+Math.round(footerH*.43))}if(sub){ctx.font="750 "+Math.round(w*.019)+"px system-ui,Arial";ctx.fillText(sub.slice(0,64),footerX+Math.round(w*.027),fy+Math.round(footerH*.76))}}
  ctx.fillStyle="rgba(255,255,255,.66)";ctx.font="600 "+Math.round(w*.012)+"px system-ui,Arial";ctx.fillText("CHEDAR AI STUDIO",p,h-Math.round(p*.18));
  return canvas.toDataURL("image/png");
 }
