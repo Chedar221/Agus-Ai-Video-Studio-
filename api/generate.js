@@ -231,6 +231,18 @@ WAJIB:
       clean.continuity && "KONTINUITAS: " + clean.continuity
     ].filter(Boolean).join(" | ").slice(0, 900);
     project.globalCharacterLock = [String(project.globalCharacterLock || ""), proLock].filter(Boolean).join("\n");
+    const manualDialogueEntries = Array.from({ length: speakerCount }, (_, i) => {
+      const n = i + 1;
+      const text = String(clean["speaker" + n + "Dialogue"] || "");
+      return text.trim() ? { name: String(clean["speaker" + n + "Name"] || "Tokoh " + n).trim(), text } : null;
+    }).filter(Boolean);
+    const manualDialogueByScene = Array.from({ length: sceneCount }, () => []);
+    manualDialogueEntries.forEach((entry, i) => {
+      const sceneIndex = Math.min(i, sceneCount - 1);
+      manualDialogueByScene[sceneIndex].push(entry.name + ": " + entry.text);
+    });
+    const narrationMode = clean.narrationMode || "auto";
+    const manualNarration = String(clean.narrationText || "");
     project.scenes = project.scenes.map((scene, index) => {
       const start = index * duration;
       const end = start + duration;
@@ -240,6 +252,9 @@ WAJIB:
       scene.imagePrompt = compactPrompt([String(scene.imagePrompt || ""), proLock].filter(Boolean).join("\n\n"), 3600);
       scene.narration = String(scene.narration || "");
       scene.dialogue = String(scene.dialogue || "");
+      if (manualDialogueEntries.length) scene.dialogue = manualDialogueByScene[index].join("\n");
+      if (narrationMode === "none" || (narrationMode === "manual" && !manualNarration.trim())) scene.narration = "";
+      else if (manualNarration.trim() && (narrationMode === "manual" || narrationMode === "auto")) scene.narration = index === 0 ? manualNarration : "";
       if (audioMode === "narration_only" || audioMode === "none") scene.dialogue = "";
       if (audioMode === "dialogue_only" || audioMode === "none") scene.narration = "";
       const hasNarration = Boolean(scene.narration.trim());
