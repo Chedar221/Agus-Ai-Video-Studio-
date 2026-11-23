@@ -22,14 +22,14 @@ async function composeFinalArtwork(source){
  ctx.fillStyle=bottom;ctx.fillRect(0,h*(portrait?.57:.55),w,h*(portrait?.43:.45));
  const round=(x,y,ww,hh,r,fill,stroke)=>{ctx.beginPath();ctx.roundRect(x,y,ww,hh,r);if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=Math.max(2,w*.0018);ctx.stroke()}};
  const fit=(text,max,font,weight="850")=>{let size=font;do{ctx.font=weight+" "+size+"px system-ui,Arial";if(ctx.measureText(text).width<=max||size<=14)break;size-=2}while(size>14);return size};
- const wrap=(text,max,font,maxLines=4,weight="650")=>{ctx.font=weight+" "+font+"px system-ui,Arial";const words=String(text||"").replace(/\\s+/g," ").trim().split(" ").filter(Boolean),lines=[];let line="";for(const word of words){const t=line?line+" "+word:word;if(ctx.measureText(t).width>max&&line){lines.push(line);line=word;if(lines.length===maxLines)break}else line=t}if(line&&lines.length<maxLines)lines.push(line);if(words.length>lines.join(" ").split(" ").length&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/[.,;:!?]?$/,"")+"…";return lines};
+ const wrap=(text,max,font,maxLines=4,weight="650")=>{ctx.font=weight+" "+font+"px system-ui,Arial";const words=String(text||"").replace(/\s+/g," ").trim().split(" ").filter(Boolean),lines=[];let line="";for(const word of words){const t=line?line+" "+word:word;if(ctx.measureText(t).width>max&&line){lines.push(line);line=word;if(lines.length===maxLines)break}else line=t}if(line&&lines.length<maxLines)lines.push(line);if(words.length>lines.join(" ").split(" ").length&&lines.length)lines[lines.length-1]=lines[lines.length-1].replace(/[.,;:!?]?$/,"")+"…";return lines};
  const title=($("designTitle").value||$("designResultTitle").textContent||"").trim();
- const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\\n"+copy).trim();
- const priceMatch=combined.match(/(?:Rp\\.?\\s*)[0-9][0-9.,]*(?:\\s*\\/\\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\\s+/g," "):"";
- const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\\s*:?\\s*[+0-9][+0-9\\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\\s+/g," ").trim():"";
- const urlMatch=combined.match(/(?:https?:\\/\\/)?(?:www\\.)?[a-z0-9-]+\\.(?:com|id|app|net|org)(?:\\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
+ const details=($("designDetails").value||"").trim(),copy=($("designCopy").value||"").trim(),combined=(details+"\n"+copy).trim();
+ const priceMatch=combined.match(/(?:Rp\.?\s*)[0-9][0-9.,]*(?:\s*\/\s*[a-zA-Z]+)?/i),price=priceMatch?priceMatch[0].replace(/\s+/g," "):"";
+ const contactMatch=combined.match(/(?:WhatsApp|WA|Hubungi|Kontak)\s*:?\s*[+0-9][+0-9\s().-]{7,}/i),contact=contactMatch?contactMatch[0].replace(/\s+/g," ").trim():"";
+ const urlMatch=combined.match(/(?:https?:\/\/)?(?:www\.)?[a-z0-9-]+\.(?:com|id|app|net|org)(?:\/[a-z0-9/_-]*)?/i),website=urlMatch?urlMatch[0]:"";
  let body=details||copy;[priceMatch?.[0],contactMatch?.[0],urlMatch?.[0]].filter(Boolean).forEach(v=>body=body.replace(v,""));
- body=body.replace(/\\s*[,;|]\\s*/g," · ").replace(/\\s+/g," ").trim();
+ body=body.replace(/\s*[,;|]\s*/g," · ").replace(/\s+/g," ").trim();
  const typeName=names[$("designType").value]||"DESAIN IKLAN";
  let logoImage=null;if(logo){try{logoImage=await loadImage(logo.url)}catch(e){console.warn("Logo overlay skipped",e)}}
  // Compact brand signature: keep the uploaded logo intact and let the photograph remain the hero.
