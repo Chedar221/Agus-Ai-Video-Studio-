@@ -1204,8 +1204,10 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   const mode=$("narrationMode")?.value||"auto",narration=$("narrationText")?.value?.trim()||"";
   const narratorVoice=$("narratorVoice")?.value||"Kore";
   const n=Number(count?.value||1);
+  const useManualNarration=mode!=="none"&&Boolean(narration);
+  if(useManualNarration)segments.push({label:"Narasi · Manual",text:narration,voice:narratorVoice,style:"natural Indonesian narration; read the supplied text verbatim"});
   for(const scene of scenes){
-   if(mode!=="none" && scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:narratorVoice,style:"natural Indonesian narration"});
+   if(mode==="auto"&&!useManualNarration&&scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:narratorVoice,style:"natural Indonesian narration"});
    const raw=String(scene.dialogue||"");
    if(raw.trim()){
     const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);
