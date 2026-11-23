@@ -628,6 +628,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
 <div class="quickSubpanel" id="quickDialoguePanel"><div class="field"><label for="quickExtraDialogue">DIALOG TAMBAHAN (OPSIONAL)</label><textarea id="quickExtraDialogue" rows="3" placeholder="Tulis kalimat khusus yang wajib dimasukkan. AI tetap membuat dialog lain yang sesuai cerita."></textarea><div class="hint">Kosongkan jika ingin AI menyusun semua dialog sendiri. Jika diisi, AI akan mempertahankan kalimat ini dan melengkapi dialog cerita.</div></div></div>
 <style>
 /* VOICE CONTROLS IN QUICK CREATE */
+#quickStudio #generateSpeechBtn{display:none!important}
 #quickStudio #voiceControlPanel{display:block!important;margin:14px 0;padding:14px!important;background:#101c2b;border:1px solid #b99a5a88;border-radius:14px}
 #quickStudio #voiceControlPanel>label{display:block;margin:12px 0 6px;color:#e8d09e;font-size:12px;font-weight:800}
 #quickStudio #voiceControlPanel select,#quickStudio #voiceControlPanel input,#quickStudio #voiceControlPanel textarea{width:100%;box-sizing:border-box}
@@ -713,7 +714,7 @@ button .btnIcon{display:inline-flex;align-items:center;justify-content:center;fl
  <p class="hint">Atur teks yang diucapkan. Teks manual dipertahankan persis; tiap karakter memakai suara yang dipilih dan berbicara bergantian.</p>
  <label for="narrationMode">Mode narasi</label>
  <select id="narrationMode"><option value="auto" selected>Otomatis jika teks kosong</option><option value="manual">Gunakan teks saya persis</option><option value="none">Tanpa narasi</option></select>
- <label for="narrationText">Teks narasi (boleh dikosongkan)</label>
+ <label for="narratorVoice">Suara narator</label><select id="narratorVoice"><option value="Kore">Kore — jelas dan tegas</option><option value="Charon">Charon — berat dan tenang</option><option value="Aoede">Aoede — lembut dan hangat</option><option value="Orus">Orus — dewasa dan berwibawa</option><option value="Puck">Puck — ceria dan ekspresif</option></select><label for="narrationText">Teks narasi (boleh dikosongkan)</label>
  <textarea id="narrationText" rows="3" placeholder="Kosongkan untuk narasi otomatis, atau isi narasi yang harus dibacakan persis..."></textarea>
  <label for="dialogueCount">Jumlah karakter yang berbicara</label>
  <select id="dialogueCount"><option value="1">1 karakter</option><option value="2">2 karakter</option><option value="3">3 karakter</option><option value="4">4 karakter</option></select>
@@ -941,7 +942,21 @@ $("projectType").addEventListener("change",updateProjectType);updateProjectType(
 function updateDialogueCount(){const count=Number($("dialogueCount").value||1);[1,2,3,4].forEach(n=>{$("speakerCard"+n).hidden=n>count;});}
 $("dialogueCount").addEventListener("change",updateDialogueCount);updateDialogueCount();
 document.querySelectorAll("[data-quicktab]").forEach(tab=>tab.addEventListener("click",()=>{document.querySelectorAll("[data-quicktab]").forEach(x=>x.classList.toggle("active",x===tab));["quickIdeaPanel","quickReferencePanel","quickDialoguePanel"].forEach(id=>$(id).classList.toggle("hidden",id!==tab.dataset.quicktab));}));
-function buildSpeakerBrief(){const extra=$("quickExtraDialogue")?.value.trim()||"";$("dialogueCount").value="1";$("speaker1Name").value="Tokoh utama";$("speaker1Dialogue").value=extra;$("audioMode").value="both";$("dialogue").value=extra?'DIALOG TAMBAHAN WAJIB DIMASUKKAN PERSIS: "'+extra+'". Dialog ini bukan pengganti dialog lain; AI tetap menyusun dialog tambahan yang natural dan sesuai cerita. Gunakan satu suara tokoh utama yang konsisten.':"";}
+function buildSpeakerBrief(){
+ const extra=$("quickExtraDialogue")?.value.trim()||"";
+ const count=Math.max(1,Math.min(4,Number($("dialogueCount")?.value||1)));
+ $("dialogueCount").value=String(count);
+ if(!$("speaker1Name").value.trim())$("speaker1Name").value="Tokoh utama";
+ if(extra&&!$("speaker1Dialogue").value.trim())$("speaker1Dialogue").value=extra;
+ const narrationMode=$("narrationMode")?.value||"auto";
+ $("audioMode").value=narrationMode==="none"?"dialogue_only":"both";
+ $("dialogue").value=Array.from({length:count},(_,i)=>{
+  const name=$("speaker"+(i+1)+"Name")?.value.trim()||("Tokoh "+(i+1));
+  const text=$("speaker"+(i+1)+"Dialogue")?.value.trim()||"AI susun dialog sesuai cerita";
+  const voice=$("speaker"+(i+1)+"Voice")?.value||"Kore";
+  return name+" | Suara: "+voice+" | Dialog: "+text;
+ }).join("\n");
+}
 
 
 function setStatus(m,k=""){ $("status").textContent=m;$("status").className="status "+k; }
@@ -1032,6 +1047,7 @@ $("quickGenerate").onclick=async(event)=>{
   const previousProject=project;
   await $("aiBtn").onclick(photos);
   if(project && project!==previousProject && window.ChedarProductionSuite?.runAll){$("quickStatus").textContent="Paket utama selesai. Menjalankan Character, Storyboard, Continuity, Voice, dan Music Director otomatis...";const suiteOk=await window.ChedarProductionSuite.runAll();if(!suiteOk)$("quickStatus").textContent="Paket utama berhasil dibuat, tetapi fitur pendamping belum selesai. Buka Hasil Video untuk memakai paket utama dan jalankan ulang 5 fitur otomatis.";}
+  if(project && project!==previousProject){const audioStatus=$("speechStatus");if(audioStatus)audioStatus.textContent="Paket video selesai. Menyiapkan audio narasi dan dialog sesuai pilihan...";$("generateSpeechBtn")?.click();}
   else if(project===previousProject){const detail=($("quickStatus").textContent||"").trim();if(!detail||detail==="Menyiapkan foto dan menghubungi AI. Jangan tutup halaman ini."||detail.includes("foto siap dikirim"))$("quickStatus").textContent="Paket belum berhasil dibuat. "+($("status").textContent||"Periksa koneksi dan konfigurasi mesin AI.");}
  }catch(error){$("quickStatus").textContent="Gagal menyiapkan foto: "+(error.message||"Coba pilih ulang foto.");}
  finally{button.disabled=false;button.textContent="✦ BUAT VIDEO OTOMATIS";}
@@ -1177,9 +1193,10 @@ renderSaved();restoreLastProject();if("serviceWorker" in navigator && location.p
   if(!Array.isArray(scenes)||!scenes.length){setStatus("Paket video belum tersedia. Generate proyek terlebih dahulu.","err");return;}
   const segments=[];
   const mode=$("narrationMode")?.value||"auto",narration=$("narrationText")?.value?.trim()||"";
+  const narratorVoice=$("narratorVoice")?.value||"Kore";
   const n=Number(count?.value||1);
   for(const scene of scenes){
-   if(mode!=="none" && scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:"Kore",style:"natural Indonesian narration"});
+   if(mode!=="none" && scene.narration?.trim())segments.push({label:"Narasi · Adegan "+scene.number,text:scene.narration,voice:narratorVoice,style:"natural Indonesian narration"});
    const raw=String(scene.dialogue||"");
    if(raw.trim()){
     const lines=raw.split(/\n+/).map(x=>x.trim()).filter(Boolean);
