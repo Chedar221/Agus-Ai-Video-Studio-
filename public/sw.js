@@ -1,5 +1,5 @@
-const CACHE = "chedar-ai-studio-logo-20261124";
-const ASSETS = ["/", "/manifest.webmanifest", "/icon.svg", "/chedar-ai-studio-logo.jpg", "/chedar-ai-studio-logo.jpg?v=20261124"];
+const CACHE = "chedar-ai-studio-original-png-logo-20261124";
+const ASSETS = ["/", "/manifest.webmanifest", "/icon.svg", "/20261122_194334.png", "/20261122_194334.png?v=20261124"];
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
