@@ -1,27 +1,39 @@
+import { createHash } from "node:crypto";
 import { isAdminRequest } from "./_admin-session.js";
 
-// Best-effort public throttle per serverless runtime instance.
-// A shared rate-limit service is required for a durable global quota.
+// Zero-cost, best-effort limits per Vercel serverless runtime instance.
+// These limits reduce accidental overuse but are not a durable global quota.
 const publicGenerateLimits = new Map();
-const PUBLIC_GENERATE_LIMIT = 5;
-const PUBLIC_GENERATE_WINDOW_MS = 60_000;
+const PUBLIC_GENERATE_PER_MINUTE = 3;
+const PUBLIC_GENERATE_PER_DAY = 10;
+const PUBLIC_GENERATE_MINUTE_MS = 60_000;
+const PUBLIC_GENERATE_DAY_MS = 24 * 60 * 60 * 1000;
 
 function checkPublicGenerateLimit(req) {
   const ip = String(req.headers?.["x-real-ip"] || req.headers?.["x-forwarded-for"] || req.socket?.remoteAddress || "unknown")
     .split(",")[0].trim().slice(0, 100);
+  const key = createHash("sha256").update(ip).digest("hex");
   const now = Date.now();
-  let entry = publicGenerateLimits.get(ip);
-  if (!entry || entry.resetAt <= now) {
-    entry = { count: 1, resetAt: now + PUBLIC_GENERATE_WINDOW_MS };
-    publicGenerateLimits.set(ip, entry);
-  } else if (entry.count >= PUBLIC_GENERATE_LIMIT) {
-    return { allowed: false, retryAfter: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)) };
-  } else {
-    entry.count += 1;
+  let entry = publicGenerateLimits.get(key);
+  if (!entry || entry.dayResetAt <= now) {
+    entry = { minuteCount: 0, minuteResetAt: now + PUBLIC_GENERATE_MINUTE_MS, dayCount: 0, dayResetAt: now + PUBLIC_GENERATE_DAY_MS };
+    publicGenerateLimits.set(key, entry);
   }
+  if (entry.minuteResetAt <= now) {
+    entry.minuteCount = 0;
+    entry.minuteResetAt = now + PUBLIC_GENERATE_MINUTE_MS;
+  }
+  if (entry.dayCount >= PUBLIC_GENERATE_PER_DAY) {
+    return { allowed: false, retryAfter: Math.max(1, Math.ceil((entry.dayResetAt - now) / 1000)), reason: "daily" };
+  }
+  if (entry.minuteCount >= PUBLIC_GENERATE_PER_MINUTE) {
+    return { allowed: false, retryAfter: Math.max(1, Math.ceil((entry.minuteResetAt - now) / 1000)), reason: "minute" };
+  }
+  entry.minuteCount += 1;
+  entry.dayCount += 1;
   if (publicGenerateLimits.size > 1000) {
-    for (const [key, value] of publicGenerateLimits) {
-      if (value.resetAt <= now) publicGenerateLimits.delete(key);
+    for (const [storedKey, value] of publicGenerateLimits) {
+      if (value.dayResetAt <= now) publicGenerateLimits.delete(storedKey);
     }
   }
   return { allowed: true };
@@ -47,7 +59,7 @@ export default async function handler(req, res) {
     const limit = checkPublicGenerateLimit(req);
     if (!limit.allowed) {
       if (typeof res.setHeader === "function") res.setHeader("Retry-After", String(limit.retryAfter));
-      return send(res, 429, { error: "Batas sementara tercapai. Coba lagi setelah " + limit.retryAfter + " detik." });
+      return send(res, 429, { error: limit.reason === "daily" ? "Batas gratis harian untuk alamat jaringan ini sudah tercapai. Silakan coba lagi besok." : "Batas gratis sementara tercapai. Coba lagi setelah " + limit.retryAfter + " detik." });
     }
   }
   let d = req.body;
@@ -232,7 +244,7 @@ WAJIB:
       if(!response.ok){const code=response.status;const provider={openai:"OpenAI",groq:"Groq",openrouter:"OpenRouter"}[requestedEngine];const message=code===401||code===403?"API Key "+provider+" ditolak. Periksa "+keyName+" di Vercel.":code===429?"Kuota atau rate limit "+provider+" tercapai. Coba lagi nanti atau pilih mesin lain.":(payload?.error?.message||provider+" API error ("+code+")").slice(0,450);return send(res,code>=500?502:code,{error:message});}
       output=String(payload.choices?.[0]?.message?.content||"").trim();
     }else{
-      const requestBody={contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:24000}};
+      const requestBody={contents:[{role:"user",parts:[{text:brief},...imageParts]}],generationConfig:{responseMimeType:"application/json",temperature:0.55,maxOutputTokens:isAdmin?24000:16000}};
       const fallbackModels=[model,...(model==="gemini-3.5-flash-lite"?[]:["gemini-3.5-flash-lite"])];
       let response=null;
       let activeModel=model;
