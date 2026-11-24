@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<defs>
+ <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#fff0a8"/><stop offset=".28" stop-color="#f8c34f"/><stop offset=".62" stop-color="#a96716"/><stop offset="1" stop-color="#ffe58b"/></linearGradient>
+ <radialGradient id="core"><stop stop-color="#fff8c9"/><stop offset=".16" stop-color="#f9b72c"/><stop offset=".48" stop-color="#21170a"/><stop offset="1" stop-color="#050505"/></radialGradient>
+ <linearGradient id="blade" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f8e3a0"/><stop offset=".5" stop-color="#6c512b"/><stop offset="1" stop-color="#15110b"/></linearGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+<rect width="512" height="512" rx="76" fill="#050505"/>
+<g fill="none" stroke="url(#g)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+ <path d="M24 174h100l28 26h76M18 236h112l26-24h68M34 300h88l28-28h76M55 364h74l36-38h66"/>
+ <circle cx="24" cy="174" r="12" fill="#090909"/><circle cx="18" cy="236" r="12" fill="#090909"/><circle cx="34" cy="300" r="12" fill="#090909"/><circle cx="55" cy="364" r="12" fill="#090909"/>
+</g>
+<path d="M154 92c74-64 188-48 253 17 48 49 54 124 18 180" fill="none" stroke="url(#g)" stroke-width="17" stroke-linecap="round"/>
+<path d="M111 404c54 70 173 84 269 23 33-21 58-48 73-79" fill="none" stroke="url(#g)" stroke-width="18" stroke-linecap="round"/>
+<path d="M145 114l223 22 82 152-170 115-135-91z" fill="#b47720" opacity=".18" stroke="url(#g)" stroke-width="8"/>
+<circle cx="272" cy="254" r="139" fill="#080706" stroke="url(#g)" stroke-width="15"/>
+<circle cx="272" cy="254" r="119" fill="#17130d" stroke="#d9a743" stroke-width="5"/>
+<g fill="url(#blade)" stroke="#c9a45c" stroke-width="3">
+ <path d="M264 146Q326 157 349 202L281 246Z"/>
+ <path d="M375 226Q381 291 335 326L284 263Z"/>
+ <path d="M315 366Q250 387 206 345L265 279Z"/>
+ <path d="M169 316Q145 255 183 208L247 256Z"/>
+ <path d="M198 171Q239 136 285 145L267 231Z"/>
+</g>
+<circle cx="272" cy="254" r="24" fill="url(#core)" filter="url(#glow)"/>
+<circle cx="272" cy="254" r="7" fill="#fff4b5"/>
+<path d="M375 102l23-12" stroke="#ffe9a1" stroke-width="5" stroke-linecap="round" filter="url(#glow)"/>
+</svg>
