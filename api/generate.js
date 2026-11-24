@@ -1,4 +1,31 @@
 import { isAdminRequest } from "./_admin-session.js";
+
+// Best-effort public throttle per serverless runtime instance.
+// A shared rate-limit service is required for a durable global quota.
+const publicGenerateLimits = new Map();
+const PUBLIC_GENERATE_LIMIT = 5;
+const PUBLIC_GENERATE_WINDOW_MS = 60_000;
+
+function checkPublicGenerateLimit(req) {
+  const ip = String(req.headers?.["x-real-ip"] || req.headers?.["x-forwarded-for"] || req.socket?.remoteAddress || "unknown")
+    .split(",")[0].trim().slice(0, 100);
+  const now = Date.now();
+  let entry = publicGenerateLimits.get(ip);
+  if (!entry || entry.resetAt <= now) {
+    entry = { count: 1, resetAt: now + PUBLIC_GENERATE_WINDOW_MS };
+    publicGenerateLimits.set(ip, entry);
+  } else if (entry.count >= PUBLIC_GENERATE_LIMIT) {
+    return { allowed: false, retryAfter: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)) };
+  } else {
+    entry.count += 1;
+  }
+  if (publicGenerateLimits.size > 1000) {
+    for (const [key, value] of publicGenerateLimits) {
+      if (value.resetAt <= now) publicGenerateLimits.delete(key);
+    }
+  }
+  return { allowed: true };
+}
 // Vercel serverless endpoint for AGUS AI VIDEO STUDIO — Google Gemini
 function compactPrompt(value, maxLength = 3800) {
   const text = String(value || "").replace(/\s+/g, " ").trim();
@@ -15,10 +42,19 @@ export default async function handler(req, res) {
     if (typeof res.setHeader === "function") res.setHeader("Allow", "POST");
     return send(res, 405, { error: "Gunakan metode POST." });
   }
+  const isAdmin = isAdminRequest(req);
+  if (!isAdmin) {
+    const limit = checkPublicGenerateLimit(req);
+    if (!limit.allowed) {
+      if (typeof res.setHeader === "function") res.setHeader("Retry-After", String(limit.retryAfter));
+      return send(res, 429, { error: "Batas sementara tercapai. Coba lagi setelah " + limit.retryAfter + " detik." });
+    }
+  }
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  // Public visitors use Gemini only. Other providers remain available to authenticated admins.\n  const isAdmin = isAdminRequest(req);\n  const requestedEngine = isAdmin ? String(d.aiEngine || "gemini").toLowerCase() : "gemini";
+  // Public visitors use Gemini only. Other providers remain available to authenticated admins.
+  const requestedEngine = isAdmin ? String(d.aiEngine || "gemini").toLowerCase() : "gemini";
   const supportedEngines=["gemini","openai","groq","openrouter"];
   if(!supportedEngines.includes(requestedEngine))return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
   const useOpenAI=requestedEngine==="openai";
