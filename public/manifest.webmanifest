@@ -10,9 +10,9 @@
   "theme_color": "#0b1018",
   "icons": [
     {
-      "src": "/chedar-ai-studio-mark.svg?v=20261124",
+      "src": "/chedar-ai-studio-logo.jpg?v=20261124",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/jpeg",
       "purpose": "any maskable"
     }
   ]
