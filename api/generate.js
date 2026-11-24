@@ -18,7 +18,7 @@ export default async function handler(req, res) {
   let d = req.body;
   if (typeof d === "string") { try { d = JSON.parse(d); } catch { d = null; } }
   if (!d || typeof d !== "object" || Array.isArray(d)) return send(res, 400, { error: "Data proyek tidak valid." });
-  const requestedEngine=String(d.aiEngine||"gemini").toLowerCase();
+  // Public visitors use Gemini only. Other providers remain available to authenticated admins.\n  const isAdmin = isAdminRequest(req);\n  const requestedEngine = isAdmin ? String(d.aiEngine || "gemini").toLowerCase() : "gemini";
   const supportedEngines=["gemini","openai","groq","openrouter"];
   if(!supportedEngines.includes(requestedEngine))return send(res,400,{error:"Pilihan mesin AI tidak dikenal."});
   const useOpenAI=requestedEngine==="openai";
